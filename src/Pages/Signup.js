@@ -53,7 +53,7 @@ function Signup() {
         {errors.username && errors.username.type === 'required' && (
           <p>이 칸을 입력해주세요.</p>
         )}
-        {errors.username && errors.username.type === 'pattern' && (
+        {errors.username && errors.username.type === 'maxLength' && (
           <p>닉네임은 최대 10자 내외로 입력해주세요.</p>
         )}
         <label>Password</label>
