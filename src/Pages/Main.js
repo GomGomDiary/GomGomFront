@@ -5,10 +5,6 @@ const Main = () => {
   const click = () => {
     axios
       .get('https://9c62-221-145-16-224.ngrok-free.app/auth', {
-        headers: {
-          'set-cookie':
-            'token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IuycoOuLiOyuuCIsImlhdCI6MTY5NTA2MDg3OSwiZXhwIjoxNjk1MTQ3Mjc5fQ.PgtYHMJSzRxzAnOYdcsuCKFkxOBcG0M3Eto1EYOb-tA; Path=/',
-        },
         withCredentials: true,
       })
       .then((response) => {
