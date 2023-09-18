@@ -4,7 +4,7 @@ import styles from './Login.module.css';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 
-function Login() {
+function Login({ setIsLogin }) {
   const {
     register,
     handleSubmit,
@@ -26,9 +26,11 @@ function Login() {
         },
       })
       .then((response) => {
-        console.log(response.data);
+        console.log(response);
+        setIsLogin(true);
       })
       .catch((error) => {
+        alert('로그인에 실패했습니다.');
         console.error(error);
       });
   };

@@ -61,18 +61,18 @@ function Signup() {
           name="password"
           type="password"
           autoComplete="on"
-          placeholder="영문+숫자+특수문자 조합의 15자 내외로 입력해주세요."
+          placeholder="영문+숫자+특수문자 조합의 7~15자 내외로 입력해주세요."
           {...register('password', {
             required: true,
             pattern:
-              /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{0,16}$/i,
+              /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{7,16}$/i,
           })}
         />
         {errors.password && errors.password.type === 'required' && (
           <p>이 칸을 입력해주세요.</p>
         )}
         {errors.password && errors.password.type === 'pattern' && (
-          <p>영문+숫자+특수문자 조합의 15자 내외로 입력해주세요.</p>
+          <p>영문+숫자+특수문자 조합의 7~15자 내외로 입력해주세요.</p>
         )}
         <label>Password Confirm</label>
         <input
