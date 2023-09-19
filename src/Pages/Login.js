@@ -1,5 +1,5 @@
 import React, { useForm } from 'react-hook-form';
-import { useRef } from 'react';
+import { useRef, useEffect } from 'react';
 import styles from './Login.module.css';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
@@ -26,7 +26,11 @@ function Login({ setIsLogin }) {
         },
       })
       .then((response) => {
-        console.log(response);
+        // 세션 토큰을 받아와서 클라이언트 측 저장소에 저장
+        const sessionToken = response.data.token;
+        localStorage.setItem('sessionToken', sessionToken);
+
+        // 로그인 상태 변경
         setIsLogin(true);
       })
       .catch((error) => {
@@ -34,6 +38,14 @@ function Login({ setIsLogin }) {
         console.error(error);
       });
   };
+
+  useEffect(() => {
+    // 컴포넌트 로딩 시, 세션 토큰 확인하여 로그인 상태 변경
+    const sessionToken = localStorage.getItem('sessionToken');
+    if (sessionToken) {
+      setIsLogin(true);
+    }
+  }, []);
 
   const password = useRef();
   password.current = watch('password');
