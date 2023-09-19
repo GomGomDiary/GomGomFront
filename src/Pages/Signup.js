@@ -2,6 +2,7 @@ import React, { useForm } from 'react-hook-form';
 import { useRef } from 'react';
 import styles from './Signup.module.css';
 import axios from 'axios';
+import { Link } from 'react-router-dom';
 
 function Signup() {
   const {
@@ -37,7 +38,9 @@ function Signup() {
 
   return (
     <div className={styles.Signup}>
-      <h1 className={styles.title}>🧸 GomGom Signup 🧸</h1>
+      <Link to="/signup" className={styles.title}>
+        🧸 GomGom Signup 🧸
+      </Link>
       <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
         <label>Name</label>
         <input

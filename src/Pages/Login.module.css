@@ -14,7 +14,8 @@ body {
   background: #f6f4eb;
 }
 
-h1 {
+.title {
+  font-size: 36px;
   font-weight: 700;
   color: #91c8e4;
   text-align: center;

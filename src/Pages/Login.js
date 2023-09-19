@@ -40,7 +40,9 @@ function Login({ setIsLogin }) {
 
   return (
     <div className={styles.Login}>
-      <h1 className={styles.title}>🧸 GomGom Login 🧸</h1>
+      <Link to="/" className={styles.title}>
+        🧸 GomGom Login 🧸
+      </Link>
       <form className={styles.form} onSubmit={handleSubmit(onLogin)}>
         <label>Name</label>
         <input
