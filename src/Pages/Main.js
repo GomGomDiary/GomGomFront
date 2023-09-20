@@ -23,8 +23,8 @@ const Main = () => {
     axios
       .post('https://9c62-221-145-16-224.ngrok-free.app/logout')
       .then((response) => {
-        console.log(response);
-        navigate('/login');
+        console.log('쿠키 삭제!');
+        navigate('/login', { replace: true });
       })
       .catch((error) => {
         alert('로그아웃에 실패했습니다.');

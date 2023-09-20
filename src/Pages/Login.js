@@ -1,10 +1,12 @@
 import React, { useForm } from 'react-hook-form';
-import { useRef, useEffect } from 'react';
+import { useRef } from 'react';
 import styles from './Login.module.css';
 import axios from 'axios';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
-function Login({ setIsLogin }) {
+function Login() {
+  const navigate = useNavigate();
+
   const {
     register,
     handleSubmit,
@@ -26,12 +28,8 @@ function Login({ setIsLogin }) {
         },
       })
       .then((response) => {
-        // 세션 토큰을 받아와서 클라이언트 측 저장소에 저장
-        const sessionToken = response.data.token;
-        localStorage.setItem('sessionToken', sessionToken);
-
-        // 로그인 상태 변경
-        setIsLogin(true);
+        console.log(response);
+        navigate('/', { replace: true });
       })
       .catch((error) => {
         alert('로그인에 실패했습니다.');
@@ -39,20 +37,12 @@ function Login({ setIsLogin }) {
       });
   };
 
-  useEffect(() => {
-    // 컴포넌트 로딩 시, 세션 토큰 확인하여 로그인 상태 변경
-    const sessionToken = localStorage.getItem('sessionToken');
-    if (sessionToken) {
-      setIsLogin(true);
-    }
-  }, []);
-
   const password = useRef();
   password.current = watch('password');
 
   return (
     <div className={styles.Login}>
-      <Link to="/" className={styles.title}>
+      <Link to="/login" className={styles.title}>
         🧸 GomGom Login 🧸
       </Link>
       <form className={styles.form} onSubmit={handleSubmit(onLogin)}>
