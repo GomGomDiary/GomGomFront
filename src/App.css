@@ -1,3 +1,10 @@
 body {
   height: 100%;
+  margin: 0 auto;
+}
+
+:root {
+  --mainColor: #f6f4eb;
+  --pointColor: #91c8e4;
+  --pointDarkColor: #4682a9;
 }
