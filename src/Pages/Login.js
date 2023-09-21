@@ -1,8 +1,9 @@
-import React, { useForm } from 'react-hook-form';
-import { useRef } from 'react';
+import React, { useRef } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { useForm } from 'react-hook-form';
+import { useCookies } from 'react-cookie';
 import styles from './Login.module.css';
 import axios from 'axios';
-import { Link, useNavigate } from 'react-router-dom';
 
 function Login() {
   const navigate = useNavigate();
@@ -13,6 +14,8 @@ function Login() {
     watch,
     formState: { errors },
   } = useForm();
+
+  const [cookie, setCookie] = useCookies(['token']);
 
   const onLogin = ({ username, password }) => {
     const requestData = {
@@ -28,8 +31,8 @@ function Login() {
         },
       })
       .then((response) => {
-        localStorage.setItem('token', response.data.token);
-        navigate('/', { replace: true });
+        setCookie('token', response.data.token);
+        navigate('/');
       })
       .catch((error) => {
         alert('로그인에 실패했습니다.');
