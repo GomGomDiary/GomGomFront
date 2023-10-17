@@ -16,7 +16,7 @@ jobs:
         env:
           API_TOKEN_GITHUB: ${{ secrets.API_TOKEN_GITHUB }}
         with:
-          source-directory: "output"
+          source-directory: front
           destination-github-username: "Yoowatney"
           destination-repository-name: "GomGomFront"
           user-email: ${{ secrets.OFFICIAL_ACCOUNT_EMAIL }}
