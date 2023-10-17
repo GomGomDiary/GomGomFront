@@ -1,4 +1,4 @@
 #!/bin/sh
 
 cd ../
-cp -r ./GomGomFront ./front
+cp -r ./GomGomFront ./output
