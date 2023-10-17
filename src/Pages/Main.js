@@ -15,7 +15,7 @@ const Main = () => {
   return (
     <div className={styles.main}>
       <div className={styles.background}>
-        <button onClick={logout}>로그아웃</button>
+        <button onClick={logout}>로그아웃 버튼</button>
       </div>
     </div>
   );
