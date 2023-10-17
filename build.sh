@@ -1,4 +1,6 @@
 #!/bin/sh
 
 cd ../
-cp -r ./GomGomFront ./front
+mkdir front
+cp -r ./GomGomFront/* ./front
+cp -r ./front ./GomGomFront
