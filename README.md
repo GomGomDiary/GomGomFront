@@ -68,3 +68,10 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/d
 ### `npm run build` fails to minify
 
 This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+
+
+## 주의 사항
+
+부끄럽지만... Vercel의 가격 정책을 피하기 위해 꼼수를 사용했습니다.\
+제 개인 레포지토리는 Vercel과 연결되어 있습니다.\
+해당 레포지토리에서 main branch에 push event가 발생하면 제 개인 레포지토리로 동기화가 일어납니다.
