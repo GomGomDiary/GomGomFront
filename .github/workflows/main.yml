@@ -4,12 +4,14 @@ on:
 
 jobs:
   build:
+    if: ${{ github.event.repository.url != 'https://github.com/Yoowatney/GomGomFront' }}
     runs-on: ubuntu-latest
     container: pandoc/latex
     steps:
       - uses: actions/checkout@v3
       - name : Create directory
         run : sh ./build.sh || ls -al
+          echo ${{ github.event.repository.name }}
       - name: Pushes to another repository
         id: push_directory
         uses: cpina/github-action-push-to-another-repository@main
