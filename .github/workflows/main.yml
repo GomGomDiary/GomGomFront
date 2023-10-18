@@ -21,6 +21,5 @@ jobs:
           source-directory: .
           destination-github-username: "Yoowatney"
           destination-repository-name: "GomGomFront"
-          user-email: ${{ secrets.OFFICIAL_ACCOUNT_EMAIL }}
           commit-message: ${{ github.event.commits[0].message }}
           target-branch: main
