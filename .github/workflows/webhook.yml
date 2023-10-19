@@ -9,8 +9,6 @@ jobs:
         run : |
             [ ${{github.event.deployment_status.state}} = success ] && COLOR=5763719 || COLOR=15548997
             echo "COLOR=$COLOR" >> $GITHUB_ENV
-            echo ${{ github.event.deployment_status }}
-            echo ${{ toJson(github.event.deployment_status) }}
       - name : Discord Webhook
         uses : tsickert/discord-webhook@v5.3.0
         with:
