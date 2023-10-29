@@ -1,0 +1,14 @@
+.Btn {
+  display: block;
+  border: none;
+  background-color: var(--point-color);
+  border-radius: 20px;
+  padding: 10px;
+  color: white;
+  width: 150px;
+  margin: 0 auto;
+}
+
+.Btn:hover {
+  background-color: var(--hover-color);
+}
