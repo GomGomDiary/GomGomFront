@@ -1,11 +1,52 @@
-* {
-  text-align: center;
+.QuestionListContainer {
+  display: flex;
+  flex-direction: column;
 }
 
 .QuestionList {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  height: 60vh;
+  text-align: center;
 }
 
 .title {
   font-size: 18px;
   line-height: 1.2;
+}
+
+.questionContent {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  font-size: 20px;
+  text-align: center;
+}
+
+.questionContent .editingContent {
+  border: none;
+  border-bottom: 1px solid var(--border-color);
+  padding: 5px;
+}
+
+.questionContent :first-child {
+  color: var(--point-color);
+}
+
+.questionBtns {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.modifyBtn {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  padding: 10px;
+  border: none;
+  background-color: transparent;
+  color: var(--point-color);
+  cursor: pointer;
 }
