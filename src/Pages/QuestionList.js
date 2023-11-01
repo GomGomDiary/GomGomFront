@@ -33,22 +33,30 @@ export const QuestionList = () => {
   const currentQuestion = selectedQuestion[currentQuestionIndex];
 
   return (
-    <div>
+    <div className={Styles.QuestionListContainer}>
       <div className={Styles.QuestionList} key={currentQuestionIndex}>
         {currentQuestionIndex < questionNumber && (
           <>
             <div className={Styles.title}>
-              질문이 마음에 들면 다음 문제를 누르고,<p></p>
+              질문이 마음에 들면 다음 질문을 누르고,<p></p>
               마음에 들지 않으면 직접 수정하세요!
             </div>
-            <p>Q.{currentQuestionIndex + 1}</p>
-            <p>{currentQuestion}</p>
+            <div className={Styles.questionContent}>
+              <p>Q.{currentQuestionIndex + 1}</p>
+              <p>{currentQuestion}</p>
+            </div>
+
+            <div>
+              {currentQuestionIndex < questionNumber && (
+                <Btn text={'다음 질문'} onClick={handleNextQuestion} />
+              )}
+            </div>
           </>
         )}
       </div>
-      {currentQuestionIndex < questionNumber && (
-        <Btn text={'다음 문제'} onClick={handleNextQuestion} />
-      )}
+      <div>
+        <button className={Styles.modifyBtn}>수정하기</button>
+      </div>
     </div>
   );
 };

@@ -1,0 +1,37 @@
+#########################################
+
+# FEAT : A new feature
+# FIX : A bug fix
+# DOCS : Changes to documentation
+# STYLE : Formatting, missing semi colons, etc; no code change
+# REFACTOR : Refactoring production code
+# TEST : Adding tests, refactoring test; no production code change
+# CHORE : Updating build tasks, package manager configs, etc; no production code change
+
+# 1. 🛫 이 줄을 지우고 commit 제목을 적어주세요.
+
+#########################################
+
+
+#########################################
+
+# 여러 줄의 메시지를 작성할 땐 "-"로 구분해주세요.
+
+# 2. 🙋 이 줄을 지우고 자세한 내용을 적어주세요.
+
+#########################################
+
+
+#########################################
+
+# 3. 💫 이 줄을 지우고 꼬릿말을 적어주세요.
+
+#########################################
+
+
+# [ Example ]
+#  FEAT : new featrue
+#
+#  웃는 기능을 추가 했습니다 허허
+#
+#  resolve: #13
