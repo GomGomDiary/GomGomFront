@@ -1,14 +1,20 @@
 on:
   push:
-    branches: [main]
 
 jobs:
   build:
-    if: ${{ github.event.repository.url != 'https://github.com/Yoowatney/GomGomFront' }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: build using docker compose
+        run: docker-compose -p gomgom_front -f docker-compose.test.yml up --build --force-recreate --abort-on-container-exit
+  push:
+    if: ${{ github.event.repository.url != 'https://github.com/Yoowatney/GomGomFront' }} && github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     container: pandoc/latex
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name : Create directory
         run : sh ./build.sh || ls -al
           echo ${{ github.event.repository.name }}
