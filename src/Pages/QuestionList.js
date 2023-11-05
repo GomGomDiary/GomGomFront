@@ -1,13 +1,16 @@
 import React, { useState } from 'react';
 import Styles from './QuestionList.module.css';
-
 import { useRecoilState } from 'recoil';
 import { QuestionNum } from '../store/QuestionNum';
 import Btn from '../components/Btn';
+import Input from '../components/Input';
 
-export const QuestionList = () => {
-  const [questionNumber, setQuestionNumber] = useRecoilState(QuestionNum);
+export const QuestionList = ({ onNextStep }) => {
+  const [questionNumber] = useRecoilState(QuestionNum);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
+
+  const [isEdited, setIsEdited] = useState(false);
+  const [editedQuestion, setEditedQuestion] = useState('');
 
   const questionArr = [
     '나는 어떤 사람이야?',
@@ -18,45 +21,78 @@ export const QuestionList = () => {
     '나에게 하고 싶은 말 있어?',
     '나랑 가보고 싶은 곳 있어?',
     '네가 생각하는 나의 장점은 뭐야?',
-    '나와의 추억 중 가장 소중한 추억은?',
+    '나와 가장 소중한 추억은?',
     '나에게 추천하고 싶은 노래는?',
   ];
 
-  const selectedQuestion = questionArr.slice(0, questionNumber + 1);
+  const selectedQuestion = questionArr.slice(0, questionNumber);
 
   const handleNextQuestion = () => {
-    if (currentQuestionIndex < questionNumber) {
+    if (currentQuestionIndex < questionNumber - 1) {
       setCurrentQuestionIndex(currentQuestionIndex + 1);
+      console.log(currentQuestionIndex);
+    } else {
+      onNextStep();
+      console.log(selectedQuestion);
     }
   };
 
-  const currentQuestion = selectedQuestion[currentQuestionIndex];
+  const editedList = [...selectedQuestion];
+
+  const modifyQuestion = () => {
+    setIsEdited(true);
+    setEditedQuestion(editedQuestion);
+  };
+
+  const saveQuestion = () => {
+    setIsEdited(false);
+    console.log(editedQuestion);
+  };
+
+  const currentQuestion = editedList[currentQuestionIndex];
 
   return (
     <div className={Styles.QuestionListContainer}>
       <div className={Styles.QuestionList} key={currentQuestionIndex}>
         {currentQuestionIndex < questionNumber && (
           <>
-            <div className={Styles.title}>
-              질문이 마음에 들면 다음 질문을 누르고,<p></p>
-              마음에 들지 않으면 직접 수정하세요!
+            <div className={Styles.top}>
+              <div className={Styles.title}></div>
+              <div className={Styles.progressBar}>
+                <div className={Styles.progress}></div>
+              </div>
             </div>
-            <div className={Styles.questionContent}>
-              <p>Q.{currentQuestionIndex + 1}</p>
-              <p>{currentQuestion}</p>
-            </div>
-
-            <div>
-              {currentQuestionIndex < questionNumber && (
+            <div className={Styles.middle}>
+              <div className={Styles.questionContent}>
+                <p>✉️ {currentQuestionIndex + 1}번째 질문 ✉️</p>
+                {isEdited ? (
+                  <Input
+                    placeholder="질문을 수정하세요."
+                    value={editedQuestion}
+                    onChange={(e) => setEditedQuestion(e.target.value)}
+                  />
+                ) : (
+                  <p>{currentQuestion}</p>
+                )}
                 <Btn text={'다음 질문'} onClick={handleNextQuestion} />
+              </div>
+            </div>
+            <div className={Styles.botton}>
+              {!isEdited ? (
+                <button className={Styles.modifyBtn} onClick={modifyQuestion}>
+                  수정하기
+                </button>
+              ) : (
+                <button className={Styles.modifyBtn} onClick={saveQuestion}>
+                  수정완료
+                </button>
               )}
             </div>
           </>
         )}
       </div>
-      <div>
-        <button className={Styles.modifyBtn}>수정하기</button>
-      </div>
     </div>
   );
 };
+
+export default QuestionList;

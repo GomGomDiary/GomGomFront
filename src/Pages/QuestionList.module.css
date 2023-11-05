@@ -1,30 +1,58 @@
 .QuestionListContainer {
   display: flex;
   flex-direction: column;
+  width: 100%;
+}
+
+.progressBar {
+  width: 90%;
+  height: 20px;
+  margin: 0 auto;
+  border-radius: 20px;
+  background-color: var(--border-color);
+}
+
+.progress {
+  width: 0px;
+  height: 20px;
+  border-radius: 20px;
+  background-color: var(--point-color);
 }
 
 .QuestionList {
   display: flex;
+  width: 100%;
   flex-direction: column;
-  justify-content: space-around;
-  height: 60vh;
+  justify-content: space-between;
+  height: 70vh;
   text-align: center;
 }
 
+.top {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
 .title {
-  font-size: 18px;
+  font-size: 16px;
   line-height: 1.2;
+}
+
+.middle {
+  height: 50%;
 }
 
 .questionContent {
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 60px;
   font-size: 20px;
-  text-align: center;
+  align-items: center;
+  width: 100%;
 }
 
-.questionContent .editingContent {
+.editingContent {
   border: none;
   border-bottom: 1px solid var(--border-color);
   padding: 5px;
