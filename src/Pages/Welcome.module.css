@@ -4,13 +4,17 @@
   display: flex;
   flex-direction: column;
   gap: 60px;
-  height: 70%;
 }
 
 .Welcome .title {
   font-size: 20px;
   text-align: center;
   line-height: 1.2;
+}
+
+.Welcome .title :first-child {
+  animation: fontAnimation 1s infinite;
+  font-size: 40px;
 }
 
 .Welcome .section {
@@ -22,4 +26,16 @@
   flex-direction: column;
   gap: 20px;
   margin: 0 auto;
+}
+
+@keyframes fontAnimation {
+  0% {
+    transform: rotate(-10deg);
+  }
+  50% {
+    transform: rotate(10deg);
+  }
+  100% {
+    transform: rotate(-10deg);
+  }
 }
