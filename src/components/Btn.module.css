@@ -7,6 +7,7 @@
   color: white;
   width: 150px;
   margin: 0 auto;
+  cursor: pointer;
 }
 
 .Btn:hover {
