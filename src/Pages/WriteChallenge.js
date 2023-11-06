@@ -22,7 +22,6 @@ const WriteChallenge = ({ onNextStep }) => {
 
   const submitChallenge = () => {
     if (challenge) {
-      console.log(challenge);
       onNextStep();
     } else {
       alert('암호를 입력해주세요.');

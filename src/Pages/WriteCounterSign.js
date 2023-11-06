@@ -23,7 +23,6 @@ const WriteCounterSign = ({ onNextStep }) => {
   const submitcountersign = () => {
     if (counterSign) {
       setCounterSign(counterSign);
-      console.log(counterSign);
       onNextStep();
     } else {
       alert('암호의 답을 입력해주세요.');

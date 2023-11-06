@@ -33,7 +33,6 @@ export const QuestionList = ({ onNextStep }) => {
       console.log(currentQuestionIndex);
     } else {
       onNextStep();
-      console.log(selectedQuestion);
     }
   };
 
@@ -46,7 +45,6 @@ export const QuestionList = ({ onNextStep }) => {
 
   const saveQuestion = () => {
     setIsEdited(false);
-    console.log(editedQuestion);
   };
 
   const currentQuestion = editedList[currentQuestionIndex];
