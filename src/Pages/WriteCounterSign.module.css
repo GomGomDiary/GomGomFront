@@ -1,27 +1,25 @@
-@import '../App.css';
-
-.Welcome {
+.WriteCounterSignContainer {
   display: flex;
   flex-direction: column;
-  gap: 60px;
+  gap: 100px;
+  height: 50vh;
 }
 
-.Welcome .title {
-  font-size: 20px;
+.top {
   text-align: center;
-  line-height: 1.2;
-}
-
-.Welcome .title :first-child {
-  animation: fontAnimation 1s infinite;
-  font-size: 40px;
-}
-
-.Welcome .section {
   line-height: 1.6;
 }
 
-.Welcome .nameInput {
+.top :first-child {
+  font-size: 40px;
+  animation: fontAnimation 0.8s infinite;
+}
+
+.top :nth-child(2) {
+  font-size: 25px;
+}
+
+.bottom {
   display: flex;
   flex-direction: column;
   gap: 20px;
@@ -33,7 +31,7 @@
     transform: rotate(-10deg);
   }
   50% {
-    transform: rotate(10deg);
+    transform: rotate(15deg);
   }
   100% {
     transform: rotate(-10deg);

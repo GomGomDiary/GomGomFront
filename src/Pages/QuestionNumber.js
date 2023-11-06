@@ -1,18 +1,11 @@
-import React, { useState } from 'react';
-
+import React from 'react';
 import { useRecoilState } from 'recoil';
 import { QuestionNum } from '../store/QuestionNum';
-
 import Btn from '../components/Btn';
 import Styles from './QuestionNumber.module.css';
 
-const QuestionNumber = ({ setStep2, setStep3 }) => {
+const QuestionNumber = ({ onNextStep }) => {
   const [questionNumber, setQuestionNumber] = useRecoilState(QuestionNum);
-
-  const goToQuestionList = () => {
-    setStep2(false);
-    setStep3(true);
-  };
 
   const numMinus = () => {
     if (questionNumber > 3) {
@@ -24,6 +17,10 @@ const QuestionNumber = ({ setStep2, setStep3 }) => {
     if (questionNumber < 10) {
       setQuestionNumber(questionNumber + 1);
     }
+  };
+
+  const goToQuestionList = () => {
+    onNextStep();
   };
 
   return (
