@@ -46,7 +46,7 @@
 .questionContent {
   display: flex;
   flex-direction: column;
-  gap: 60px;
+  gap: 70px;
   font-size: 20px;
   align-items: center;
   width: 100%;
@@ -58,8 +58,14 @@
   padding: 5px;
 }
 
-.questionContent :first-child {
+.questionContent p {
   color: var(--point-color);
+}
+
+.Btns {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 }
 
 .questionBtns {

@@ -5,8 +5,9 @@ import { CounterSign } from '../store/CounterSign';
 
 import Input from '../components/Input';
 import Btn from '../components/Btn';
+import WhiteBtn from '../components/WhiteBtn';
 
-const WriteCounterSign = ({ onNextStep }) => {
+const WriteCounterSign = ({ onNextStep, onPreviousStep }) => {
   const [counterSign, setCounterSign] = useRecoilState(CounterSign);
   const CounterSignInputRef = useRef();
 
@@ -23,7 +24,6 @@ const WriteCounterSign = ({ onNextStep }) => {
   const submitcountersign = () => {
     if (counterSign) {
       setCounterSign(counterSign);
-      console.log(counterSign);
       onNextStep();
     } else {
       alert('암호의 답을 입력해주세요.');
@@ -39,7 +39,7 @@ const WriteCounterSign = ({ onNextStep }) => {
         <div>암호를 푼 사람만 질문을 확인할 수 있어요.</div>
         <div>암호의 답을 정확하고 신중하게 입력해주세요.</div>
       </div>
-      <div className={Styles.bottom}>
+      <div className={Styles.middle}>
         <Input
           text={'다음'}
           value={counterSign}
@@ -48,6 +48,9 @@ const WriteCounterSign = ({ onNextStep }) => {
           placeholder="암호의 답을 입력하세요."
           ref={CounterSignInputRef}
         />
+      </div>
+      <div className={Styles.bottom}>
+        <WhiteBtn text={'이전으로'} onClick={onPreviousStep} />
         <Btn text={'다음'} onClick={submitcountersign} />
       </div>
     </div>

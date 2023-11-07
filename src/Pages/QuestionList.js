@@ -1,11 +1,13 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
+
 import Styles from './QuestionList.module.css';
 import { useRecoilState } from 'recoil';
 import { QuestionNum } from '../store/QuestionNum';
 import Btn from '../components/Btn';
+import WhiteBtn from '../components/WhiteBtn';
 import Input from '../components/Input';
 
-export const QuestionList = ({ onNextStep }) => {
+export const QuestionList = ({ onNextStep, onPreviousStep }) => {
   const [questionNumber] = useRecoilState(QuestionNum);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
 
@@ -30,10 +32,16 @@ export const QuestionList = ({ onNextStep }) => {
   const handleNextQuestion = () => {
     if (currentQuestionIndex < questionNumber - 1) {
       setCurrentQuestionIndex(currentQuestionIndex + 1);
-      console.log(currentQuestionIndex);
     } else {
       onNextStep();
-      console.log(selectedQuestion);
+    }
+  };
+
+  const handlePrevious = () => {
+    if (currentQuestionIndex > 0) {
+      setCurrentQuestionIndex(currentQuestionIndex - 1);
+    } else {
+      onPreviousStep();
     }
   };
 
@@ -46,10 +54,13 @@ export const QuestionList = ({ onNextStep }) => {
 
   const saveQuestion = () => {
     setIsEdited(false);
-    console.log(editedQuestion);
   };
 
   const currentQuestion = editedList[currentQuestionIndex];
+
+  const calculateProgress = useMemo(() => {
+    return ((currentQuestionIndex + 1) / selectedQuestion.length) * 100;
+  }, [currentQuestionIndex, selectedQuestion.length]);
 
   return (
     <div className={Styles.QuestionListContainer}>
@@ -59,7 +70,10 @@ export const QuestionList = ({ onNextStep }) => {
             <div className={Styles.top}>
               <div className={Styles.title}></div>
               <div className={Styles.progressBar}>
-                <div className={Styles.progress}></div>
+                <div
+                  className={Styles.progress}
+                  style={{ width: `${calculateProgress}%` }}
+                ></div>
               </div>
             </div>
             <div className={Styles.middle}>
@@ -72,9 +86,12 @@ export const QuestionList = ({ onNextStep }) => {
                     onChange={(e) => setEditedQuestion(e.target.value)}
                   />
                 ) : (
-                  <p>{currentQuestion}</p>
+                  <span>{currentQuestion}</span>
                 )}
-                <Btn text={'다음 질문'} onClick={handleNextQuestion} />
+                <div className={Styles.Btns}>
+                  <WhiteBtn text={'이전으로'} onClick={handlePrevious} />
+                  <Btn text={'다음 질문'} onClick={handleNextQuestion} />
+                </div>
               </div>
             </div>
             <div className={Styles.botton}>
