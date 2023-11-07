@@ -10,6 +10,12 @@ import Finish from '../Pages/Finish';
 const Main = () => {
   const [step, setStep] = useState(1);
 
+  const onPreviousStep = () => {
+    if (step > 1) {
+      setStep(step - 1);
+    }
+  };
+
   const renderStep = () => {
     switch (step) {
       case 1:
@@ -17,11 +23,26 @@ const Main = () => {
       case 2:
         return <QuestionNumber onNextStep={() => setStep(3)} />;
       case 3:
-        return <QuestionList onNextStep={() => setStep(4)} />;
+        return (
+          <QuestionList
+            onNextStep={() => setStep(4)}
+            onPreviousStep={onPreviousStep}
+          />
+        );
       case 4:
-        return <WriteChallenge onNextStep={() => setStep(5)} />;
+        return (
+          <WriteChallenge
+            onNextStep={() => setStep(5)}
+            onPreviousStep={onPreviousStep}
+          />
+        );
       case 5:
-        return <WriteCounterSign onNextStep={() => setStep(6)} />;
+        return (
+          <WriteCounterSign
+            onNextStep={() => setStep(6)}
+            onPreviousStep={onPreviousStep}
+          />
+        );
       case 6:
         return <Finish onNextStep={() => setStep(7)} />;
       default:
