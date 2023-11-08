@@ -4,8 +4,12 @@ import ConfettiEffect from '../components/ConfettiEffect';
 
 import Btn from '../components/Btn';
 import WhiteBtn from '../components/WhiteBtn';
+import { useRecoilValue } from 'recoil';
+import { QuestionArr } from '../store/QuestionArr';
 
 const Finish = () => {
+  const questionArr = useRecoilValue(QuestionArr);
+  console.log(questionArr);
   return (
     <div>
       <ConfettiEffect />
