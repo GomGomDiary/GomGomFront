@@ -45,15 +45,19 @@ export const QuestionList = ({ onNextStep, onPreviousStep }) => {
     }
   };
 
-  const editedList = [...selectedQuestion];
+  const [editedList, setEditedList] = useState([...selectedQuestion]);
+  const updatedList = [...editedList];
 
   const modifyQuestion = () => {
     setIsEdited(true);
-    setEditedQuestion(editedQuestion);
+    setEditedQuestion('');
   };
 
   const saveQuestion = () => {
     setIsEdited(false);
+
+    updatedList.splice(currentQuestionIndex, 1, editedQuestion);
+    setEditedList(updatedList);
   };
 
   const currentQuestion = editedList[currentQuestionIndex];
