@@ -3,29 +3,19 @@ import React, { useState, useMemo } from 'react';
 import Styles from './QuestionList.module.css';
 import { useRecoilState } from 'recoil';
 import { QuestionNum } from '../store/QuestionNum';
+import { QuestionArr } from '../store/QuestionArr';
 import Btn from '../components/Btn';
 import WhiteBtn from '../components/WhiteBtn';
 import Input from '../components/Input';
 
 export const QuestionList = ({ onNextStep, onPreviousStep }) => {
   const [questionNumber] = useRecoilState(QuestionNum);
+  const [questionArr, setQuestionArr] = useRecoilState(QuestionArr);
+
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
 
   const [isEdited, setIsEdited] = useState(false);
   const [editedQuestion, setEditedQuestion] = useState('');
-
-  const questionArr = [
-    '나는 어떤 사람이야?',
-    '우리는 어떤 점이 비슷하고 달라?',
-    '내가 가장 좋아하는 음식은?',
-    '내가 너에게 준 좋은 영향은?',
-    '10년 후 우리는 어떤 모습일까?',
-    '나에게 하고 싶은 말 있어?',
-    '나랑 가보고 싶은 곳 있어?',
-    '네가 생각하는 나의 장점은 뭐야?',
-    '나와 가장 소중한 추억은?',
-    '나에게 추천하고 싶은 노래는?',
-  ];
 
   const selectedQuestion = questionArr.slice(0, questionNumber);
 
@@ -34,6 +24,7 @@ export const QuestionList = ({ onNextStep, onPreviousStep }) => {
       setCurrentQuestionIndex(currentQuestionIndex + 1);
     } else {
       onNextStep();
+      setQuestionArr(updatedList);
     }
   };
 
@@ -57,7 +48,9 @@ export const QuestionList = ({ onNextStep, onPreviousStep }) => {
     setIsEdited(false);
 
     updatedList.splice(currentQuestionIndex, 1, editedQuestion);
+
     setEditedList(updatedList);
+    setQuestionArr(updatedList);
   };
 
   const currentQuestion = editedList[currentQuestionIndex];

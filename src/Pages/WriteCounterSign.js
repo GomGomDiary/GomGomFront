@@ -1,15 +1,26 @@
 import React, { useRef } from 'react';
 import Styles from './WriteCounterSign.module.css';
-import { useRecoilState } from 'recoil';
+import { useRecoilState, useRecoilValue } from 'recoil';
+
 import { CounterSign } from '../store/CounterSign';
+import { Questioner } from '../store/Questioner';
+import { QuestionArr } from '../store/QuestionArr';
+import { Challenge } from '../store/Challenge';
 
 import Input from '../components/Input';
 import Btn from '../components/Btn';
 import WhiteBtn from '../components/WhiteBtn';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 const WriteCounterSign = ({ onNextStep, onPreviousStep }) => {
   const [counterSign, setCounterSign] = useRecoilState(CounterSign);
   const CounterSignInputRef = useRef();
+
+  const questioner = useRecoilValue(Questioner);
+  const questionArr = useRecoilValue(QuestionArr);
+  const countersign = useRecoilValue(CounterSign);
+  const challenge = useRecoilValue(Challenge);
 
   const writecountersign = (e) => {
     setCounterSign(e.target.value);
@@ -21,10 +32,38 @@ const WriteCounterSign = ({ onNextStep, onPreviousStep }) => {
     }
   };
 
+  const navigate = useNavigate();
+
   const submitcountersign = () => {
     if (counterSign) {
       setCounterSign(counterSign);
-      onNextStep();
+
+      axios
+        .post(`${process.env.REACT_APP_SERVER_URL}/question`, {
+          question: questionArr,
+          questioner,
+          challenge,
+          countersign,
+        })
+        .then((response) => {
+          if (response.status === 201) {
+            onNextStep();
+          } else if (response.status === 204) {
+            if (
+              window.confirm(
+                '이전에 만든 질문과 받았던 답장들이 모두 사라져도 괜찮나요?'
+              )
+            ) {
+              onNextStep();
+            } else {
+              alert('처음으로 돌아갈게요!');
+              navigate('/');
+            }
+          }
+        })
+        .catch((error) => {
+          console.error(error);
+        });
     } else {
       alert('암호의 답을 입력해주세요.');
       CounterSignInputRef.current.focus();
