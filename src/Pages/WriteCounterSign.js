@@ -45,6 +45,7 @@ const WriteCounterSign = ({ onNextStep, onPreviousStep }) => {
           challenge,
           countersign,
         })
+          { withCredentials: true }
         .then((response) => {
           if (response.status === 201) {
             onNextStep();
