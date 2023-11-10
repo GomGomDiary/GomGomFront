@@ -1,16 +1,16 @@
 import React, { useRef } from 'react';
 import { useRecoilState } from 'recoil';
-import { Nickname } from '../store/Nickname';
+import { Questioner } from '../store/Questioner';
 import Styles from './Welcome.module.css';
 import Btn from '../components/Btn';
 import Input from '../components/Input';
 
 const Welcome = ({ onNextStep }) => {
-  const [nickname, setNickname] = useRecoilState(Nickname);
+  const [questioner, setquestioner] = useRecoilState(Questioner);
   const NameInputRef = useRef();
 
   const writeName = (e) => {
-    setNickname(e.target.value);
+    setquestioner(e.target.value);
   };
 
   const handleKeyPress = (e) => {
@@ -20,7 +20,7 @@ const Welcome = ({ onNextStep }) => {
   };
 
   const submitName = () => {
-    if (nickname) {
+    if (questioner) {
       onNextStep();
     } else {
       alert('이름을 입력해주세요.');
@@ -44,7 +44,7 @@ const Welcome = ({ onNextStep }) => {
       <div className={Styles.nameInput}>
         <Input
           type="text"
-          value={nickname}
+          value={questioner}
           onChange={(e) => writeName(e)}
           onKeyUp={handleKeyPress}
           placeholder="이름을 입력하세요"
