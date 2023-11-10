@@ -39,12 +39,16 @@ const WriteCounterSign = ({ onNextStep, onPreviousStep }) => {
       setCounterSign(counterSign);
 
       axios
-        .post(`${process.env.REACT_APP_SERVER_URL}/question`, {
-          question: questionArr,
-          questioner,
-          challenge,
-          countersign,
-        })
+        .post(
+          `${process.env.REACT_APP_SERVER_URL}/question`,
+          {
+            question: questionArr,
+            questioner,
+            challenge,
+            countersign,
+          },
+          { withCredentials: true }
+        )
         .then((response) => {
           if (response.status === 201) {
             onNextStep();
