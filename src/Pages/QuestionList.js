@@ -24,6 +24,7 @@ export const QuestionList = ({ onNextStep, onPreviousStep }) => {
       setCurrentQuestionIndex(currentQuestionIndex + 1);
     } else {
       onNextStep();
+      setQuestionArr(updatedList);
     }
   };
 
