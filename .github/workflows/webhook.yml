@@ -9,12 +9,23 @@ jobs:
         run : |
             [ ${{github.event.deployment_status.state}} = success ] && COLOR=5763719 || COLOR=15548997
             echo "COLOR=$COLOR" >> $GITHUB_ENV
-      - name : Discord Webhook
-        uses : tsickert/discord-webhook@v5.3.0
-        with:
-          webhook-url : ${{ secrets.DISCORD_WEBHOOK_URL }}
-          embed-title : "Deployment Status"
-          embed-description : "${{ github.event.deployment_status.state }}, ${{ github.event.deployment_status.description}}"
-          embed-color : ${{ env.COLOR }}
-        if: always()
 
+      - name: Report success to discord
+        uses: tsickert/discord-webhook@v5.3.0
+        if: success()
+        with:
+          webhook-url: ${{ secrets.DISCORD_WEBHOOK_URL }}
+          embed-title: "Deployment Status"
+          embed-description: "[Successfully deployed.](<https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}>)"
+          embed-timestamp: ${{ github.event.head_commit.timestamp }}
+          embed-color: ${{ env.COLOR }}
+
+      - name: Report failure to discord
+        uses: tsickert/discord-webhook@v5.3.0
+        if: failure()
+        with:
+          webhook-url: ${{ secrets.DISCORD_WEBHOOK }}
+          embed-title : "Deployment Status"
+          embed-description : "[Failed to deploy.](<https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}>) <@&1172193099909439528> "
+          embed-timestamp: ${{ github.event.head_commit.timestamp }}
+          embed-color: ${{ env.COLOR }}
