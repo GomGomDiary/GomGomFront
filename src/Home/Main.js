@@ -1,11 +1,14 @@
 import React, { useState } from 'react';
 import Styles from './Main.module.css';
-import Welcome from '../Pages/Welcome';
-import QuestionNumber from '../Pages/QuestionNumber';
-import QuestionList from '../Pages/QuestionList';
-import WriteChallenge from '../Pages/WriteChallenge';
-import WriteCounterSign from '../Pages/WriteCounterSign';
-import Finish from '../Pages/Finish';
+import Welcome from '../Pages/Create/Welcome';
+import QuestionNumber from '../Pages/Create/QuestionNumber';
+import QuestionList from '../Pages/Create/QuestionList';
+import WriteChallenge from '../Pages/Create/WriteChallenge';
+import WriteCounterSign from '../Pages/Create/WriteCounterSign';
+import Finish from '../Pages/Create/Finish';
+
+import MatchChallenge from '../Pages/Response/MatchChallenge';
+import { useParams } from 'react-router-dom';
 
 const Main = () => {
   const [step, setStep] = useState(1);
@@ -45,6 +48,8 @@ const Main = () => {
         );
       case 6:
         return <Finish onNextStep={() => setStep(7)} />;
+      case 7:
+        return <MatchChallenge onNextStep={() => setStep(8)} />;
       default:
         return null;
     }
@@ -54,7 +59,9 @@ const Main = () => {
     <div className={Styles.Main}>
       <div className={Styles.center}>
         <div className={Styles.pin}>📌</div>
-        <section className={Styles.content}>{renderStep()}</section>
+        <section className={Styles.content}>
+          {useParams().diaryId ? <MatchChallenge /> : renderStep()}
+        </section>
       </div>
     </div>
   );
