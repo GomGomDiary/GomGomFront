@@ -25,8 +25,6 @@ const Finish = () => {
     fetchUserCookie();
   }, [setUserCookie]);
 
-  console.log(userCookieValue);
-
   const handleShareLink = (link) => {
     navigator.clipboard
       .writeText(link)
