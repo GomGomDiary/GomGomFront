@@ -1,18 +1,18 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Modal from 'react-modal';
 import Styles from './CustomModal.module.css';
 
-const CustomModal = ({ isOpen }) => {
-  const [open, setOpen] = useState(isOpen);
+const CustomModal = () => {
+  const [modalIsOpen, setModalIsOpenState] = useState(true);
 
   const handleClose = () => {
-    setOpen(!open);
+    setModalIsOpenState(false);
   };
 
   return (
     <Modal
       className={Styles.Modal}
-      isOpen={open}
+      isOpen={modalIsOpen}
       appElement={document.getElementById('root')}
       style={{
         overlay: {

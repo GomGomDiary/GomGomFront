@@ -5,8 +5,6 @@ import Styles from './Welcome.module.css';
 import Btn from '../../components/Btn';
 import Input from '../../components/Input';
 
-import CustomModal from '../../components/CustomModal';
-
 const Welcome = ({ onNextStep }) => {
   const [questioner, setQuestioner] = useRecoilState(Questioner);
   const NameInputRef = useRef();
