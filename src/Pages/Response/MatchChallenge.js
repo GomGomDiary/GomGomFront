@@ -4,12 +4,12 @@ import Styles from './MatchChallenge.module.css';
 
 import Input from '../../components/Input';
 import Btn from '../../components/Btn';
+import CustomModal from '../../components/CustomModal';
 
 import { useRecoilState, useRecoilValue } from 'recoil';
 import { UserCookie } from '../../store/Create/UserCookie';
 import { Challenge } from '../../store/Create/Challenge';
 import { getCookie } from '../../api/cookie';
-
 import { Questioner } from '../../store/Create/Questioner';
 
 const MatchChallenge = () => {
@@ -69,15 +69,14 @@ const MatchChallenge = () => {
           { withCredentials: true }
         )
         .then((response) => {
-          console.log(response.data);
-          alert('정답임');
+          alert('정답');
         })
         .catch((error) => {
-          alert('다시 입력해주세요!');
-          CountersignInput.current.focus();
+          console.error(error);
+          alert('노');
         });
     } else {
-      alert('다시 입력해주세요.');
+      alert('1노');
       CountersignInput.current.focus();
     }
   };

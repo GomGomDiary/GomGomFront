@@ -3,7 +3,7 @@
 .MatchChallengeContainer {
   display: flex;
   flex-direction: column;
-  gap: 80px;
+  gap: 50px;
   height: 60vh;
 }
 
@@ -24,13 +24,13 @@
 .middle {
   text-align: center;
   background-color: var(--main-color);
-  padding: 20px;
+  padding: 30px;
 }
 
 .bottom {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 20px;
   margin: 0 auto;
 }
 
