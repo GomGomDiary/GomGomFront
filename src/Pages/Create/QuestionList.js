@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useRef, useEffect } from 'react';
 
 import Styles from './QuestionList.module.css';
 import { useRecoilState } from 'recoil';
@@ -15,13 +15,22 @@ export const QuestionList = ({ onNextStep, onPreviousStep }) => {
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
 
   const [isEdited, setIsEdited] = useState(false);
+  const [isEditing, setIsEditing] = useState(false);
   const [editedQuestion, setEditedQuestion] = useState('');
 
   const selectedQuestion = questionArr.slice(0, questionNumber);
 
+  const [editedList, setEditedList] = useState([...selectedQuestion]);
+  const updatedList = [...editedList];
+
+  const editedQuestionInputRef = useRef(null);
+
   const handleNextQuestion = () => {
-    if (currentQuestionIndex < questionNumber - 1) {
+    if (currentQuestionIndex < questionNumber - 1 && !isEditing) {
       setCurrentQuestionIndex(currentQuestionIndex + 1);
+    } else if (isEditing) {
+      alert('질문을 완성해주세요.');
+      editedQuestionInputRef.current.focus();
     } else {
       onNextStep();
       setQuestionArr(updatedList);
@@ -36,18 +45,29 @@ export const QuestionList = ({ onNextStep, onPreviousStep }) => {
     }
   };
 
-  const [editedList, setEditedList] = useState([...selectedQuestion]);
-  const updatedList = [...editedList];
-
   const modifyQuestion = () => {
     setIsEdited(true);
+    setIsEditing(true);
     setEditedQuestion('');
   };
 
-  const saveQuestion = () => {
-    setIsEdited(false);
+  useEffect(() => {
+    if (isEdited) {
+      editedQuestionInputRef.current.focus();
+    }
+  }, [isEdited]);
 
-    updatedList.splice(currentQuestionIndex, 1, editedQuestion);
+  const saveQuestion = () => {
+    if (!editedQuestion) {
+      alert('질문을 입력해주세요.');
+      setIsEditing(true);
+      setIsEdited(true);
+      editedQuestionInputRef.current.focus();
+    } else {
+      updatedList.splice(currentQuestionIndex, 1, editedQuestion);
+      setIsEditing(false);
+      setIsEdited(false);
+    }
 
     setEditedList(updatedList);
     setQuestionArr(updatedList);
@@ -81,6 +101,7 @@ export const QuestionList = ({ onNextStep, onPreviousStep }) => {
                     placeholder="질문을 수정하세요."
                     value={editedQuestion}
                     onChange={(e) => setEditedQuestion(e.target.value)}
+                    ref={editedQuestionInputRef}
                   />
                 ) : (
                   <span>{currentQuestion}</span>
