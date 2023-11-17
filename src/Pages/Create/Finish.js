@@ -17,9 +17,9 @@ const Finish = () => {
   const navigate = useNavigate('');
 
   useEffect(() => {
-    const fetchUserCookie = async () => {
+    const fetchUserCookie = () => {
       try {
-        const diaryId = await getCookie('diaryUser');
+        const diaryId = getCookie('diaryUser');
         setUserCookie(diaryId);
       } catch (error) {
         console.error('error', error);

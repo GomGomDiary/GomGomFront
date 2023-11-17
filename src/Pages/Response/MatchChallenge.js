@@ -23,9 +23,9 @@ const MatchChallenge = ({ onNextStep }) => {
   const [answererCookie, setAnswererCookie] = useRecoilValue(AnswererCookie);
 
   useEffect(() => {
-    const fetchUserCookie = async () => {
+    const fetchUserCookie = () => {
       try {
-        const diaryId = await getCookie('diaryUser');
+        const diaryId = getCookie('diaryUser');
         setUserCookie(diaryId);
       } catch (error) {
         console.error('error', error);
@@ -37,7 +37,6 @@ const MatchChallenge = ({ onNextStep }) => {
   const diaryId = useRecoilValue(UserCookie);
 
   const navigate = useNavigate('');
-  const answerId = getCookie('diaryUser');
 
   useEffect(() => {
     /*if (diaryId === answerId) {
