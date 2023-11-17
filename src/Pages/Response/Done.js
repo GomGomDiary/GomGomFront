@@ -48,7 +48,6 @@ const Done = () => {
     fetchUserCookie();
   }, []);
 
-  console.log(answerer);
   return (
     <div>
       <ConfettiEffect />
