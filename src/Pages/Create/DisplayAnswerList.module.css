@@ -1,0 +1,54 @@
+.noResponse {
+  display: flex;
+  flex-direction: column;
+  height: 50vh;
+}
+
+.noResponsetitle {
+  font-size: 20px;
+  text-align: center;
+}
+
+.noResponsecontent {
+  display: flex;
+  font-size: 100px;
+  font-weight: bold;
+  justify-content: center;
+  align-items: center;
+  flex: 1;
+}
+
+.haveResponse {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  text-align: center;
+  gap: 20px;
+}
+
+.haveResponseImg {
+  font-size: 100px;
+}
+
+.haveResponseTitle {
+  font-size: 20px;
+}
+
+.listContainer {
+  height: 100px;
+  width: 100%;
+}
+
+.haveResponseList {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 90%;
+  height: 100%;
+  padding: 10px;
+  overflow-y: scroll;
+}
+
+.haveResponseList div {
+  cursor: pointer;
+}
