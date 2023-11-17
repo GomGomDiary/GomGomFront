@@ -11,11 +11,16 @@ import { UserCookie } from '../../store/Create/UserCookie';
 import { Challenge } from '../../store/Create/Challenge';
 import { getCookie } from '../../api/cookie';
 import { Questioner } from '../../store/Create/Questioner';
+import { AnswererToken } from '../../store/Response/AnswererToken';
+import { useNavigate } from 'react-router-dom';
+import { AnswererCookie } from '../../store/Response/AnswererCookie';
 
-const MatchChallenge = () => {
+const MatchChallenge = ({ onNextStep }) => {
   const [userCookie, setUserCookie] = useRecoilState(UserCookie);
   const [questioner, setQuestioner] = useRecoilState(Questioner);
   const [challenge, setChallenge] = useRecoilState(Challenge);
+  const [answererToken, setAnswererToken] = useRecoilState(AnswererToken);
+  const [answererCookie, setAnswererCookie] = useRecoilValue(AnswererCookie);
 
   useEffect(() => {
     const fetchUserCookie = async () => {
@@ -31,8 +36,14 @@ const MatchChallenge = () => {
 
   const diaryId = useRecoilValue(UserCookie);
 
+  const navigate = useNavigate('');
+  const answerId = getCookie('diaryUser');
+
   useEffect(() => {
-    if (!!diaryId) {
+    /*if (diaryId === answerId) {
+      alert('자신의 다이어리엔 답할 수 없어요.');
+      navigate('/');
+    } else*/ if (!!diaryId) {
       axios
         .get(`${process.env.REACT_APP_SERVER_URL}/challenge/${diaryId}`)
         .then((response) => {
@@ -43,7 +54,10 @@ const MatchChallenge = () => {
             console.error('nono');
           }
         })
-        .catch((error) => console.error(error));
+        .catch((error) => {
+          alert('생성된 적 없는 다이어리예요.');
+          navigate('/');
+        });
     }
   }, [diaryId]);
 
@@ -70,13 +84,16 @@ const MatchChallenge = () => {
         )
         .then((response) => {
           alert('정답');
+          setAnswererToken(response.data.diaryToken);
+          onNextStep();
         })
         .catch((error) => {
+          alert('에러가 났어요. 다시 입력해주세요.');
           console.error(error);
-          alert('노');
+          CountersignInput.current.focus();
         });
     } else {
-      alert('1노');
+      alert('다시 입력해주세요.');
       CountersignInput.current.focus();
     }
   };
