@@ -12,15 +12,16 @@ import { useNavigate } from 'react-router-dom';
 
 const Finish = () => {
   const [userCookie, setUserCookie] = useRecoilState(UserCookie);
-  const userCookieValue = useRecoilValue(UserCookie);
 
   const navigate = useNavigate('');
 
   useEffect(() => {
-    const fetchUserCookie = () => {
+    const fetchUserCookie = async () => {
       try {
-        const diaryId = getCookie('diaryUser');
+        console.log();
+        const diaryId = await getCookie('diaryUser');
         setUserCookie(diaryId);
+        console.log('Recoil 상태 업데이트 완료:', diaryId);
       } catch (error) {
         console.error('error', error);
       }
@@ -39,6 +40,8 @@ const Finish = () => {
       });
   };
 
+  const location = window.location.href;
+
   return (
     <div>
       <ConfettiEffect />
@@ -52,7 +55,7 @@ const Finish = () => {
           <WhiteBtn
             text={'링크로 공유하기'}
             onClick={() => {
-              handleShareLink(`http://localhost:3000/${userCookieValue}`);
+              handleShareLink(`${location}${userCookie}`);
             }}
           />
           <WhiteBtn text={'카톡으로 공유하기'} />
@@ -60,7 +63,7 @@ const Finish = () => {
         <div className={Styles.bottom}>
           <Btn
             text={'답변 현황 확인하기'}
-            onClick={() => navigate(`/answerers/${userCookieValue}`)}
+            onClick={() => navigate(`/answerers/${userCookie}`)}
           />
         </div>
       </div>
