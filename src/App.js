@@ -18,6 +18,7 @@ function App() {
           <Routes>
             <Route path="/" element={<Main />} />
             <Route path="/:diaryId" element={<Main />} />
+            <Route path="/answerers/:diaryId" element={<Main />} />
           </Routes>
         </RecoilRoot>
       </BrowserRouter>

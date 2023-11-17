@@ -8,10 +8,20 @@ import WriteCounterSign from '../Pages/Create/WriteCounterSign';
 import Finish from '../Pages/Create/Finish';
 
 import MatchChallenge from '../Pages/Response/MatchChallenge';
+import WriteAnswererName from '../Pages/Response/WriteAnswererName';
 import { useParams } from 'react-router-dom';
+import WriteResponse from '../Pages/Response/WriteResponse';
+import Done from '../Pages/Response/Done';
+import DisplayAnswerList from '../Pages/Create/DisplayAnswerList';
+import { useRecoilValue } from 'recoil';
+import { Questioner } from '../store/Create/Questioner';
 
 const Main = () => {
   const [step, setStep] = useState(1);
+  const { diaryId } = useParams();
+
+  const isAnswerersPage =
+    window.location.pathname.indexOf('/answerers/') !== -1;
 
   const onPreviousStep = () => {
     if (step > 1) {
@@ -48,8 +58,31 @@ const Main = () => {
         );
       case 6:
         return <Finish onNextStep={() => setStep(7)} />;
-      case 7:
-        return <MatchChallenge onNextStep={() => setStep(8)} />;
+      default:
+        return null;
+    }
+  };
+
+  const renderResponseStep = () => {
+    switch (step) {
+      case 1:
+        return <MatchChallenge onNextStep={() => setStep(2)} />;
+      case 2:
+        return (
+          <WriteAnswererName
+            onNextStep={() => setStep(3)}
+            onPreviousStep={onPreviousStep}
+          />
+        );
+      case 3:
+        return (
+          <WriteResponse
+            onNextStep={() => setStep(4)}
+            onPreviousStep={onPreviousStep}
+          />
+        );
+      case 4:
+        return <Done onNextStep={() => setStep(5)} />;
       default:
         return null;
     }
@@ -60,7 +93,13 @@ const Main = () => {
       <div className={Styles.center}>
         <div className={Styles.pin}>📌</div>
         <section className={Styles.content}>
-          {useParams().diaryId ? <MatchChallenge /> : renderStep()}
+          {diaryId && window.location.pathname.includes('answerers') ? (
+            <DisplayAnswerList />
+          ) : diaryId ? (
+            renderResponseStep()
+          ) : (
+            renderStep()
+          )}
         </section>
       </div>
     </div>
