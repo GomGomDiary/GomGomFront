@@ -8,10 +8,13 @@ import WhiteBtn from '../../components/WhiteBtn';
 import { UserCookie } from '../../store/Create/UserCookie';
 import { getCookie } from '../../api/cookie';
 import { useRecoilState, useRecoilValue } from 'recoil';
+import { useNavigate } from 'react-router-dom';
 
 const Finish = () => {
   const [userCookie, setUserCookie] = useRecoilState(UserCookie);
   const userCookieValue = useRecoilValue(UserCookie);
+
+  const navigate = useNavigate('');
 
   useEffect(() => {
     const fetchUserCookie = async () => {
@@ -55,7 +58,10 @@ const Finish = () => {
           <WhiteBtn text={'카톡으로 공유하기'} />
         </div>
         <div className={Styles.bottom}>
-          <Btn text={'답변 현황 확인하기'} />
+          <Btn
+            text={'답변 현황 확인하기'}
+            onClick={() => navigate(`/answerers/${userCookieValue}`)}
+          />
         </div>
       </div>
     </div>
