@@ -13,15 +13,10 @@ import { useParams } from 'react-router-dom';
 import WriteResponse from '../Pages/Response/WriteResponse';
 import Done from '../Pages/Response/Done';
 import DisplayAnswerList from '../Pages/Create/DisplayAnswerList';
-import { useRecoilValue } from 'recoil';
-import { Questioner } from '../store/Create/Questioner';
 
 const Main = () => {
   const [step, setStep] = useState(1);
   const { diaryId } = useParams();
-
-  const isAnswerersPage =
-    window.location.pathname.indexOf('/answerers/') !== -1;
 
   const onPreviousStep = () => {
     if (step > 1) {
