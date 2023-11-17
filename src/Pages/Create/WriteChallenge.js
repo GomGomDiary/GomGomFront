@@ -1,11 +1,11 @@
 import React, { useRef } from 'react';
 import Styles from './WriteChallenge.module.css';
 import { useRecoilState } from 'recoil';
-import { Challenge } from '../store/Challenge';
+import { Challenge } from '../../store/Create/Challenge';
 
-import Input from '../components/Input';
-import Btn from '../components/Btn';
-import WhiteBtn from '../components/WhiteBtn';
+import Input from '../../components/Input';
+import Btn from '../../components/Btn';
+import WhiteBtn from '../../components/WhiteBtn';
 
 const WriteChallenge = ({ onNextStep, onPreviousStep }) => {
   const [challenge, setChallenge] = useRecoilState(Challenge);

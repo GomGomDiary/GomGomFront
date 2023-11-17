@@ -2,14 +2,14 @@ import React, { useRef } from 'react';
 import Styles from './WriteCounterSign.module.css';
 import { useRecoilState, useRecoilValue } from 'recoil';
 
-import { CounterSign } from '../store/CounterSign';
-import { Questioner } from '../store/Questioner';
-import { QuestionArr } from '../store/QuestionArr';
-import { Challenge } from '../store/Challenge';
+import { CounterSign } from '../../store/Create/CounterSign';
+import { Questioner } from '../../store/Create/Questioner';
+import { QuestionArr } from '../../store/Create/QuestionArr';
+import { Challenge } from '../../store/Create/Challenge';
 
-import Input from '../components/Input';
-import Btn from '../components/Btn';
-import WhiteBtn from '../components/WhiteBtn';
+import Input from '../../components/Input';
+import Btn from '../../components/Btn';
+import WhiteBtn from '../../components/WhiteBtn';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 

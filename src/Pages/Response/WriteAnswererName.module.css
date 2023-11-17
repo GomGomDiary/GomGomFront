@@ -1,7 +1,9 @@
-.WriteCounterSignContainer {
+@import '../../App.css';
+
+.MatchChallengeContainer {
   display: flex;
   flex-direction: column;
-  gap: 80px;
+  gap: 50px;
   height: 60vh;
 }
 
@@ -21,6 +23,7 @@
 
 .middle {
   text-align: center;
+  padding: 30px;
 }
 
 .bottom {

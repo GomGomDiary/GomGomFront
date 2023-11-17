@@ -1,16 +1,16 @@
 import React, { useRef } from 'react';
 import { useRecoilState } from 'recoil';
-import { Questioner } from '../store/Questioner';
+import { Questioner } from '../../store/Create/Questioner';
 import Styles from './Welcome.module.css';
-import Btn from '../components/Btn';
-import Input from '../components/Input';
+import Btn from '../../components/Btn';
+import Input from '../../components/Input';
 
 const Welcome = ({ onNextStep }) => {
-  const [questioner, setquestioner] = useRecoilState(Questioner);
+  const [questioner, setQuestioner] = useRecoilState(Questioner);
   const NameInputRef = useRef();
 
   const writeName = (e) => {
-    setquestioner(e.target.value);
+    setQuestioner(e.target.value);
   };
 
   const handleKeyPress = (e) => {
@@ -21,6 +21,7 @@ const Welcome = ({ onNextStep }) => {
 
   const submitName = () => {
     if (questioner) {
+      setQuestioner(questioner);
       onNextStep();
     } else {
       alert('이름을 입력해주세요.');

@@ -1,14 +1,22 @@
 import React, { useState } from 'react';
 import Styles from './Main.module.css';
-import Welcome from '../Pages/Welcome';
-import QuestionNumber from '../Pages/QuestionNumber';
-import QuestionList from '../Pages/QuestionList';
-import WriteChallenge from '../Pages/WriteChallenge';
-import WriteCounterSign from '../Pages/WriteCounterSign';
-import Finish from '../Pages/Finish';
+import Welcome from '../Pages/Create/Welcome';
+import QuestionNumber from '../Pages/Create/QuestionNumber';
+import QuestionList from '../Pages/Create/QuestionList';
+import WriteChallenge from '../Pages/Create/WriteChallenge';
+import WriteCounterSign from '../Pages/Create/WriteCounterSign';
+import Finish from '../Pages/Create/Finish';
+
+import MatchChallenge from '../Pages/Response/MatchChallenge';
+import WriteAnswererName from '../Pages/Response/WriteAnswererName';
+import { useParams } from 'react-router-dom';
+import WriteResponse from '../Pages/Response/WriteResponse';
+import Done from '../Pages/Response/Done';
+import DisplayAnswerList from '../Pages/Create/DisplayAnswerList';
 
 const Main = () => {
   const [step, setStep] = useState(1);
+  const { diaryId } = useParams();
 
   const onPreviousStep = () => {
     if (step > 1) {
@@ -50,11 +58,44 @@ const Main = () => {
     }
   };
 
+  const renderResponseStep = () => {
+    switch (step) {
+      case 1:
+        return <MatchChallenge onNextStep={() => setStep(2)} />;
+      case 2:
+        return (
+          <WriteAnswererName
+            onNextStep={() => setStep(3)}
+            onPreviousStep={onPreviousStep}
+          />
+        );
+      case 3:
+        return (
+          <WriteResponse
+            onNextStep={() => setStep(4)}
+            onPreviousStep={onPreviousStep}
+          />
+        );
+      case 4:
+        return <Done onNextStep={() => setStep(5)} />;
+      default:
+        return null;
+    }
+  };
+
   return (
     <div className={Styles.Main}>
       <div className={Styles.center}>
         <div className={Styles.pin}>📌</div>
-        <section className={Styles.content}>{renderStep()}</section>
+        <section className={Styles.content}>
+          {diaryId && window.location.pathname.includes('answerers') ? (
+            <DisplayAnswerList />
+          ) : diaryId ? (
+            renderResponseStep()
+          ) : (
+            renderStep()
+          )}
+        </section>
       </div>
     </div>
   );

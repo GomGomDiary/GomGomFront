@@ -1,0 +1,12 @@
+.Modal {
+  position: relative;
+}
+
+.cancelBtn {
+  position: absolute;
+
+  left: 90%;
+  transform: translateX(-50%);
+  border: none;
+  background-color: transparent;
+}

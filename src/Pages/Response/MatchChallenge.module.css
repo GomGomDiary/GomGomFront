@@ -1,0 +1,47 @@
+@import '../../App.css';
+
+.MatchChallengeContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 50px;
+  height: 60vh;
+}
+
+.top {
+  text-align: center;
+  line-height: 1.6;
+}
+
+.top :first-child {
+  font-size: 40px;
+  animation: fontAnimation 0.8s infinite;
+}
+
+.top :nth-child(2) {
+  font-size: 25px;
+}
+
+.middle {
+  text-align: center;
+  background-color: var(--main-color);
+  padding: 30px;
+}
+
+.bottom {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  margin: 0 auto;
+}
+
+@keyframes fontAnimation {
+  0% {
+    transform: rotate(-10deg);
+  }
+  50% {
+    transform: rotate(15deg);
+  }
+  100% {
+    transform: rotate(-10deg);
+  }
+}

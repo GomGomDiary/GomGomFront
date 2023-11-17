@@ -1,7 +1,7 @@
 import React from 'react';
 import { useRecoilState } from 'recoil';
-import { QuestionNum } from '../store/QuestionNum';
-import Btn from '../components/Btn';
+import { QuestionNum } from '../../store/Create/QuestionNum';
+import Btn from '../../components/Btn';
 import Styles from './QuestionNumber.module.css';
 
 const QuestionNumber = ({ onNextStep }) => {
