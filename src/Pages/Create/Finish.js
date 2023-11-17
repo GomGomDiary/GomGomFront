@@ -26,7 +26,7 @@ const Finish = () => {
       }
     };
     fetchUserCookie();
-  }, [setUserCookie]);
+  }, []);
 
   const handleShareLink = (link) => {
     navigator.clipboard
@@ -38,6 +38,8 @@ const Finish = () => {
         console.error('error', error);
       });
   };
+
+  console.log(userCookieValue);
 
   return (
     <div>
@@ -52,7 +54,7 @@ const Finish = () => {
           <WhiteBtn
             text={'링크로 공유하기'}
             onClick={() => {
-              handleShareLink(`http://localhost:3000/${userCookieValue}`);
+              handleShareLink(`/${userCookieValue}`);
             }}
           />
           <WhiteBtn text={'카톡으로 공유하기'} />

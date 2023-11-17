@@ -46,7 +46,7 @@ const Done = () => {
       }
     };
     fetchUserCookie();
-  }, [setUserCookie]);
+  }, []);
 
   console.log(answerer);
   return (
