@@ -11,6 +11,7 @@ import { UserCookie } from '../../store/Create/UserCookie';
 import { AnswererToken } from '../../store/Response/AnswererToken';
 import { AnswererCookie } from '../../store/Response/AnswererCookie';
 import { Response } from '../../store/Response/Response';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 
 const WriteResponse = ({ onNextStep, onPreviousStep }) => {
   const diaryId = useRecoilValue(UserCookie);
@@ -28,6 +29,8 @@ const WriteResponse = ({ onNextStep, onPreviousStep }) => {
     },
   });
 
+  const navigate = useNavigate('');
+
   useEffect(() => {
     api
       .get(`/question/${diaryId}`)
@@ -38,6 +41,15 @@ const WriteResponse = ({ onNextStep, onPreviousStep }) => {
       })
       .catch((error) => console.error(error));
   }, []);
+
+  /*useEffect(() => {
+    if (answererCookie === diaryId) {
+      alert('자신의 다이어리엔 답할 수 없어요.');
+      window.location.href = 'https://gomgomdiary.site/';
+    }
+  }, [answererCookie]);*/
+
+  console.log(answererCookie, diaryId);
 
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
 
