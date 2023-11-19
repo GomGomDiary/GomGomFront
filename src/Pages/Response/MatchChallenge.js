@@ -7,6 +7,7 @@ import Btn from '../../components/Btn';
 import CustomModal from '../../components/CustomModal';
 
 import { useRecoilState, useRecoilValue } from 'recoil';
+import { useParams } from 'react-router-dom';
 import { UserCookie } from '../../store/Create/UserCookie';
 import { Challenge } from '../../store/Create/Challenge';
 import { getCookie } from '../../api/cookie';
@@ -21,24 +22,14 @@ const MatchChallenge = ({ onNextStep }) => {
   const [challenge, setChallenge] = useRecoilState(Challenge);
   const [answererToken, setAnswererToken] = useRecoilState(AnswererToken);
 
-  useEffect(() => {
-    const fetchUserCookie = async () => {
-      try {
-        const diaryId = await getCookie('diaryAddress');
-        setUserCookie(diaryId);
-      } catch (error) {
-        console.error('error', error);
-      }
-    };
-    fetchUserCookie();
-  }, []);
-
-  const diaryId = useRecoilValue(UserCookie);
+  const { diaryId } = useParams();
 
   const navigate = useNavigate('');
+  const [countersign, setCountersign] = useState('');
 
   useEffect(() => {
     if (!!diaryId) {
+      setUserCookie(diaryId);
       axios
         .get(`${process.env.REACT_APP_SERVER_URL}/challenge/${diaryId}`)
         .then((response) => {
@@ -54,10 +45,9 @@ const MatchChallenge = ({ onNextStep }) => {
           navigate('/');
         });
     }
-  }, [diaryId]);
+  }, [diaryId, setUserCookie, setChallenge, setQuestioner, navigate]);
 
   const CountersignInput = useRef();
-  const [countersign, setCountersign] = useState('');
 
   const writeCountersign = (e) => {
     setCountersign(e.target.value);

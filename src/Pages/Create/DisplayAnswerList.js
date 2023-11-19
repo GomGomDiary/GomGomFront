@@ -19,7 +19,6 @@ const DisplayAnswerList = () => {
       .then((response) => {
         if (response.status === 200) {
           setCountAnswerer(response.data.answererList);
-          console.log(response.data.answererList);
         }
       });
   }, [setCountAnswerer]);
@@ -30,7 +29,7 @@ const DisplayAnswerList = () => {
       .then((response) => {
         console.log(response.data);
       })
-      .catch((error) => console.log(error));
+      .catch((error) => console.log(diaryId));
   };
 
   return (
@@ -48,6 +47,7 @@ const DisplayAnswerList = () => {
                   {person.answerer}님의 답장
                 </div>
                 <div>{person._id}</div>
+                <div>{diaryId}</div>
               </div>
             ))}
           </div>

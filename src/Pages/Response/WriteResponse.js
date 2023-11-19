@@ -19,7 +19,6 @@ const WriteResponse = ({ onNextStep, onPreviousStep }) => {
 
   const [questionNumber, setQuestionNumber] = useState(0);
   const [questionArr, setQuestionArr] = useState([]);
-  const [answererCookie, setAnswererCookie] = useRecoilState(AnswererCookie);
 
   const api = axios.create({
     baseURL: `${process.env.REACT_APP_SERVER_URL}`,
@@ -37,7 +36,6 @@ const WriteResponse = ({ onNextStep, onPreviousStep }) => {
       .then((response) => {
         setQuestionArr(response.data.question);
         setQuestionNumber(response.data.questionLength);
-        setAnswererCookie(response.data._id);
       })
       .catch((error) => console.error(error));
   }, []);
@@ -48,8 +46,6 @@ const WriteResponse = ({ onNextStep, onPreviousStep }) => {
       window.location.href = 'https://gomgomdiary.site/';
     }
   }, [answererCookie]);*/
-
-  console.log(answererCookie, diaryId);
 
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
 
