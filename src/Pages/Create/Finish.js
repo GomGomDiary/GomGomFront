@@ -18,8 +18,7 @@ const Finish = () => {
   useEffect(() => {
     const fetchUserCookie = async () => {
       try {
-        console.log();
-        const diaryId = await getCookie('diaryUser');
+        const diaryId = await getCookie('diaryAddress');
         setUserCookie(diaryId);
         console.log('Recoil 상태 업데이트 완료:', diaryId);
       } catch (error) {

@@ -20,12 +20,11 @@ const MatchChallenge = ({ onNextStep }) => {
   const [questioner, setQuestioner] = useRecoilState(Questioner);
   const [challenge, setChallenge] = useRecoilState(Challenge);
   const [answererToken, setAnswererToken] = useRecoilState(AnswererToken);
-  const [answererCookie, setAnswererCookie] = useRecoilValue(AnswererCookie);
 
   useEffect(() => {
-    const fetchUserCookie = () => {
+    const fetchUserCookie = async () => {
       try {
-        const diaryId = getCookie('diaryUser');
+        const diaryId = await getCookie('diaryAddress');
         setUserCookie(diaryId);
       } catch (error) {
         console.error('error', error);
@@ -35,15 +34,11 @@ const MatchChallenge = ({ onNextStep }) => {
   }, []);
 
   const diaryId = useRecoilValue(UserCookie);
-  const answerId = useRecoilValue(AnswererCookie);
 
   const navigate = useNavigate('');
 
   useEffect(() => {
-    if (diaryId === answerId) {
-      alert('자신의 다이어리엔 답할 수 없어요.');
-      navigate('/');
-    } else if (!!diaryId) {
+    if (!!diaryId) {
       axios
         .get(`${process.env.REACT_APP_SERVER_URL}/challenge/${diaryId}`)
         .then((response) => {

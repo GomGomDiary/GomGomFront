@@ -15,7 +15,6 @@ import { useRecoilState, useRecoilValue } from 'recoil';
 import { AnswererToken } from '../../store/Response/AnswererToken';
 
 const Done = () => {
-  const [userCookie, setUserCookie] = useRecoilState(UserCookie);
   const answererJWT = useRecoilValue(AnswererToken);
   const answerer = useRecoilValue(Answerer);
   const response = useRecoilValue(Response);
