@@ -1,35 +1,62 @@
 import React, { useEffect, useState } from 'react';
 import Styles from './DisplayAnswerList.module.css';
-import axios from 'axios';
+import instance from '../../api/customAxios';
 
-import { useParams } from 'react-router-dom';
-import { useRecoilValue } from 'recoil';
-import { AnswererCookie } from '../../store/Response/AnswererCookie';
-import { UserCookie } from '../../store/Create/UserCookie';
-import { getCookie } from '../../api/cookie';
+import { Link, useParams } from 'react-router-dom';
+import { useRecoilState, useRecoilValue } from 'recoil';
+import { Answer } from '../../store/Create/Answer';
+import { Question } from '../../store/Create/Question';
+import { useNavigate } from 'react-router-dom';
+import Btn from '../../components/Btn';
+import { UpdateClick } from '../../store/Create/UpdateClick';
 
 const DisplayAnswerList = () => {
+  const navigate = useNavigate();
   const { diaryId } = useParams();
 
   const [countAnswerer, setCountAnswerer] = useState([]);
+  const [answer, setAnswer] = useRecoilState(Answer);
+  const [question, setQuestion] = useRecoilState(Question);
+  const axiosInstance = instance();
 
   useEffect(() => {
-    axios
-      .get(`${process.env.REACT_APP_SERVER_URL}/answerers/${diaryId}`)
+    axiosInstance
+      .get(`/answerers/${diaryId}`)
       .then((response) => {
         if (response.status === 200) {
           setCountAnswerer(response.data.answererList);
         }
-      });
+      })
+      .catch((e) => navigate('/error-route'));
   }, [setCountAnswerer]);
 
   const handleDisplayResponse = (answerId) => {
-    axios
-      .get(`${process.env.REACT_APP_SERVER_URL}/answer/${diaryId}/${answerId}`)
+    axiosInstance
+      .get(`/answer/${diaryId}/${answerId}`)
       .then((response) => {
-        console.log(response.data);
+        setAnswer(response.data.answer);
+        setQuestion(response.data.question);
+        navigate(`/answer/${diaryId}/${answerId}`);
       })
-      .catch((error) => console.log(diaryId));
+      .catch((error) => alert('다른 사람의 답변은 볼 수 없어요.'));
+  };
+
+  const main = window.location.origin;
+  const updateClick = useRecoilValue(UpdateClick);
+
+  const handleNewDiary = async () => {
+    console.log(updateClick);
+    const axiosInstance = instance();
+
+    const { data: diaryData } = await axiosInstance.get('/');
+
+    if (diaryData) {
+      window.confirm('다이어리를 다시 만드시겠어요?');
+
+      if (true) {
+        window.location.href = `${main}`;
+      }
+    }
   };
 
   return (
@@ -46,8 +73,6 @@ const DisplayAnswerList = () => {
                 <div onClick={() => handleDisplayResponse(person._id)}>
                   {person.answerer}님의 답장
                 </div>
-                <div>{person._id}</div>
-                <div>{diaryId}</div>
               </div>
             ))}
           </div>
@@ -60,6 +85,7 @@ const DisplayAnswerList = () => {
           <div className={Styles.noResponsecontent}>텅</div>
         </div>
       )}
+      <Btn text={'새로 만들기'} onClick={handleNewDiary} />
     </div>
   );
 };
