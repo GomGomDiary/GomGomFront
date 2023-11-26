@@ -1,0 +1,56 @@
+@import '../App.css';
+
+.Main {
+  display: flex;
+  justify-content: center;
+}
+
+.pin {
+  font-size: 36px;
+  position: absolute;
+  top: 80px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1;
+}
+
+.center {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100vw;
+  height: 100vh;
+  background-color: var(--background-color);
+}
+
+.content {
+  position: relative;
+  width: 320px;
+  height: 80vh;
+  padding: 10px;
+  background-color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.errorMessage {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  gap: 20px;
+  height: 20vh;
+}
+
+.errortitle {
+  font-size: 30px;
+}
+
+.error {
+  display: flex;
+  flex-direction: column;
+  font-size: 36px;
+  gap: 10px;
+}
