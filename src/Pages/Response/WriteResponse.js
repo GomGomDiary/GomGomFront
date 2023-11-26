@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useMemo, useRef } from 'react';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import Styles from './WriteResponse.module.css';
-import axios from 'axios';
+import instance from '../../api/customAxios';
 
 import WhiteBtn from '../../components/WhiteBtn';
 import Btn from '../../components/Btn';
@@ -9,9 +9,9 @@ import Input from '../../components/Input';
 
 import { UserCookie } from '../../store/Create/UserCookie';
 import { AnswererToken } from '../../store/Response/AnswererToken';
-import { AnswererCookie } from '../../store/Response/AnswererCookie';
 import { Response } from '../../store/Response/Response';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { getCookie } from '../../api/cookie';
 
 const WriteResponse = ({ onNextStep, onPreviousStep }) => {
   const diaryId = useRecoilValue(UserCookie);
@@ -20,13 +20,7 @@ const WriteResponse = ({ onNextStep, onPreviousStep }) => {
   const [questionNumber, setQuestionNumber] = useState(0);
   const [questionArr, setQuestionArr] = useState([]);
 
-  const api = axios.create({
-    baseURL: `${process.env.REACT_APP_SERVER_URL}`,
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${answererJWT}`,
-    },
-  });
+  const api = instance(answererJWT);
 
   const navigate = useNavigate('');
 
@@ -40,12 +34,14 @@ const WriteResponse = ({ onNextStep, onPreviousStep }) => {
       .catch((error) => console.error(error));
   }, []);
 
-  /*useEffect(() => {
-    if (answererCookie === diaryId) {
+  useEffect(() => {
+    const answerId = getCookie('diaryAddress');
+    if (diaryId === answerId) {
       alert('자신의 다이어리엔 답할 수 없어요.');
-      window.location.href = 'https://gomgomdiary.site/';
+      const location = window.location.origin;
+      window.location.href = `${location}`;
     }
-  }, [answererCookie]);*/
+  }, []);
 
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
 
@@ -80,12 +76,13 @@ const WriteResponse = ({ onNextStep, onPreviousStep }) => {
 
   const handleSkip = () => {
     if (currentQuestionIndex < questionNumber - 1) {
-      let skip = '';
+      let skip = '생략했어요.';
       setResponseArr([...responseArr, skip]);
       setCurrentQuestionIndex(currentQuestionIndex + 1);
     } else {
+      let skip = '생략했어요.';
       onNextStep();
-      setResponseArr([...responseArr, response]);
+      setResponseArr([...responseArr, skip]);
     }
   };
 
