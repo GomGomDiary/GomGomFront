@@ -13,10 +13,11 @@ import { useParams } from 'react-router-dom';
 import WriteResponse from '../Pages/Response/WriteResponse';
 import Done from '../Pages/Response/Done';
 import DisplayAnswerList from '../Pages/Create/DisplayAnswerList';
+import DisplayAnswer from '../Pages/Create/DisplayAnswer';
 
 const Main = () => {
   const [step, setStep] = useState(1);
-  const { diaryId } = useParams();
+  const { diaryId, answerId } = useParams();
 
   const onPreviousStep = () => {
     if (step > 1) {
@@ -88,13 +89,23 @@ const Main = () => {
       <div className={Styles.center}>
         <div className={Styles.pin}>📌</div>
         <section className={Styles.content}>
-          {diaryId && window.location.pathname.includes('answerers') ? (
-            <DisplayAnswerList />
-          ) : diaryId ? (
-            renderResponseStep()
-          ) : (
-            renderStep()
+          {diaryId && answerId && (
+            <>
+              <DisplayAnswer />
+            </>
           )}
+
+          {diaryId && window.location.pathname.includes('answerers') && (
+            <>
+              <DisplayAnswerList />
+            </>
+          )}
+          {!diaryId && <>{renderStep()}</>}
+          {diaryId &&
+            !answerId &&
+            !window.location.pathname.includes('answerers') && (
+              <>{renderResponseStep()}</>
+            )}
         </section>
       </div>
     </div>
