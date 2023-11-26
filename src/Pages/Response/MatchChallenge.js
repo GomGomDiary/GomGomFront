@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
-import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
+import instance from '../../api/customAxios';
 import Styles from './MatchChallenge.module.css';
 
 import Input from '../../components/Input';
@@ -10,11 +11,8 @@ import { useRecoilState, useRecoilValue } from 'recoil';
 import { useParams } from 'react-router-dom';
 import { UserCookie } from '../../store/Create/UserCookie';
 import { Challenge } from '../../store/Create/Challenge';
-import { getCookie } from '../../api/cookie';
 import { Questioner } from '../../store/Create/Questioner';
 import { AnswererToken } from '../../store/Response/AnswererToken';
-import { useNavigate } from 'react-router-dom';
-import { AnswererCookie } from '../../store/Response/AnswererCookie';
 
 const MatchChallenge = ({ onNextStep }) => {
   const [userCookie, setUserCookie] = useRecoilState(UserCookie);
@@ -26,18 +24,18 @@ const MatchChallenge = ({ onNextStep }) => {
 
   const navigate = useNavigate('');
   const [countersign, setCountersign] = useState('');
+  const axiosInstance = instance(answererToken);
 
   useEffect(() => {
     if (!!diaryId) {
       setUserCookie(diaryId);
-      axios
-        .get(`${process.env.REACT_APP_SERVER_URL}/challenge/${diaryId}`)
+
+      axiosInstance
+        .get(`/challenge/${diaryId}`)
         .then((response) => {
           if (response.status === 200) {
             setChallenge(response.data.challenge);
             setQuestioner(response.data.questioner);
-          } else {
-            console.error('nono');
           }
         })
         .catch((error) => {
@@ -61,20 +59,15 @@ const MatchChallenge = ({ onNextStep }) => {
 
   const submitCountersign = () => {
     if (countersign) {
-      axios
-        .post(
-          `${process.env.REACT_APP_SERVER_URL}/countersign/${diaryId}`,
-          { countersign },
-          { withCredentials: true }
-        )
+      axiosInstance
+        .post(`/countersign/${diaryId}`, { countersign })
         .then((response) => {
           alert('정답');
           setAnswererToken(response.data.diaryToken);
           onNextStep();
         })
-        .catch((error) => {
-          alert('에러가 났어요. 다시 입력해주세요.');
-          console.error(error);
+        .catch(() => {
+          alert('틀렸어요. 다시 입력해주세요.');
           CountersignInput.current.focus();
         });
     } else {
