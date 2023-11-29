@@ -1,0 +1,36 @@
+.DisplayAnswer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 30px;
+}
+
+.answerer {
+  width: 300px;
+  padding: 0px 10px;
+  text-align: center;
+  font-size: 20px;
+}
+
+.answer {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  overflow-y: scroll;
+  height: 300px;
+  width: 280px;
+  padding: 0px 10px;
+}
+
+.answer div {
+  overflow-wrap: break-word;
+}
+
+.answer :nth-child(3n-2) {
+  color: var(--point-color);
+  font-size: 20px;
+}
+
+.answer :nth-child(3n) {
+  padding-bottom: 15px;
+}

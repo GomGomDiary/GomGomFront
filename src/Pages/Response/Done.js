@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import axios from 'axios';
+import instance from '../../api/customAxios';
 import Styles from './Done.module.css';
 import ConfettiEffect from '../../components/ConfettiEffect';
 
@@ -7,33 +7,25 @@ import Btn from '../../components/Btn';
 import WhiteBtn from '../../components/WhiteBtn';
 
 import { UserCookie } from '../../store/Create/UserCookie';
-import { getCookie } from '../../api/cookie';
 import { Answerer } from '../../store/Response/Answerer';
 import { Response } from '../../store/Response/Response';
 import { Questioner } from '../../store/Create/Questioner';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import { AnswererToken } from '../../store/Response/AnswererToken';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 const Done = () => {
-  const [userCookie, setUserCookie] = useRecoilState(UserCookie);
   const answererJWT = useRecoilValue(AnswererToken);
   const answerer = useRecoilValue(Answerer);
   const response = useRecoilValue(Response);
-
-  const api = axios.create({
-    baseURL: `${process.env.REACT_APP_SERVER_URL}`,
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${answererJWT}`,
-    },
-  });
 
   const diaryId = useRecoilValue(UserCookie);
 
   useEffect(() => {
     const fetchUserCookie = async () => {
       try {
-        api.post(
+        const axiosInstance = instance(answererJWT);
+        axiosInstance.post(
           `/answer/${diaryId}`,
           {
             answerer: answerer,
@@ -48,6 +40,18 @@ const Done = () => {
     fetchUserCookie();
   }, []);
 
+  const navigate = useNavigate('');
+
+  const location = window.location.origin;
+
+  const handleDisplayAnswerList = () => {
+    navigate(`/answerers/${diaryId}`);
+  };
+
+  const handleMakeGomgom = () => {
+    window.location.href = `${location}`;
+  };
+
   return (
     <div>
       <ConfettiEffect />
@@ -59,10 +63,13 @@ const Done = () => {
         </div>
         <div className={Styles.middle}>
           <WhiteBtn text={'카톡으로 알리기'} />
-          <WhiteBtn text={'내 답장 확인하기'} />
+          <WhiteBtn
+            text={'내 답장 확인하기'}
+            onClick={() => handleDisplayAnswerList()}
+          />
         </div>
         <div className={Styles.bottom}>
-          <Btn text={'내 곰곰다이어리 만들기'} />
+          <Btn text={'나도 만들어보기'} onClick={() => handleMakeGomgom()} />
         </div>
       </div>
     </div>

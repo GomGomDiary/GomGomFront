@@ -1,9 +1,12 @@
-import React, { useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { useRecoilState } from 'recoil';
 import { Questioner } from '../../store/Create/Questioner';
 import Styles from './Welcome.module.css';
 import Btn from '../../components/Btn';
 import Input from '../../components/Input';
+import { getCookie } from '../../api/cookie';
+import { useNavigate } from 'react-router-dom';
+import instance from '../../api/customAxios';
 
 const Welcome = ({ onNextStep }) => {
   const [questioner, setQuestioner] = useRecoilState(Questioner);
@@ -28,6 +31,19 @@ const Welcome = ({ onNextStep }) => {
       NameInputRef.current.focus();
     }
   };
+
+  const diaryId = getCookie('diaryAddress');
+  const navigate = useNavigate('');
+
+  const axiosInstance = instance();
+
+  useEffect(() => {
+    axiosInstance.get('/').then((response) => {
+      if (response.data === true) {
+        navigate(`/answerers/${diaryId}`);
+      }
+    });
+  }, []);
 
   return (
     <div className={Styles.Welcome}>

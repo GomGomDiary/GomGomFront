@@ -7,7 +7,7 @@ import WhiteBtn from '../../components/WhiteBtn';
 
 import { UserCookie } from '../../store/Create/UserCookie';
 import { getCookie } from '../../api/cookie';
-import { useRecoilState, useRecoilValue } from 'recoil';
+import { useRecoilState } from 'recoil';
 import { useNavigate } from 'react-router-dom';
 
 const Finish = () => {
@@ -18,10 +18,8 @@ const Finish = () => {
   useEffect(() => {
     const fetchUserCookie = async () => {
       try {
-        console.log();
-        const diaryId = await getCookie('diaryUser');
+        const diaryId = await getCookie('diaryAddress');
         setUserCookie(diaryId);
-        console.log('Recoil 상태 업데이트 완료:', diaryId);
       } catch (error) {
         console.error('error', error);
       }
@@ -55,7 +53,7 @@ const Finish = () => {
           <WhiteBtn
             text={'링크로 공유하기'}
             onClick={() => {
-              handleShareLink(`${location}${userCookie}`);
+              handleShareLink(`${location}diary/${userCookie}`);
             }}
           />
           <WhiteBtn text={'카톡으로 공유하기'} />

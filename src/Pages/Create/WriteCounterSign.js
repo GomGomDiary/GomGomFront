@@ -10,8 +10,8 @@ import { Challenge } from '../../store/Create/Challenge';
 import Input from '../../components/Input';
 import Btn from '../../components/Btn';
 import WhiteBtn from '../../components/WhiteBtn';
-import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
+
+import instance from '../../api/customAxios';
 
 const WriteCounterSign = ({ onNextStep, onPreviousStep }) => {
   const [counterSign, setCounterSign] = useRecoilState(CounterSign);
@@ -32,45 +32,22 @@ const WriteCounterSign = ({ onNextStep, onPreviousStep }) => {
     }
   };
 
-  const navigate = useNavigate();
-
-  const submitcountersign = () => {
+  const submitcountersign = async () => {
     if (counterSign) {
       setCounterSign(counterSign);
+      const axiosInstance = instance();
 
-      axios
-        .post(
-          `${process.env.REACT_APP_SERVER_URL}/question`,
-          {
-            question: questionArr,
-            questioner,
-            challenge,
-            countersign,
-          },
-          { withCredentials: true }
-        )
-        .then((response) => {
-          if (response.status === 201) {
-            onNextStep();
-          } else if (response.status === 204) {
-            if (
-              window.confirm(
-                '이전에 만든 질문과 받았던 답장들이 모두 사라져도 괜찮나요?'
-              )
-            ) {
-              onNextStep();
-            } else {
-              alert('처음으로 돌아갈게요!');
-              navigate('/');
-            }
-          }
-        })
-        .catch((error) => {
-          console.error(error);
-        });
-    } else {
-      alert('암호의 답을 입력해주세요.');
-      CounterSignInputRef.current.focus();
+      const { status: statusCode } = await axiosInstance.post('/question', {
+        question: questionArr,
+        questioner,
+        challenge,
+        countersign,
+      });
+
+      if (statusCode === 201) {
+        onNextStep();
+        return;
+      }
     }
   };
 
