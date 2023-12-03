@@ -11,8 +11,8 @@ import NotFound from './Pages/NotFound';
 function App() {
   return (
     <CookiesProvider>
-      <BrowserRouter>
-        <RecoilRoot>
+      <RecoilRoot>
+        <BrowserRouter>
           <Header />
           <Routes>
             <Route path="/answerers/:diaryId" element={<Main />} />
@@ -21,8 +21,8 @@ function App() {
             <Route path="/" element={<Main />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
-        </RecoilRoot>
-      </BrowserRouter>
+        </BrowserRouter>
+      </RecoilRoot>
     </CookiesProvider>
   );
 }
