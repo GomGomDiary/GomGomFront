@@ -1,6 +1,7 @@
 import React, { useRef } from 'react';
 import Styles from './WriteCounterSign.module.css';
 import { useRecoilState, useRecoilValue } from 'recoil';
+import { useNavigate } from 'react-router-dom';
 
 import { CounterSign } from '../../store/Create/CounterSign';
 import { Questioner } from '../../store/Create/Questioner';
@@ -13,7 +14,7 @@ import WhiteBtn from '../../components/WhiteBtn';
 
 import instance from '../../api/customAxios';
 
-const WriteCounterSign = ({ onNextStep, onPreviousStep }) => {
+const WriteCounterSign = ({ onNextStep, onPreviousStep, goToFirstStep }) => {
   const [counterSign, setCounterSign] = useRecoilState(CounterSign);
   const CounterSignInputRef = useRef();
 
@@ -44,9 +45,19 @@ const WriteCounterSign = ({ onNextStep, onPreviousStep }) => {
         countersign,
       });
 
+      const { data: isCreated } = await axiosInstance.get('/');
+
       if (statusCode === 201) {
         onNextStep();
         return;
+      }
+
+      if (isCreated) {
+        if (window.confirm('다시 만들면 이전 다이어리는 저장됩니다.')) {
+          onNextStep();
+        } else {
+          goToFirstStep();
+        }
       }
     }
   };

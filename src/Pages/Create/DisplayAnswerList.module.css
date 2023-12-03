@@ -1,3 +1,9 @@
+.DisplayAnswerList {
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+}
+
 .noResponse {
   display: flex;
   flex-direction: column;

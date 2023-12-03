@@ -2,8 +2,8 @@ import React, { useEffect, useState } from 'react';
 import Styles from './DisplayAnswerList.module.css';
 import instance from '../../api/customAxios';
 
-import { Link, useParams } from 'react-router-dom';
-import { useRecoilState, useRecoilValue } from 'recoil';
+import { useParams } from 'react-router-dom';
+import { useRecoilState } from 'recoil';
 import { Answer } from '../../store/Create/Answer';
 import { Question } from '../../store/Create/Question';
 import { useNavigate } from 'react-router-dom';
@@ -41,26 +41,23 @@ const DisplayAnswerList = () => {
       .catch((error) => alert('다른 사람의 답변은 볼 수 없어요.'));
   };
 
-  const main = window.location.origin;
-  const updateClick = useRecoilValue(UpdateClick);
+  const [updateClick, setUpdateClick] = useRecoilState(UpdateClick);
 
   const handleNewDiary = async () => {
-    console.log(updateClick);
     const axiosInstance = instance();
 
-    const { data: diaryData } = await axiosInstance.get('/');
+    const { data: diaryData } = await axiosInstance.get('');
 
     if (diaryData) {
-      window.confirm('다이어리를 다시 만드시겠어요?');
-
-      if (true) {
-        window.location.href = `${main}`;
+      if (window.confirm('다이어리를 다시 만드시겠어요?')) {
+        setUpdateClick(true);
+        navigate('/');
       }
     }
   };
 
   return (
-    <div>
+    <div className={Styles.DisplayAnswerList}>
       {countAnswerer.length ? (
         <div className={Styles.haveResponse}>
           <div className={Styles.haveResponseImg}>💌</div>

@@ -49,11 +49,17 @@ const Main = () => {
         return (
           <WriteCounterSign
             onNextStep={() => setStep(6)}
+            goToFirstStep={() => setStep(1)}
             onPreviousStep={onPreviousStep}
           />
         );
       case 6:
-        return <Finish onNextStep={() => setStep(7)} />;
+        return (
+          <Finish
+            onNextStep={() => setStep(7)}
+            onPreviousStep={onPreviousStep}
+          />
+        );
       default:
         return null;
     }
@@ -97,7 +103,7 @@ const Main = () => {
 
           {diaryId && window.location.pathname.includes('answerers') && (
             <>
-              <DisplayAnswerList />
+              <DisplayAnswerList goToFirstStep={() => setStep(1)} />
             </>
           )}
           {!diaryId && <>{renderStep()}</>}
