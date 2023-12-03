@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from 'react';
-import { useRecoilState } from 'recoil';
+import { useRecoilState, useRecoilValue } from 'recoil';
 import { Questioner } from '../../store/Create/Questioner';
 import Styles from './Welcome.module.css';
 import Btn from '../../components/Btn';
@@ -7,6 +7,7 @@ import Input from '../../components/Input';
 import { getCookie } from '../../api/cookie';
 import { useNavigate } from 'react-router-dom';
 import instance from '../../api/customAxios';
+import { UpdateClick } from '../../store/Create/UpdateClick';
 
 const Welcome = ({ onNextStep }) => {
   const [questioner, setQuestioner] = useRecoilState(Questioner);
@@ -36,10 +37,13 @@ const Welcome = ({ onNextStep }) => {
   const navigate = useNavigate('');
 
   const axiosInstance = instance();
+  const updateClick = useRecoilValue(UpdateClick);
 
   useEffect(() => {
     axiosInstance.get('/').then((response) => {
-      if (response.data === true) {
+      if (response.data === true && updateClick) {
+        alert('새 다이어리 만들기');
+      } else if (response.data === true) {
         navigate(`/answerers/${diaryId}`);
       }
     });
