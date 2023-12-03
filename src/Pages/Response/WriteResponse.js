@@ -10,7 +10,7 @@ import Input from '../../components/Input';
 import { UserCookie } from '../../store/Create/UserCookie';
 import { AnswererToken } from '../../store/Response/AnswererToken';
 import { Response } from '../../store/Response/Response';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { getCookie } from '../../api/cookie';
 
 const WriteResponse = ({ onNextStep, onPreviousStep }) => {
@@ -21,7 +21,6 @@ const WriteResponse = ({ onNextStep, onPreviousStep }) => {
   const [questionArr, setQuestionArr] = useState([]);
 
   const api = instance(answererJWT);
-
   const navigate = useNavigate('');
 
   useEffect(() => {
@@ -38,8 +37,7 @@ const WriteResponse = ({ onNextStep, onPreviousStep }) => {
     const answerId = getCookie('diaryAddress');
     if (diaryId === answerId) {
       alert('자신의 다이어리엔 답할 수 없어요.');
-      const location = window.location.origin;
-      window.location.href = `${location}`;
+      navigate(`/answerers/${answerId}`);
     }
   }, []);
 

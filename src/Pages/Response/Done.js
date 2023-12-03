@@ -10,9 +10,9 @@ import { UserCookie } from '../../store/Create/UserCookie';
 import { Answerer } from '../../store/Response/Answerer';
 import { Response } from '../../store/Response/Response';
 import { Questioner } from '../../store/Create/Questioner';
-import { useRecoilState, useRecoilValue } from 'recoil';
+import { useRecoilValue } from 'recoil';
 import { AnswererToken } from '../../store/Response/AnswererToken';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 const Done = () => {
   const answererJWT = useRecoilValue(AnswererToken);
@@ -34,7 +34,7 @@ const Done = () => {
           { withCredentials: true }
         );
       } catch (error) {
-        console.error('error', error);
+        console.log('실패');
       }
     };
     fetchUserCookie();
@@ -42,14 +42,12 @@ const Done = () => {
 
   const navigate = useNavigate('');
 
-  const location = window.location.origin;
-
   const handleDisplayAnswerList = () => {
     navigate(`/answerers/${diaryId}`);
   };
 
   const handleMakeGomgom = () => {
-    window.location.href = `${location}`;
+    navigate('/');
   };
 
   return (
