@@ -22,14 +22,16 @@ const DisplayAnswer = () => {
   }
 
   return (
-    <div className={Styles.DisplayAnswer}>
-      <div className={Styles.answerer}>{answer.answerer}님의 답장💌</div>
-      <div className={Styles.answer}>
-        {arr.map((num, idx) => (
-          <div key={idx}>{num}</div>
-        ))}
+    <div className={Styles.DisplayAnswerContainer}>
+      <div className={Styles.DisplayAnswer}>
+        <div className={Styles.answerer}>{answer.answerer}님의 답장💌</div>
+        <div className={Styles.answer}>
+          {arr.map((num, idx) => (
+            <div key={idx}>{num}</div>
+          ))}
+        </div>
+        <Btn text={'뒤로 가기'} onClick={() => navigate(-1)} />
       </div>
-      <Btn text={'뒤로 가기'} onClick={() => navigate(-1)} />
     </div>
   );
 };

@@ -1,7 +1,9 @@
 .DisplayAnswerList {
   display: flex;
   flex-direction: column;
-  gap: 40px;
+  gap: 20px;
+  height: 70vh;
+  margin-top: 10px;
 }
 
 .noResponse {
@@ -28,13 +30,12 @@
   display: flex;
   flex-direction: column;
   width: 100%;
-  height: 50vh;
   text-align: center;
-  gap: 20px;
+  gap: 30px;
 }
 
 .haveResponseImg {
-  font-size: 100px;
+  font-size: 80px;
 }
 
 .haveResponseTitle {
@@ -42,20 +43,56 @@
 }
 
 .listContainer {
-  height: 100%;
+  height: 150px;
   width: 250px;
-  overflow-y: scroll;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .haveResponseList {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
   width: 90%;
-  padding: 10px;
-  overflow-y: scroll;
+  height: 100%;
 }
 
 .haveResponseList div {
+  cursor: pointer;
+  padding: 5px;
+}
+
+.correctAnswerer {
+  color: var(--point-color);
+  background-color: var(--main-color);
+}
+
+.owner {
+  color: black;
+}
+
+.notCorrect {
+  color: gray;
+}
+
+td {
+  border-bottom: 1px solid var(--main-color);
+  padding: 5px;
+}
+
+.btns {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.preBtn,
+.nextBtn {
+  border: none;
+  background-color: var(--main-color);
+  border-radius: 100%;
+  width: 30px;
+  height: 30px;
+  color: white;
+  font-size: 16px;
   cursor: pointer;
 }

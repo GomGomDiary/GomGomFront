@@ -2,6 +2,17 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
+  height: 100%;
+  gap: 30px;
+}
+
+.DisplayAnswerContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 80%;
   gap: 30px;
 }
 
@@ -17,7 +28,6 @@
   flex-direction: column;
   gap: 10px;
   overflow-y: scroll;
-  height: 300px;
   width: 280px;
   padding: 0px 10px;
 }

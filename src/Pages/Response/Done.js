@@ -14,7 +14,7 @@ import { useRecoilValue } from 'recoil';
 import { AnswererToken } from '../../store/Response/AnswererToken';
 import { useNavigate } from 'react-router-dom';
 
-const Done = () => {
+const Done = ({ goToFirstStep }) => {
   const answererJWT = useRecoilValue(AnswererToken);
   const answerer = useRecoilValue(Answerer);
   const response = useRecoilValue(Response);
@@ -48,6 +48,7 @@ const Done = () => {
 
   const handleMakeGomgom = () => {
     navigate('/');
+    goToFirstStep();
   };
 
   return (

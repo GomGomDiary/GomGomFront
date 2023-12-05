@@ -9,26 +9,41 @@ import { Question } from '../../store/Create/Question';
 import { useNavigate } from 'react-router-dom';
 import Btn from '../../components/Btn';
 import { UpdateClick } from '../../store/Create/UpdateClick';
+import { getCookie } from '../../api/cookie';
+import ResponseContent from '../../components/ResponseContent';
 
 const DisplayAnswerList = () => {
   const navigate = useNavigate();
   const { diaryId } = useParams();
 
-  const [countAnswerer, setCountAnswerer] = useState([]);
+  const [answererList, setAnswererList] = useState([]);
+  const [answererCount, setAnswerCount] = useState(0);
   const [answer, setAnswer] = useRecoilState(Answer);
   const [question, setQuestion] = useRecoilState(Question);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [start, setStart] = useState(0);
   const axiosInstance = instance();
+
+  const itemsPerPage = 5;
+  const totalPages = Math.ceil(answererCount / itemsPerPage);
+
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+
+  const [isOwner, setIsOwner] = useState('');
 
   useEffect(() => {
     axiosInstance
-      .get(`/answerers/${diaryId}`)
+      .get(`/answerers/${diaryId}/?start=${start}&take=${itemsPerPage}`)
       .then((response) => {
         if (response.status === 200) {
-          setCountAnswerer(response.data.answererList);
+          setAnswererList(response.data.answererList);
+          setIsOwner(response.data._id);
+          setAnswerCount(response.data.answerCount);
         }
       })
-      .catch((e) => navigate('/error-route'));
-  }, [setCountAnswerer]);
+      .catch((e) => /*navigate('/error-route'),*/ console.error());
+  }, []);
 
   const handleDisplayResponse = (answerId) => {
     axiosInstance
@@ -56,23 +71,71 @@ const DisplayAnswerList = () => {
     }
   };
 
+  const handleNextPage = () => {
+    if (currentPage < totalPages) {
+      setStart(start + itemsPerPage);
+      setCurrentPage(currentPage + 1);
+    }
+  };
+
+  const handlePrevPage = () => {
+    if (currentPage > 1) {
+      setStart(start - itemsPerPage);
+      setCurrentPage(currentPage - 1);
+    }
+  };
+
+  const correctAnswerer = getCookie('diaryAddress');
+
   return (
     <div className={Styles.DisplayAnswerList}>
-      {countAnswerer.length ? (
+      {answererList.length ? (
         <div className={Styles.haveResponse}>
-          <div className={Styles.haveResponseImg}>💌</div>
+          <div className={Styles.haveResponseImg}>
+            <ResponseContent content={answererCount} />
+          </div>
           <div className={Styles.haveResponseTitle}>
-            {countAnswerer.length}명이 질문에 답했어요.
+            {answererCount}명이 질문에 답했어요.
           </div>
           <div className={Styles.listContainer}>
-            {countAnswerer.map((person) => (
-              <div className={Styles.haveResponseList} key={person._id}>
-                <div onClick={() => handleDisplayResponse(person._id)}>
-                  {person.answerer}님의 답장
-                </div>
-              </div>
-            ))}
+            <table>
+              <tbody>
+                {answererList.map((person) => (
+                  <tr key={person._id}>
+                    <td
+                      onClick={() => handleDisplayResponse(person._id)}
+                      className={
+                        person._id === correctAnswerer
+                          ? Styles.correctAnswerer
+                          : person._id
+                          ? Styles.owner
+                          : Styles.notCorrect
+                      }
+                    >
+                      {person.answerer} 님의 답장
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
           </div>
+          <div className={Styles.btns}>
+            <button
+              className={Styles.preBtn}
+              onClick={handlePrevPage}
+              disabled={currentPage === 1}
+            >
+              {'<'}
+            </button>
+            <button
+              className={Styles.nextBtn}
+              onClick={handleNextPage}
+              disabled={currentPage === totalPages || totalPages === 0}
+            >
+              {'>'}
+            </button>
+          </div>
+          <Btn text={'새로 만들기'} onClick={handleNewDiary} />
         </div>
       ) : (
         <div className={Styles.noResponse}>
@@ -82,7 +145,6 @@ const DisplayAnswerList = () => {
           <div className={Styles.noResponsecontent}>텅</div>
         </div>
       )}
-      <Btn text={'새로 만들기'} onClick={handleNewDiary} />
     </div>
   );
 };

@@ -1,0 +1,25 @@
+.ResponseContent {
+  animation: fontAnimation 2s infinite;
+}
+
+@keyframes fontAnimation {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+
+  100% {
+    transform: scale(1);
+  }
+}
+
+.contentEmoji {
+  cursor: pointer;
+}
+
+.info {
+  font-size: 12px;
+  color: var(--point-color);
+}

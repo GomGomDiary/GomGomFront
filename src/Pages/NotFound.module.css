@@ -5,15 +5,6 @@
   justify-content: center;
 }
 
-.pin {
-  font-size: 36px;
-  position: absolute;
-  top: 80px;
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 1;
-}
-
 .center {
   display: flex;
   flex-direction: column;
@@ -27,7 +18,7 @@
 .content {
   position: relative;
   width: 320px;
-  height: 80vh;
+  height: 100vh;
   padding: 10px;
   background-color: white;
   display: flex;
