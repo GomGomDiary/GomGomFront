@@ -41,9 +41,7 @@ const Welcome = ({ onNextStep }) => {
 
   useEffect(() => {
     axiosInstance.get('/').then((response) => {
-      if (response.data === true && updateClick) {
-        alert('새 다이어리 만들기');
-      } else if (response.data === true) {
+      if (response.data === true && !updateClick) {
         navigate(`/answerers/${diaryId}`);
       }
     });
