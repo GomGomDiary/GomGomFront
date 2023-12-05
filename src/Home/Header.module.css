@@ -1,7 +1,10 @@
 @import '../App.css';
 
 .Header {
-  position: relative;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
   display: flex;
   padding: 5px;
   height: 25px;
@@ -14,7 +17,6 @@
 }
 
 .float {
-  z-index: 999;
   position: absolute;
   font-size: 20px;
   cursor: pointer;
