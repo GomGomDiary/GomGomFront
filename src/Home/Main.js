@@ -84,7 +84,7 @@ const Main = () => {
           />
         );
       case 4:
-        return <Done onNextStep={() => setStep(5)} />;
+        return <Done goToFirstStep={() => setStep(1)} />;
       default:
         return null;
     }
@@ -93,25 +93,18 @@ const Main = () => {
   return (
     <div className={Styles.Main}>
       <div className={Styles.center}>
-        <div className={Styles.pin}>📌</div>
-        <section className={Styles.content}>
-          {diaryId && answerId && (
-            <>
-              <DisplayAnswer />
-            </>
-          )}
-
-          {diaryId && window.location.pathname.includes('answerers') && (
-            <>
+        <section className={Styles.contentContainer}>
+          <div className={Styles.content}>
+            {diaryId && answerId && <DisplayAnswer />}
+            {diaryId && window.location.pathname.includes('answerers') && (
               <DisplayAnswerList goToFirstStep={() => setStep(1)} />
-            </>
-          )}
-          {!diaryId && <>{renderStep()}</>}
-          {diaryId &&
-            !answerId &&
-            !window.location.pathname.includes('answerers') && (
-              <>{renderResponseStep()}</>
             )}
+            {!diaryId && renderStep()}
+            {diaryId &&
+              !answerId &&
+              !window.location.pathname.includes('answerers') &&
+              renderResponseStep()}
+          </div>
         </section>
       </div>
     </div>
