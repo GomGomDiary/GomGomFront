@@ -5,7 +5,6 @@ const NotFound = () => {
   return (
     <div className={Styles.Main}>
       <div className={Styles.center}>
-        <div className={Styles.pin}>📌</div>
         <section className={Styles.content}>
           <div className={Styles.errorMessage}>
             <div className={Styles.error}>
