@@ -8,6 +8,7 @@ import { Answer } from '../../store/Create/Answer';
 import { Question } from '../../store/Create/Question';
 import { useNavigate } from 'react-router-dom';
 import Btn from '../../components/Btn';
+import WhiteBtn from '../../components/WhiteBtn';
 import { UpdateClick } from '../../store/Create/UpdateClick';
 import { getCookie } from '../../api/cookie';
 import ResponseContent from '../../components/ResponseContent';
@@ -28,7 +29,6 @@ const DisplayAnswerList = () => {
   const totalPages = Math.ceil(answererCount / itemsPerPage);
 
   const startIndex = (currentPage - 1) * itemsPerPage;
-  const endIndex = startIndex + itemsPerPage;
 
   const [isOwner, setIsOwner] = useState('');
 
@@ -40,6 +40,7 @@ const DisplayAnswerList = () => {
           setAnswererList(response.data.answererList);
           setIsOwner(response.data._id);
           setAnswerCount(response.data.answerCount);
+          console.log(response.data);
         }
       })
       .catch((e) => /*navigate('/error-route'),*/ console.error());
@@ -58,6 +59,9 @@ const DisplayAnswerList = () => {
 
   const [updateClick, setUpdateClick] = useRecoilState(UpdateClick);
 
+  let host = window.location.origin;
+  let pathname = window.location.pathname.slice(11);
+
   const handleNewDiary = async () => {
     const axiosInstance = instance();
 
@@ -68,6 +72,8 @@ const DisplayAnswerList = () => {
         setUpdateClick(true);
         navigate('/');
       }
+    } else {
+      alert('주인만 다시 만들 수 있어요.');
     }
   };
 
@@ -86,6 +92,24 @@ const DisplayAnswerList = () => {
   };
 
   const correctAnswerer = getCookie('diaryAddress');
+  const [isCorrect, setIsCorrect] = useState(false);
+
+  useEffect(() => {
+    if (correctAnswerer === diaryId) {
+      setIsCorrect(true);
+    }
+  }, []);
+
+  const handleShareLink = (link) => {
+    navigator.clipboard
+      .writeText(link)
+      .then(() => {
+        alert('복사 완료!');
+      })
+      .catch((error) => {
+        console.error('error', error);
+      });
+  };
 
   return (
     <div className={Styles.DisplayAnswerList}>
@@ -119,7 +143,7 @@ const DisplayAnswerList = () => {
               </tbody>
             </table>
           </div>
-          <div className={Styles.btns}>
+          <div className={Styles.pageBtns}>
             <button
               className={Styles.preBtn}
               onClick={handlePrevPage}
@@ -135,7 +159,17 @@ const DisplayAnswerList = () => {
               {'>'}
             </button>
           </div>
-          <Btn text={'새로 만들기'} onClick={handleNewDiary} />
+          {isCorrect && (
+            <div className={Styles.commonBtns}>
+              <Btn text={'새로 만들기'} onClick={handleNewDiary} />
+              <WhiteBtn
+                text={'링크로 공유하기'}
+                onClick={() => {
+                  handleShareLink(`${host}/diary/${pathname}`);
+                }}
+              />
+            </div>
+          )}
         </div>
       ) : (
         <div className={Styles.noResponse}>
@@ -143,6 +177,17 @@ const DisplayAnswerList = () => {
             아직 아무도 답하지 않았어요.
           </div>
           <div className={Styles.noResponsecontent}>텅</div>
+          {isCorrect && (
+            <div className={Styles.commonBtns}>
+              <Btn text={'새로 만들기'} onClick={handleNewDiary} />
+              <WhiteBtn
+                text={'링크로 공유하기'}
+                onClick={() => {
+                  handleShareLink(`${host}/diary/${pathname}`);
+                }}
+              />
+            </div>
+          )}
         </div>
       )}
     </div>

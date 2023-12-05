@@ -1,8 +1,8 @@
 .DisplayAnswerList {
   display: flex;
   flex-direction: column;
+  justify-content: center;
   gap: 20px;
-  height: 70vh;
   margin-top: 10px;
 }
 
@@ -10,6 +10,7 @@
   display: flex;
   flex-direction: column;
   height: 50vh;
+  gap: 20px;
 }
 
 .noResponsetitle {
@@ -78,7 +79,7 @@ td {
   padding: 5px;
 }
 
-.btns {
+.pageBtns {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -95,4 +96,10 @@ td {
   color: white;
   font-size: 16px;
   cursor: pointer;
+}
+
+.commonBtns {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 }
