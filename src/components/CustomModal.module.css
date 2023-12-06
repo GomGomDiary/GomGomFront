@@ -1,12 +1,62 @@
 .Modal {
   position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100px;
+  width: 280px;
+  top: 15%;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: white;
+  border: 1px solid var(--point-color);
+  padding: 20px;
+}
+
+.ModalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(224, 224, 224, 0.513);
+}
+
+.ModalContent {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+
+.ModalBtns {
+  display: flex;
+  gap: 10px;
+}
+
+.okBtn,
+.comfirmBtn {
+  width: 60px;
+  height: 30px;
+  border: none;
+  border-radius: 20px;
+  background-color: var(--point-color);
+  color: white;
+  cursor: pointer;
 }
 
 .cancelBtn {
-  position: absolute;
-
-  left: 90%;
-  transform: translateX(-50%);
+  width: 60px;
+  height: 30px;
   border: none;
-  background-color: transparent;
+  border: 1px solid var(--point-color);
+  border-radius: 20px;
+  background-color: white;
+  color: var(--point-color);
+  cursor: pointer;
+}
+
+.okBtn:hover,
+.comfirmBtn:hover {
+  background-color: var(--hover-color);
 }
