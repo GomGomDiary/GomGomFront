@@ -46,7 +46,7 @@ const Finish = () => {
       <div className={Styles.Finish}>
         <div className={Styles.top}>
           <div>🎉</div>
-          <div>곰곰다이어리가 완성됐어요!</div>
+          <div>곰곰다이어리가 완성됐다곰!</div>
           <div>완성된 다이어리를 공유해보세요.</div>
         </div>
         <div className={Styles.middle}>
