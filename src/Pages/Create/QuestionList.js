@@ -7,6 +7,7 @@ import { QuestionArr } from '../../store/Create/QuestionArr';
 import Btn from '../../components/Btn';
 import WhiteBtn from '../../components/WhiteBtn';
 import Input from '../../components/Input';
+import CustomModal from '../../components/CustomModal';
 
 export const QuestionList = ({ onNextStep, onPreviousStep }) => {
   const [questionNumber] = useRecoilState(QuestionNum);
@@ -25,11 +26,15 @@ export const QuestionList = ({ onNextStep, onPreviousStep }) => {
 
   const editedQuestionInputRef = useRef(null);
 
+  const [isModified, setIsModified] = useState(false);
+  const [isCompleted, setIsCompleted] = useState(false);
+
   const handleNextQuestion = () => {
     if (currentQuestionIndex < questionNumber - 1 && !isEditing) {
       setCurrentQuestionIndex(currentQuestionIndex + 1);
+      setIsModified(false);
     } else if (isEditing) {
-      alert('질문을 완성해주세요.');
+      setIsModified(true);
       editedQuestionInputRef.current.focus();
     } else {
       onNextStep();
@@ -59,16 +64,16 @@ export const QuestionList = ({ onNextStep, onPreviousStep }) => {
 
   const saveQuestion = () => {
     if (!editedQuestion) {
-      alert('질문을 입력해주세요.');
+      setIsCompleted(true);
       setIsEditing(true);
       setIsEdited(true);
       editedQuestionInputRef.current.focus();
     } else {
       updatedList.splice(currentQuestionIndex, 1, editedQuestion);
+      setIsCompleted(false);
       setIsEditing(false);
       setIsEdited(false);
     }
-
     setEditedList(updatedList);
     setQuestionArr(updatedList);
   };
@@ -79,11 +84,28 @@ export const QuestionList = ({ onNextStep, onPreviousStep }) => {
     return ((currentQuestionIndex + 1) / selectedQuestion.length) * 100;
   }, [currentQuestionIndex, selectedQuestion.length]);
 
+  const handleModalClose = () => {
+    setIsModified(false);
+    setIsCompleted(false);
+  };
+
   return (
     <div className={Styles.QuestionListContainer}>
       <div className={Styles.QuestionList} key={currentQuestionIndex}>
         {currentQuestionIndex < questionNumber && (
           <>
+            {isModified && (
+              <CustomModal
+                message={'질문을 완성해주세요.'}
+                updateModal={handleModalClose}
+              />
+            )}
+            {isCompleted && (
+              <CustomModal
+                message={'질문을 완성해주세요.'}
+                updateModal={handleModalClose}
+              />
+            )}
             <div className={Styles.top}>
               <div className={Styles.title}></div>
               <div className={Styles.progressBar}>
