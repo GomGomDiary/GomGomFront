@@ -3,7 +3,7 @@
 .Welcome {
   display: flex;
   flex-direction: column;
-  gap: 60px;
+  gap: 50px;
 }
 
 .Welcome .title {
@@ -19,12 +19,21 @@
 
 .Welcome .section {
   line-height: 1.6;
+  text-align: center;
+}
+
+.Welcome .section div {
+  font-size: 18px;
+  line-height: 1.4;
+  color: var(--point-color);
+  padding: 10px 0px;
+  font-weight: bold;
 }
 
 .Welcome .nameInput {
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 30px;
   margin: 0 auto;
 }
 

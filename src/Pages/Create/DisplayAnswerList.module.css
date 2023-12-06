@@ -70,8 +70,8 @@
   color: black;
 }
 
-.notCorrect {
-  color: gray;
+.notOwner {
+  color: lightgray;
 }
 
 td {
