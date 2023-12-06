@@ -57,6 +57,7 @@ const Main = () => {
         return (
           <Finish
             onNextStep={() => setStep(7)}
+            goToFirstStep={() => setStep(1)}
             onPreviousStep={onPreviousStep}
           />
         );
