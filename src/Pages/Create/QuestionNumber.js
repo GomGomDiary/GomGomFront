@@ -26,7 +26,7 @@ const QuestionNumber = ({ onNextStep }) => {
   return (
     <div className={Styles.QuestionNumber}>
       <div className={Styles.title}>
-        최소 3개 ~ 최대 10개로<p></p>질문 개수를 정해주세요.
+        최소 3개부터 최대 10개로<p></p>질문 개수를 정해달라곰!
       </div>
       <div className={Styles.circle}>
         <button className={Styles.minus} onClick={numMinus}>
