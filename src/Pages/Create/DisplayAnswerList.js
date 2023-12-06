@@ -9,11 +9,12 @@ import { Question } from '../../store/Create/Question';
 import { useNavigate } from 'react-router-dom';
 import Btn from '../../components/Btn';
 import WhiteBtn from '../../components/WhiteBtn';
-import { UpdateClick } from '../../store/Create/UpdateClick';
 import { getCookie } from '../../api/cookie';
 import ResponseContent from '../../components/ResponseContent';
+import CustomModal from '../../components/CustomModal';
+import ConfirmModal from '../../components/ComfirmModal';
 
-const DisplayAnswerList = () => {
+const DisplayAnswerList = ({ goToFirstStep }) => {
   const navigate = useNavigate();
   const { diaryId } = useParams();
 
@@ -28,9 +29,8 @@ const DisplayAnswerList = () => {
   const itemsPerPage = 5;
   const totalPages = Math.ceil(answererCount / itemsPerPage);
 
-  const startIndex = (currentPage - 1) * itemsPerPage;
-
   const [isOwner, setIsOwner] = useState('');
+  const [isNotOwner, setIsNotOwner] = useState(false);
 
   useEffect(() => {
     axiosInstance
@@ -40,10 +40,9 @@ const DisplayAnswerList = () => {
           setAnswererList(response.data.answererList);
           setIsOwner(response.data._id);
           setAnswerCount(response.data.answerCount);
-          console.log(response.data);
         }
       })
-      .catch((e) => /*navigate('/error-route'),*/ console.error());
+      .catch((e) => navigate('/error-route'));
   }, []);
 
   const handleDisplayResponse = (answerId) => {
@@ -54,10 +53,10 @@ const DisplayAnswerList = () => {
         setQuestion(response.data.question);
         navigate(`/answer/${diaryId}/${answerId}`);
       })
-      .catch((error) => alert('다른 사람의 답변은 볼 수 없어요.'));
+      .catch((error) => setIsNotOwner(true));
   };
 
-  const [updateClick, setUpdateClick] = useRecoilState(UpdateClick);
+  const [wantNewDiary, setWantNewDiary] = useState(false);
 
   let host = window.location.origin;
   let pathname = window.location.pathname.slice(11);
@@ -68,12 +67,7 @@ const DisplayAnswerList = () => {
     const { data: diaryData } = await axiosInstance.get('');
 
     if (diaryData) {
-      if (window.confirm('다이어리를 다시 만드시겠어요?')) {
-        setUpdateClick(true);
-        navigate('/');
-      }
-    } else {
-      alert('주인만 다시 만들 수 있어요.');
+      setWantNewDiary(true);
     }
   };
 
@@ -100,11 +94,19 @@ const DisplayAnswerList = () => {
     }
   }, []);
 
+  const [isCopied, setIsCopied] = useState(false);
+
+  const handleModalClose = () => {
+    setIsCopied(false);
+    setIsNotOwner(false);
+    setWantNewDiary(false);
+  };
+
   const handleShareLink = (link) => {
     navigator.clipboard
       .writeText(link)
       .then(() => {
-        alert('복사 완료!');
+        setIsCopied(true);
       })
       .catch((error) => {
         console.error('error', error);
@@ -113,83 +115,97 @@ const DisplayAnswerList = () => {
 
   return (
     <div className={Styles.DisplayAnswerList}>
-      {answererList.length ? (
-        <div className={Styles.haveResponse}>
-          <div className={Styles.haveResponseImg}>
-            <ResponseContent content={answererCount} />
-          </div>
-          <div className={Styles.haveResponseTitle}>
-            {answererCount}명이 질문에 답했어요.
-          </div>
-          <div className={Styles.listContainer}>
-            <table>
-              <tbody>
-                {answererList.map((person) => (
-                  <tr key={person._id}>
-                    <td
-                      onClick={() => handleDisplayResponse(person._id)}
-                      className={
-                        person._id === correctAnswerer
-                          ? Styles.correctAnswerer
-                          : person._id
-                          ? Styles.owner
-                          : Styles.notCorrect
-                      }
-                    >
-                      {person.answerer} 님의 답장
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-          <div className={Styles.pageBtns}>
-            <button
-              className={Styles.preBtn}
-              onClick={handlePrevPage}
-              disabled={currentPage === 1}
-            >
-              {'<'}
-            </button>
-            <button
-              className={Styles.nextBtn}
-              onClick={handleNextPage}
-              disabled={currentPage === totalPages || totalPages === 0}
-            >
-              {'>'}
-            </button>
-          </div>
-          {isCorrect && (
-            <div className={Styles.commonBtns}>
-              <Btn text={'새로 만들기'} onClick={handleNewDiary} />
-              <WhiteBtn
-                text={'링크로 공유하기'}
-                onClick={() => {
-                  handleShareLink(`${host}/diary/${pathname}`);
-                }}
-              />
+      <div
+        className={
+          answererList.length ? Styles.haveResponse : Styles.noResponse
+        }
+      >
+        {answererList.length ? (
+          <>
+            <div className={Styles.haveResponseImg}>
+              <ResponseContent content={answererCount} />
             </div>
-          )}
-        </div>
-      ) : (
-        <div className={Styles.noResponse}>
-          <div className={Styles.noResponsetitle}>
-            아직 아무도 답하지 않았어요.
-          </div>
-          <div className={Styles.noResponsecontent}>텅</div>
-          {isCorrect && (
-            <div className={Styles.commonBtns}>
-              <Btn text={'새로 만들기'} onClick={handleNewDiary} />
-              <WhiteBtn
-                text={'링크로 공유하기'}
-                onClick={() => {
-                  handleShareLink(`${host}/diary/${pathname}`);
-                }}
-              />
+            <div className={Styles.haveResponseTitle}>
+              {answererCount}명이 질문에 답했다곰!
             </div>
-          )}
-        </div>
-      )}
+            <div className={Styles.listContainer}>
+              <table>
+                <tbody>
+                  {answererList.map((person) => (
+                    <tr key={person._id}>
+                      <td
+                        onClick={() => handleDisplayResponse(person._id)}
+                        className={
+                          person._id === correctAnswerer
+                            ? Styles.correctAnswerer
+                            : person._id === diaryId
+                            ? Styles.notOwner
+                            : Styles.owner
+                        }
+                      >
+                        {person.answerer} 님의 답장
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+            <div className={Styles.pageBtns}>
+              <button
+                className={Styles.preBtn}
+                onClick={handlePrevPage}
+                disabled={currentPage === 1}
+              >
+                {'<'}
+              </button>
+              <button
+                className={Styles.nextBtn}
+                onClick={handleNextPage}
+                disabled={currentPage === totalPages || totalPages === 0}
+              >
+                {'>'}
+              </button>
+            </div>
+          </>
+        ) : (
+          <>
+            <div className={Styles.noResponsetitle}>
+              아직 아무도 답하지 않았다곰...
+            </div>
+            <div className={Styles.noResponsecontent}>텅</div>
+          </>
+        )}
+        {isCorrect && (
+          <div className={Styles.commonBtns}>
+            <Btn text={'새로 만들기'} onClick={handleNewDiary} />
+            <WhiteBtn
+              text={'링크로 공유하기'}
+              onClick={() => {
+                handleShareLink(`${host}/diary/${pathname}`);
+              }}
+            />
+          </div>
+        )}
+        {isNotOwner && (
+          <CustomModal
+            message={'다이어리 주인만 볼 수 있어요.'}
+            updateModal={handleModalClose}
+          />
+        )}
+        {isCopied && (
+          <CustomModal
+            message={'링크를 복사했어요.'}
+            updateModal={handleModalClose}
+          />
+        )}
+        {wantNewDiary && (
+          <ConfirmModal
+            message={'다이어리를 다시 만드시겠어요?'}
+            updateModal={handleModalClose}
+            goToFirstStep={goToFirstStep}
+          />
+        )}
+      </div>
     </div>
   );
 };
