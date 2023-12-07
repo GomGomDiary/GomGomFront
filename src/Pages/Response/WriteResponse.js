@@ -75,6 +75,7 @@ const WriteResponse = ({ onNextStep, onPreviousStep }) => {
   const handleSkip = () => {
     if (currentQuestionIndex < questionNumber - 1) {
       let skip = '생략했어요.';
+      setResponse('');
       setResponseArr([...responseArr, skip]);
       setCurrentQuestionIndex(currentQuestionIndex + 1);
     } else {
@@ -109,10 +110,11 @@ const WriteResponse = ({ onNextStep, onPreviousStep }) => {
                 <p>✉️ {currentQuestionIndex + 1}번째 질문 ✉️</p>
                 <span>{currentQuestion}</span>
                 <Input
-                  placeholder="답변을 입력하세요."
+                  placeholder="100자 내외로 답장을 입력하세요."
                   value={response}
                   onChange={(e) => setResponse(e.target.value)}
                   ref={responseInputRef}
+                  maxLength={100}
                 />
               </div>
               <div className={Styles.Btns}>
