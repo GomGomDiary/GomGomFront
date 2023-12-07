@@ -25,7 +25,7 @@ const Done = ({ goToFirstStep }) => {
     const fetchUserCookie = async () => {
       try {
         const axiosInstance = instance(answererJWT);
-        axiosInstance.post(
+        await axiosInstance.post(
           `/answer/${diaryId}`,
           {
             answerer: answerer,
@@ -34,7 +34,7 @@ const Done = ({ goToFirstStep }) => {
           { withCredentials: true }
         );
       } catch (error) {
-        console.log('실패');
+        alert('잘못된 접근이에요.');
       }
     };
     fetchUserCookie();

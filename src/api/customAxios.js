@@ -12,7 +12,9 @@ const instance = (answererJWT) => {
 
   axiosInstance.interceptors.response.use(
     (response) => response,
-    (error) => Promise.reject(error)
+    (error) => {
+      return Promise.reject(error);
+    }
   );
   return axiosInstance;
 };
