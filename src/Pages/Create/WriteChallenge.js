@@ -49,7 +49,8 @@ const WriteChallenge = ({ onNextStep, onPreviousStep }) => {
         <div>🔒</div>
         <div>모든 질문이 완성됐다곰!</div>
         <div>우리만의 암호를 아는 사람만 답장할 수 있도록</div>
-        <div>암호는 정확하게 입력해주세요.</div>
+        <div>암호는 정확하고 명확한 것으로 입력해주세요.</div>
+        <div>(ex. 내 생일 4자리, 내 MBTI 대문자 등)</div>
       </div>
       <div className={Styles.middle}>
         <Input
@@ -57,8 +58,9 @@ const WriteChallenge = ({ onNextStep, onPreviousStep }) => {
           value={challenge}
           onChange={(e) => writingChallenge(e)}
           onKeyUp={handleKeyPress}
-          placeholder="ex. 내 생일 4자리"
+          placeholder="50자 내외로 입력해주세요."
           ref={challengeInputRef}
+          maxLength={50}
         />
       </div>
       <div className={Styles.bottom}>

@@ -26,6 +26,13 @@ const MatchChallenge = ({ onNextStep }) => {
   const [countersign, setCountersign] = useState('');
   const axiosInstance = instance(answererToken);
 
+  const [isExisted, setIsExisted] = useState(false);
+
+  const handleBeforeNavigate = () => {
+    setIsExisted(false);
+    navigate('/');
+  };
+
   useEffect(() => {
     if (!!diaryId) {
       setUserCookie(diaryId);
@@ -39,8 +46,7 @@ const MatchChallenge = ({ onNextStep }) => {
           }
         })
         .catch((error) => {
-          alert('생성된 적 없는 다이어리예요.');
-          navigate('/');
+          setIsExisted(true);
         });
     }
   }, [diaryId, setUserCookie, setChallenge, setQuestioner, navigate]);
@@ -57,21 +63,28 @@ const MatchChallenge = ({ onNextStep }) => {
     }
   };
 
+  const [isCorrected, setIsCorrected] = useState('');
+
+  const handleModalClose = () => {
+    setIsCorrected('');
+  };
+
+  /* 코드 중복 고민 필요 */
+
   const submitCountersign = () => {
     if (countersign) {
       axiosInstance
         .post(`/countersign/${diaryId}`, { countersign })
         .then((response) => {
-          alert('정답');
           setAnswererToken(response.data.diaryToken);
           onNextStep();
         })
         .catch(() => {
-          alert('틀렸어요. 다시 입력해주세요.');
+          setIsCorrected('오답');
           CountersignInput.current.focus();
         });
     } else {
-      alert('다시 입력해주세요.');
+      setIsCorrected('미입력');
       CountersignInput.current.focus();
     }
   };
@@ -81,8 +94,8 @@ const MatchChallenge = ({ onNextStep }) => {
       <div className={Styles.top}>
         <div>🔒</div>
         <div>
-          {useRecoilValue(Questioner)}님의 질문지를 보려면 <p></p>암호를
-          맞춰야해요!
+          {useRecoilValue(Questioner)}님의 질문지를 보려면 <p></p>암호를 맞춰야
+          한다곰!
         </div>
       </div>
       <div className={Styles.middle}>{useRecoilValue(Challenge)}</div>
@@ -96,6 +109,24 @@ const MatchChallenge = ({ onNextStep }) => {
           ref={CountersignInput}
         />
         <Btn text={'다음'} onClick={submitCountersign} />
+        {isCorrected === '오답' && (
+          <CustomModal
+            message={'틀렸어요. 다시 입력해주세요.'}
+            updateModal={handleModalClose}
+          />
+        )}
+        {isCorrected === '미입력' && (
+          <CustomModal
+            message={'암호를 입력해주세요.'}
+            updateModal={handleModalClose}
+          />
+        )}
+        {isExisted && (
+          <CustomModal
+            message={'존재하지 않는 다이어리예요.'}
+            updateModal={handleBeforeNavigate}
+          />
+        )}
       </div>
     </div>
   );

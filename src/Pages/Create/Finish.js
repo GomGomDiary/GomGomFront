@@ -1,17 +1,25 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import Styles from './Finish.module.css';
 import ConfettiEffect from '../../components/ConfettiEffect';
 
 import Btn from '../../components/Btn';
 import WhiteBtn from '../../components/WhiteBtn';
+import CustomModal from '../../components/CustomModal';
 
 import { UserCookie } from '../../store/Create/UserCookie';
 import { getCookie } from '../../api/cookie';
 import { useRecoilState } from 'recoil';
 import { useNavigate } from 'react-router-dom';
+import { Questioner } from '../../store/Create/Questioner';
+import { CounterSign } from '../../store/Create/CounterSign';
+import { Challenge } from '../../store/Create/Challenge';
 
 const Finish = () => {
   const [userCookie, setUserCookie] = useRecoilState(UserCookie);
+
+  const [questioner, setQuestioner] = useRecoilState(Questioner);
+  const [counterSign, setCounterSign] = useRecoilState(CounterSign);
+  const [challenge, setChallenge] = useRecoilState(Challenge);
 
   const navigate = useNavigate('');
 
@@ -20,6 +28,9 @@ const Finish = () => {
       try {
         const diaryId = await getCookie('diaryAddress');
         setUserCookie(diaryId);
+        setQuestioner('');
+        setChallenge('');
+        setCounterSign('');
       } catch (error) {
         console.error('error', error);
       }
@@ -27,18 +38,31 @@ const Finish = () => {
     fetchUserCookie();
   }, [setUserCookie]);
 
+  const [isCopied, setIsCopied] = useState(false);
+
   const handleShareLink = (link) => {
     navigator.clipboard
       .writeText(link)
       .then(() => {
-        alert('복사 완료!');
+        setIsCopied(true);
       })
       .catch((error) => {
         console.error('error', error);
       });
   };
 
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const handleModalClose = () => {
+    setIsCopied(false);
+    setIsModalOpen(false);
+  };
+
   const location = window.location.href;
+
+  const handleKaKaoTalk = () => {
+    setIsModalOpen(true);
+  };
 
   return (
     <div>
@@ -56,7 +80,19 @@ const Finish = () => {
               handleShareLink(`${location}diary/${userCookie}`);
             }}
           />
-          <WhiteBtn text={'카톡으로 공유하기'} />
+          {isCopied && (
+            <CustomModal
+              message={'링크를 복사했어요.'}
+              updateModal={handleModalClose}
+            />
+          )}
+          <WhiteBtn text={'카톡으로 공유하기'} onClick={handleKaKaoTalk} />
+          {isModalOpen && (
+            <CustomModal
+              message={'현재 개발중입니다. 조금만 기다려주세요 :)'}
+              updateModal={handleModalClose}
+            />
+          )}
         </div>
         <div className={Styles.bottom}>
           <Btn

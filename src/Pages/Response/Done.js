@@ -1,10 +1,11 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import instance from '../../api/customAxios';
 import Styles from './Done.module.css';
 import ConfettiEffect from '../../components/ConfettiEffect';
 
 import Btn from '../../components/Btn';
 import WhiteBtn from '../../components/WhiteBtn';
+import CustomModal from '../../components/CustomModal';
 
 import { UserCookie } from '../../store/Create/UserCookie';
 import { Answerer } from '../../store/Response/Answerer';
@@ -21,11 +22,18 @@ const Done = ({ goToFirstStep }) => {
 
   const diaryId = useRecoilValue(UserCookie);
 
+  const [isCorrected, setIsCorrected] = useState(false);
+
+  const handleBeforeNavigate = () => {
+    setIsCorrected(true);
+    navigate(`/answerers/${diaryId}`);
+  };
+
   useEffect(() => {
     const fetchUserCookie = async () => {
       try {
         const axiosInstance = instance(answererJWT);
-        axiosInstance.post(
+        await axiosInstance.post(
           `/answer/${diaryId}`,
           {
             answerer: answerer,
@@ -34,7 +42,9 @@ const Done = ({ goToFirstStep }) => {
           { withCredentials: true }
         );
       } catch (error) {
-        console.log('실패');
+        if (error.response.status === 409) {
+          setIsCorrected(true);
+        }
       }
     };
     fetchUserCookie();
@@ -51,6 +61,16 @@ const Done = ({ goToFirstStep }) => {
     goToFirstStep();
   };
 
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const handleModalClose = () => {
+    setIsModalOpen(false);
+  };
+
+  const handleKaKaoTalk = () => {
+    setIsModalOpen(true);
+  };
+
   return (
     <div>
       <ConfettiEffect />
@@ -61,14 +81,26 @@ const Done = ({ goToFirstStep }) => {
           <div>{useRecoilValue(Questioner)}님에게 알려보세요!</div>
         </div>
         <div className={Styles.middle}>
-          <WhiteBtn text={'카톡으로 알리기'} />
+          <WhiteBtn text={'카톡으로 알리기'} onClick={handleKaKaoTalk} />
+          {isModalOpen && (
+            <CustomModal
+              message={'현재 개발중입니다. 조금만 기다려주세요 :)'}
+              updateModal={handleModalClose}
+            />
+          )}
+          {isCorrected && (
+            <CustomModal
+              message={'잘못된 접근이에요.'}
+              updateModal={handleBeforeNavigate}
+            />
+          )}
           <WhiteBtn
             text={'내 답장 확인하기'}
             onClick={() => handleDisplayAnswerList()}
           />
         </div>
         <div className={Styles.bottom}>
-          <Btn text={'나도 만들어보기'} onClick={() => handleMakeGomgom()} />
+          <Btn text={'나도 만들어보기'} onClick={handleMakeGomgom} />
         </div>
       </div>
     </div>

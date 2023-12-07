@@ -28,6 +28,7 @@
   color: var(--point-color);
   padding: 10px 0px;
   font-weight: bold;
+  text-align: center;
 }
 
 .Welcome .nameInput {

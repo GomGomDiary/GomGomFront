@@ -2,7 +2,7 @@ import React from 'react';
 import Styles from './Input.module.css';
 
 const Input = React.forwardRef(
-  ({ value, onChange, onKeyUp, placeholder }, ref) => {
+  ({ value, onChange, onKeyUp, placeholder, maxLength }, ref) => {
     return (
       <input
         className={Styles.input}
@@ -12,6 +12,7 @@ const Input = React.forwardRef(
         onKeyUp={onKeyUp}
         placeholder={placeholder}
         ref={ref}
+        maxLength={maxLength}
       />
     );
   }

@@ -6,6 +6,7 @@ import instance from '../../api/customAxios';
 import WhiteBtn from '../../components/WhiteBtn';
 import Btn from '../../components/Btn';
 import Input from '../../components/Input';
+import CustomModal from '../../components/CustomModal';
 
 import { UserCookie } from '../../store/Create/UserCookie';
 import { AnswererToken } from '../../store/Response/AnswererToken';
@@ -23,6 +24,12 @@ const WriteResponse = ({ onNextStep, onPreviousStep }) => {
   const api = instance(answererJWT);
   const navigate = useNavigate('');
 
+  const [isWritten, setIsWritten] = useState(false);
+
+  const handleModalClose = () => {
+    setIsWritten(false);
+  };
+
   useEffect(() => {
     api
       .get(`/question/${diaryId}`)
@@ -33,11 +40,18 @@ const WriteResponse = ({ onNextStep, onPreviousStep }) => {
       .catch((error) => console.error(error));
   }, []);
 
+  const [isMyself, setIsMyself] = useState(false);
+
+  const answerId = getCookie('diaryAddress');
+
+  const handleBeforeNavigate = () => {
+    setIsMyself(false);
+    navigate(`/answerers/${answerId}`);
+  };
+
   useEffect(() => {
-    const answerId = getCookie('diaryAddress');
     if (diaryId === answerId) {
-      alert('자신의 다이어리엔 답할 수 없어요.');
-      navigate(`/answerers/${answerId}`);
+      setIsMyself(true);
     }
   }, []);
 
@@ -53,7 +67,7 @@ const WriteResponse = ({ onNextStep, onPreviousStep }) => {
       setResponse('');
       setCurrentQuestionIndex(currentQuestionIndex + 1);
     } else if (!response) {
-      alert('답변을 입력해주세요.');
+      setIsWritten(true);
       responseInputRef.current.focus();
     } else {
       onNextStep();
@@ -75,6 +89,7 @@ const WriteResponse = ({ onNextStep, onPreviousStep }) => {
   const handleSkip = () => {
     if (currentQuestionIndex < questionNumber - 1) {
       let skip = '생략했어요.';
+      setResponse('');
       setResponseArr([...responseArr, skip]);
       setCurrentQuestionIndex(currentQuestionIndex + 1);
     } else {
@@ -109,15 +124,22 @@ const WriteResponse = ({ onNextStep, onPreviousStep }) => {
                 <p>✉️ {currentQuestionIndex + 1}번째 질문 ✉️</p>
                 <span>{currentQuestion}</span>
                 <Input
-                  placeholder="답변을 입력하세요."
+                  placeholder="100자 내외로 답장을 입력하세요."
                   value={response}
                   onChange={(e) => setResponse(e.target.value)}
                   ref={responseInputRef}
+                  maxLength={100}
                 />
               </div>
               <div className={Styles.Btns}>
                 <WhiteBtn text={'이전으로'} onClick={handlePrevious} />
                 <Btn text={'다음 질문'} onClick={handleNextQuestion} />
+                {isWritten && (
+                  <CustomModal
+                    message={'답장을 작성해주세요.'}
+                    updateModal={handleModalClose}
+                  />
+                )}
               </div>
             </div>
             <div className={Styles.botton}>
@@ -125,6 +147,12 @@ const WriteResponse = ({ onNextStep, onPreviousStep }) => {
                 스킵하기
               </button>
             </div>
+            {isMyself && (
+              <CustomModal
+                message={'자신의 다이어리엔 답할 수 없어요.'}
+                updateModal={handleBeforeNavigate}
+              />
+            )}
           </>
         )}
       </div>
