@@ -126,60 +126,62 @@ const DisplayAnswerList = ({ goToFirstStep }) => {
             answererList.length ? Styles.haveResponse : Styles.noResponse
           }
         >
-          <>
-            <div className={Styles.haveResponseImg}>
-              <ResponseContent content={answererCount} />
-            </div>
-            <div className={Styles.haveResponseTitle}>
-              {answererCount}명이 질문에 답했다곰!
-            </div>
-            <div className={Styles.listContainer}>
-              <table>
-                <tbody>
-                  {answererList.map((person) => (
-                    <tr key={person._id}>
-                      <td
-                        onClick={() => handleDisplayResponse(person._id)}
-                        className={
-                          person._id === correctAnswerer
-                            ? Styles.correctAnswerer
-                            : person._id === diaryId
-                            ? Styles.notOwner
-                            : Styles.owner
-                        }
-                      >
-                        {person.answerer} 님의 답장
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-            <div className={Styles.pageBtns}>
-              <button
-                className={Styles.preBtn}
-                onClick={handlePrevPage}
-                disabled={currentPage === 1}
-              >
-                {'<'}
-              </button>
-              <button
-                className={Styles.nextBtn}
-                onClick={handleNextPage}
-                disabled={currentPage === totalPages || totalPages === 0}
-              >
-                {'>'}
-              </button>
-            </div>
-          </>
+          <div className={Styles.haveResponseImg}>
+            <ResponseContent content={answererCount} />
+          </div>
+          <div className={Styles.haveResponseTitle}>
+            {answererCount}명이 질문에 답했다곰!
+          </div>
+          <div className={Styles.listContainer}>
+            <table>
+              <tbody>
+                {answererList.map((person) => (
+                  <tr key={person._id}>
+                    <td
+                      onClick={() => handleDisplayResponse(person._id)}
+                      className={
+                        person._id === correctAnswerer
+                          ? Styles.correctAnswerer
+                          : person._id === diaryId
+                          ? Styles.notOwner
+                          : Styles.owner
+                      }
+                    >
+                      {person.answerer} 님의 답장
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+          <div className={Styles.pageBtns}>
+            <button
+              className={Styles.preBtn}
+              onClick={handlePrevPage}
+              disabled={currentPage === 1}
+            >
+              {'<'}
+            </button>
+            <button
+              className={Styles.nextBtn}
+              onClick={handleNextPage}
+              disabled={currentPage === totalPages || totalPages === 0}
+            >
+              {'>'}
+            </button>
+          </div>
         </div>
       ) : (
-        <>
+        <div
+          className={
+            answererList.length ? Styles.haveResponse : Styles.noResponse
+          }
+        >
           <div className={Styles.noResponsetitle}>
             아직 아무도 답하지 않았다곰...
           </div>
           <div className={Styles.noResponsecontent}>텅</div>
-        </>
+        </div>
       )}
 
       {isCorrect && (
