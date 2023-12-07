@@ -45,8 +45,9 @@ const WriteAnswererName = ({ onNextStep, onPreviousStep }) => {
           value={answerer}
           onChange={(e) => writeName(e)}
           onKeyUp={handleKeyPress}
-          placeholder="이름을 입력하세요"
+          placeholder="10자 이내로 이름을 입력하세요."
           ref={NameInputRef}
+          maxLength={10}
         />
       </div>
       <div className={Styles.bottom}>
