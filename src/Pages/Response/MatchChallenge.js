@@ -81,8 +81,8 @@ const MatchChallenge = ({ onNextStep }) => {
       <div className={Styles.top}>
         <div>🔒</div>
         <div>
-          {useRecoilValue(Questioner)}님의 질문지를 보려면 <p></p>암호를
-          맞춰야해요!
+          {useRecoilValue(Questioner)}님의 질문지를 보려면 <p></p>암호를 맞춰야
+          한다곰!
         </div>
       </div>
       <div className={Styles.middle}>{useRecoilValue(Challenge)}</div>
@@ -95,6 +95,7 @@ const MatchChallenge = ({ onNextStep }) => {
           onKeyUp={handleKeyPress}
           ref={CountersignInput}
         />
+
         <Btn text={'다음'} onClick={submitCountersign} />
       </div>
     </div>
