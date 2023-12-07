@@ -48,10 +48,15 @@
 .questionContent {
   display: flex;
   flex-direction: column;
-  gap: 70px;
+  gap: 50px;
   font-size: 20px;
   align-items: center;
   width: 100%;
+}
+
+.currentQuestion {
+  width: 80%;
+  word-break: break-all;
 }
 
 .editingContent {
@@ -85,4 +90,5 @@
   background-color: transparent;
   color: var(--point-color);
   cursor: pointer;
+  font-size: 16px;
 }
