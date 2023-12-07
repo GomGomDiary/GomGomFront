@@ -32,11 +32,14 @@ const DisplayAnswerList = ({ goToFirstStep }) => {
   const [isOwner, setIsOwner] = useState('');
   const [isNotOwner, setIsNotOwner] = useState(false);
 
+  const [isConnected, setIsConnected] = useState(false);
+
   useEffect(() => {
     axiosInstance
       .get(`/answerers/${diaryId}/?start=${start}&take=${itemsPerPage}`)
       .then((response) => {
         if (response.status === 200) {
+          setIsConnected(true);
           setAnswererList(response.data.answererList);
           setIsOwner(response.data._id);
           setAnswerCount(response.data.answerCount);
@@ -115,12 +118,14 @@ const DisplayAnswerList = ({ goToFirstStep }) => {
 
   return (
     <div className={Styles.DisplayAnswerList}>
-      <div
-        className={
-          answererList.length ? Styles.haveResponse : Styles.noResponse
-        }
-      >
-        {answererList.length ? (
+      {!isConnected ? (
+        <div>로딩중이에요.</div>
+      ) : answererList.length ? (
+        <div
+          className={
+            answererList.length ? Styles.haveResponse : Styles.noResponse
+          }
+        >
           <>
             <div className={Styles.haveResponseImg}>
               <ResponseContent content={answererCount} />
@@ -167,45 +172,46 @@ const DisplayAnswerList = ({ goToFirstStep }) => {
               </button>
             </div>
           </>
-        ) : (
-          <>
-            <div className={Styles.noResponsetitle}>
-              아직 아무도 답하지 않았다곰...
-            </div>
-            <div className={Styles.noResponsecontent}>텅</div>
-          </>
-        )}
-        {isCorrect && (
-          <div className={Styles.commonBtns}>
-            <Btn text={'새로 만들기'} onClick={handleNewDiary} />
-            <WhiteBtn
-              text={'링크로 공유하기'}
-              onClick={() => {
-                handleShareLink(`${host}/diary/${pathname}`);
-              }}
-            />
+        </div>
+      ) : (
+        <>
+          <div className={Styles.noResponsetitle}>
+            아직 아무도 답하지 않았다곰...
           </div>
-        )}
-        {isNotOwner && (
-          <CustomModal
-            message={'다이어리 주인만 볼 수 있어요.'}
-            updateModal={handleModalClose}
+          <div className={Styles.noResponsecontent}>텅</div>
+        </>
+      )}
+
+      {isCorrect && (
+        <div className={Styles.commonBtns}>
+          <Btn text={'새로 만들기'} onClick={handleNewDiary} />
+          <WhiteBtn
+            text={'링크로 공유하기'}
+            onClick={() => {
+              handleShareLink(`${host}/diary/${pathname}`);
+            }}
           />
-        )}
-        {isCopied && (
-          <CustomModal
-            message={'링크를 복사했어요.'}
-            updateModal={handleModalClose}
-          />
-        )}
-        {wantNewDiary && (
-          <ConfirmModal
-            message={'다이어리를 다시 만드시겠어요?'}
-            updateModal={handleModalClose}
-            goToFirstStep={goToFirstStep}
-          />
-        )}
-      </div>
+        </div>
+      )}
+      {isNotOwner && (
+        <CustomModal
+          message={'다이어리 주인만 볼 수 있어요.'}
+          updateModal={handleModalClose}
+        />
+      )}
+      {isCopied && (
+        <CustomModal
+          message={'링크를 복사했어요.'}
+          updateModal={handleModalClose}
+        />
+      )}
+      {wantNewDiary && (
+        <ConfirmModal
+          message={'다이어리를 다시 만드시겠어요?'}
+          updateModal={handleModalClose}
+          goToFirstStep={goToFirstStep}
+        />
+      )}
     </div>
   );
 };
