@@ -81,4 +81,5 @@
   background-color: transparent;
   color: var(--point-color);
   cursor: pointer;
+  font-size: 16px;
 }
