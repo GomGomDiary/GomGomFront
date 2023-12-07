@@ -9,9 +9,16 @@ import { UserCookie } from '../../store/Create/UserCookie';
 import { getCookie } from '../../api/cookie';
 import { useRecoilState } from 'recoil';
 import { useNavigate } from 'react-router-dom';
+import { Questioner } from '../../store/Create/Questioner';
+import { CounterSign } from '../../store/Create/CounterSign';
+import { Challenge } from '../../store/Create/Challenge';
 
 const Finish = () => {
   const [userCookie, setUserCookie] = useRecoilState(UserCookie);
+
+  const [questioner, setQuestioner] = useRecoilState(Questioner);
+  const [counterSign, setCounterSign] = useRecoilState(CounterSign);
+  const [challenge, setChallenge] = useRecoilState(Challenge);
 
   const navigate = useNavigate('');
 
@@ -20,6 +27,9 @@ const Finish = () => {
       try {
         const diaryId = await getCookie('diaryAddress');
         setUserCookie(diaryId);
+        setQuestioner('');
+        setChallenge('');
+        setCounterSign('');
       } catch (error) {
         console.error('error', error);
       }
@@ -40,6 +50,10 @@ const Finish = () => {
 
   const location = window.location.href;
 
+  const handleKaKaoTalk = () => {
+    alert('아직 개발중이에요.');
+  };
+
   return (
     <div>
       <ConfettiEffect />
@@ -56,7 +70,7 @@ const Finish = () => {
               handleShareLink(`${location}diary/${userCookie}`);
             }}
           />
-          <WhiteBtn text={'카톡으로 공유하기'} />
+          <WhiteBtn text={'카톡으로 공유하기'} onClick={handleKaKaoTalk} />
         </div>
         <div className={Styles.bottom}>
           <Btn
