@@ -57,7 +57,7 @@ const WriteCounterSign = ({ onNextStep, onPreviousStep, goToFirstStep }) => {
         if (window.confirm('다시 만들면 이전 다이어리는 저장됩니다.')) {
           onNextStep();
         } else {
-          goToFirstStep(); /* 수정 필요 */
+          goToFirstStep();
         }
       }
     } else {
@@ -83,6 +83,7 @@ const WriteCounterSign = ({ onNextStep, onPreviousStep, goToFirstStep }) => {
         <div>거의 다 왔다곰!</div>
         <div>우리만의 암호를 아는 사람만 답장할 수 있도록</div>
         <div>암호의 답을 정확하게 입력해주세요.</div>
+        <div>(ex. 0718, INFJ 등)</div>
       </div>
       <div className={Styles.middle}>
         <Input
@@ -90,8 +91,9 @@ const WriteCounterSign = ({ onNextStep, onPreviousStep, goToFirstStep }) => {
           value={counterSign}
           onChange={(e) => writecountersign(e)}
           onKeyUp={handleKeyPress}
-          placeholder="ex. 0718"
+          placeholder="50자 내외로 입력해주세요."
           ref={CounterSignInputRef}
+          maxLength={50}
         />
       </div>
       <div className={Styles.bottom}>
