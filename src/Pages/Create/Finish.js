@@ -1,9 +1,10 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import Styles from './Finish.module.css';
 import ConfettiEffect from '../../components/ConfettiEffect';
 
 import Btn from '../../components/Btn';
 import WhiteBtn from '../../components/WhiteBtn';
+import CustomModal from '../../components/CustomModal';
 
 import { UserCookie } from '../../store/Create/UserCookie';
 import { getCookie } from '../../api/cookie';
@@ -37,21 +38,30 @@ const Finish = () => {
     fetchUserCookie();
   }, [setUserCookie]);
 
+  const [isCopied, setIsCopied] = useState(false);
+
   const handleShareLink = (link) => {
     navigator.clipboard
       .writeText(link)
       .then(() => {
-        alert('복사 완료!');
+        setIsCopied(true);
       })
       .catch((error) => {
         console.error('error', error);
       });
   };
 
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const handleModalClose = () => {
+    setIsCopied(false);
+    setIsModalOpen(false);
+  };
+
   const location = window.location.href;
 
   const handleKaKaoTalk = () => {
-    alert('아직 개발중이에요.');
+    setIsModalOpen(true);
   };
 
   return (
@@ -70,7 +80,19 @@ const Finish = () => {
               handleShareLink(`${location}diary/${userCookie}`);
             }}
           />
+          {isCopied && (
+            <CustomModal
+              message={'링크를 복사했어요.'}
+              updateModal={handleModalClose}
+            />
+          )}
           <WhiteBtn text={'카톡으로 공유하기'} onClick={handleKaKaoTalk} />
+          {isModalOpen && (
+            <CustomModal
+              message={'현재 개발중입니다. 조금만 기다려주세요 :)'}
+              updateModal={handleModalClose}
+            />
+          )}
         </div>
         <div className={Styles.bottom}>
           <Btn
