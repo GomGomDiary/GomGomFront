@@ -4,21 +4,21 @@ import { MdOutlineHistory } from 'react-icons/md';
 import CustomModal from '../components/CustomModal';
 
 const Header = () => {
-  const [isClicked, setIsClicked] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const handleAlert = () => {
-    setIsClicked(true);
+  const handleModalOpen = () => {
+    setIsModalOpen(true);
   };
 
   const handleModalClose = () => {
-    setIsClicked(false);
+    setIsModalOpen(false);
   };
 
   return (
     <div className={Styles.Header}>
-      <MdOutlineHistory className={Styles.history} onClick={handleAlert} />
+      <MdOutlineHistory className={Styles.history} onClick={handleModalOpen} />
       <div className={Styles.title}>GomGom Diary 🐻💭</div>
-      {isClicked && (
+      {isModalOpen && (
         <CustomModal
           message={`현재 개발중입니다. 조금만 기다려주세요 :)`}
           updateModal={handleModalClose}

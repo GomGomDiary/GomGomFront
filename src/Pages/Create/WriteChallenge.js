@@ -10,7 +10,7 @@ import CustomModal from '../../components/CustomModal';
 
 const WriteChallenge = ({ onNextStep, onPreviousStep }) => {
   const [challenge, setChallenge] = useRecoilState(Challenge);
-  const [isSetted, setIsSetted] = useState(false);
+  const [isChallengeWritten, setIsChallengeWritten] = useState(false);
 
   const challengeInputRef = useRef();
 
@@ -28,18 +28,18 @@ const WriteChallenge = ({ onNextStep, onPreviousStep }) => {
     if (challenge) {
       onNextStep();
     } else {
-      setIsSetted(true);
+      setIsChallengeWritten(true);
       challengeInputRef.current.focus();
     }
   };
 
   const handleModalClose = () => {
-    setIsSetted(false);
+    setIsChallengeWritten(false);
   };
 
   return (
     <div className={Styles.WriteChallengeContainer}>
-      {isSetted && (
+      {isChallengeWritten && (
         <CustomModal
           message={'암호를 설정해주세요.'}
           updateModal={handleModalClose}

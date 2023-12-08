@@ -22,20 +22,20 @@ const WriteAnswererName = ({ onNextStep, onPreviousStep }) => {
     }
   };
 
-  const [isWritten, setIsWritten] = useState(false);
+  const [isNameWritten, setIsNameWritten] = useState(false);
 
   const submitName = () => {
     if (answerer) {
       setAnswerer(answerer);
       onNextStep();
     } else {
-      setIsWritten(true);
+      setIsNameWritten(true);
       NameInputRef.current.focus();
     }
   };
 
   const handleModalClose = () => {
-    setIsWritten(false);
+    setIsNameWritten(false);
   };
 
   return (
@@ -60,7 +60,7 @@ const WriteAnswererName = ({ onNextStep, onPreviousStep }) => {
       <div className={Styles.bottom}>
         <WhiteBtn text={'이전으로'} onClick={onPreviousStep} />
         <Btn text={'시작'} onClick={submitName} />
-        {isWritten && (
+        {isNameWritten && (
           <CustomMoal
             message={'이름을 입력해주세요.'}
             updateModal={handleModalClose}

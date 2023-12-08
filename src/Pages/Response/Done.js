@@ -34,7 +34,7 @@ const Done = ({ goToFirstStep }) => {
       try {
         const axiosInstance = instance(answererJWT);
         await axiosInstance.post(
-          `/answer/${diaryId}`,
+          `diary/answer/${diaryId}`,
           {
             answerer: answerer,
             answers: response,
@@ -88,9 +88,10 @@ const Done = ({ goToFirstStep }) => {
               updateModal={handleModalClose}
             />
           )}
+
           {isCorrected && (
             <CustomModal
-              message={'잘못된 접근이에요.'}
+              message={'이미 제출됐어요. 작성한 답장을 확인해보세요!'}
               updateModal={handleBeforeNavigate}
             />
           )}
