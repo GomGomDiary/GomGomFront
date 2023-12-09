@@ -13,6 +13,11 @@ import { getCookie } from '../../api/cookie';
 import ResponseContent from '../../components/ResponseContent';
 import CustomModal from '../../components/CustomModal';
 import ConfirmModal from '../../components/ConfirmModal';
+import { CounterSign } from '../../store/Create/CounterSign';
+import { QuestionArr } from '../../store/Create/QuestionArr';
+import { Challenge } from '../../store/Create/Challenge';
+import { Questioner } from '../../store/Create/Questioner';
+import { OriginQuestionArr } from '../../store/Create/OriginQuestionArr';
 
 const DisplayAnswerList = ({ goToFirstStep }) => {
   const navigate = useNavigate();
@@ -81,6 +86,13 @@ const DisplayAnswerList = ({ goToFirstStep }) => {
   let host = window.location.origin;
   let pathname = window.location.pathname.slice(11);
 
+  const [questioner, setQuestioner] = useRecoilState(Questioner);
+  const [questionArr, setQuestionArr] = useRecoilState(QuestionArr);
+  const [challenge, setChallenge] = useRecoilState(Challenge);
+  const [countersign, setCountersign] = useRecoilState(CounterSign);
+  const [originQuestionArr, setOriginQuestionArr] =
+    useRecoilState(OriginQuestionArr);
+
   const handleNewDiary = async () => {
     const axiosInstance = instance();
 
@@ -89,6 +101,10 @@ const DisplayAnswerList = ({ goToFirstStep }) => {
     if (diaryData) {
       setWantNewDiary(true);
     } else {
+      setQuestioner('');
+      setQuestionArr(originQuestionArr);
+      setChallenge('');
+      setCountersign('');
       navigate('/');
       goToFirstStep();
     }
@@ -219,7 +235,8 @@ const DisplayAnswerList = ({ goToFirstStep }) => {
       )}
       {wantNewDiary && (
         <ConfirmModal
-          message={'다이어리를 만드시겠어요?'}
+          message={`새로 만들면 이전 다이어리는 저장됩니다.
+            저장된 다이어리는 최근 답장 5개만 볼 수 있어요.`}
           updateModal={handleModalClose}
           goToFirstStep={goToFirstStep}
         />

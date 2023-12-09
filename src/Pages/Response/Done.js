@@ -10,10 +10,15 @@ import CustomModal from '../../components/CustomModal';
 import { UserCookie } from '../../store/Create/UserCookie';
 import { Answerer } from '../../store/Response/Answerer';
 import { Response } from '../../store/Response/Response';
-import { Questioner } from '../../store/Create/Questioner';
-import { useRecoilValue } from 'recoil';
+
+import { useRecoilState, useRecoilValue } from 'recoil';
 import { AnswererToken } from '../../store/Response/AnswererToken';
 import { useNavigate } from 'react-router-dom';
+import { QuestionArr } from '../../store/Create/QuestionArr';
+import { Challenge } from '../../store/Create/Challenge';
+import { Questioner } from '../../store/Create/Questioner';
+import { CounterSign } from '../../store/Create/CounterSign';
+import { OriginQuestionArr } from '../../store/Create/OriginQuestionArr';
 
 const Done = ({ goToFirstStep }) => {
   const answererJWT = useRecoilValue(AnswererToken);
@@ -23,6 +28,13 @@ const Done = ({ goToFirstStep }) => {
   const diaryId = useRecoilValue(UserCookie);
 
   const [isCorrected, setIsCorrected] = useState(false);
+
+  const [questioner, setQuestioner] = useRecoilState(Questioner);
+  const [questionArr, setQuestionArr] = useRecoilState(QuestionArr);
+  const [challenge, setChallenge] = useRecoilState(Challenge);
+  const [countersign, setCountersign] = useRecoilState(CounterSign);
+  const [originQuestionArr, setOriginQuestionArr] =
+    useRecoilState(OriginQuestionArr);
 
   const handleBeforeNavigate = () => {
     setIsCorrected(true);
@@ -58,6 +70,11 @@ const Done = ({ goToFirstStep }) => {
 
   const handleMakeGomgom = () => {
     navigate('/');
+
+    setQuestioner('');
+    setQuestionArr(originQuestionArr);
+    setChallenge('');
+    setCountersign('');
     goToFirstStep();
   };
 
@@ -101,7 +118,7 @@ const Done = ({ goToFirstStep }) => {
           />
         </div>
         <div className={Styles.bottom}>
-          <Btn text={'나도 만들어보기'} onClick={handleMakeGomgom} />
+          <Btn text={'나도 만들기'} onClick={handleMakeGomgom} />
         </div>
       </div>
     </div>
