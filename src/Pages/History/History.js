@@ -3,6 +3,8 @@ import instance from '../../api/customAxios';
 import Styles from './History.module.css';
 import { useNavigate } from 'react-router-dom';
 import CustomModal from '../../components/CustomModal';
+import { Questioner } from '../../store/Create/Questioner';
+import { useRecoilState } from 'recoil';
 
 const History = () => {
   const axiosInstance = instance();
@@ -34,8 +36,11 @@ const History = () => {
     }
   };
 
+  const [questioner, setQuestioner] = useRecoilState(Questioner);
+
   const handleModalClose = () => {
     setIsError(false);
+    setQuestioner('');
     navigate('/');
   };
 
