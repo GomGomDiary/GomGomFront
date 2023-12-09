@@ -91,20 +91,19 @@ const Main = () => {
     }
   };
 
+  const answerers = window.location.pathname.includes('answerers');
+
   return (
     <div className={Styles.Main}>
       <div className={Styles.center}>
         <section className={Styles.contentContainer}>
           <div className={Styles.content}>
             {diaryId && answerId && <DisplayAnswer />}
-            {diaryId && window.location.pathname.includes('answerers') && (
+            {diaryId && answerers && (
               <DisplayAnswerList goToFirstStep={() => setStep(1)} />
             )}
             {!diaryId && renderStep()}
-            {diaryId &&
-              !answerId &&
-              !window.location.pathname.includes('answerers') &&
-              renderResponseStep()}
+            {diaryId && !answerId && !answerers && renderResponseStep()}
           </div>
         </section>
       </div>
