@@ -6,12 +6,21 @@ import { useRecoilState } from 'recoil';
 import { UpdateClick } from '../store/Create/UpdateClick';
 import { Questioner } from '../store/Create/Questioner';
 import { CounterSign } from '../store/Create/CounterSign';
+import { QuestionArr } from '../store/Create/QuestionArr';
 import { Challenge } from '../store/Create/Challenge';
+import { OriginQuestionArr } from '../store/Create/OriginQuestionArr';
 
 const ConfirmModal = ({ message, updateModal, goToFirstStep, onNextStep }) => {
   const [modalIsOpen, setModalIsOpen] = useState(true);
   const navigate = useNavigate();
   const [updateClick, setUpdateClick] = useRecoilState(UpdateClick);
+
+  const [questioner, setQuestioner] = useRecoilState(Questioner);
+  const [questionArr, setQuestionArr] = useRecoilState(QuestionArr);
+  const [challenge, setChallenge] = useRecoilState(Challenge);
+  const [countersign, setCountersign] = useRecoilState(CounterSign);
+  const [originQuestionArr, setOriginQuestionArr] =
+    useRecoilState(OriginQuestionArr);
 
   const handleClose = () => {
     setModalIsOpen(false);
@@ -19,14 +28,15 @@ const ConfirmModal = ({ message, updateModal, goToFirstStep, onNextStep }) => {
   };
 
   const handleconfirm = () => {
-    if (message === '다이어리를 만드시겠어요?') {
-      setModalIsOpen(false);
-      setUpdateClick(true);
-      navigate('/');
-      goToFirstStep();
-    } else if (message === '다시 만들면 이전 다이어리는 저장됩니다.') {
-      onNextStep();
-    }
+    setModalIsOpen(false);
+    setUpdateClick(true);
+    navigate('/');
+
+    setQuestioner('');
+    setQuestionArr(originQuestionArr);
+    setChallenge('');
+    setCountersign('');
+    goToFirstStep();
   };
 
   return (
@@ -38,7 +48,7 @@ const ConfirmModal = ({ message, updateModal, goToFirstStep, onNextStep }) => {
       onRequestClose={handleClose}
     >
       <div className={Styles.ModalContent}>
-        <div>{message}</div>
+        <div className={Styles.message}>{message}</div>
         <div className={Styles.ModalBtns}>
           <button className={Styles.cancelBtn} onClick={handleClose}>
             취소

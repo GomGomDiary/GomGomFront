@@ -16,7 +16,9 @@ const Header = () => {
         className={Styles.history}
         onClick={handleGoToHistory}
       />
-      <div className={Styles.title}>GomGom Diary 🐻💭</div>
+      <div className={Styles.title} onClick={() => navigate('/')}>
+        GomGom Diary 🐻💭
+      </div>
     </div>
   );
 };

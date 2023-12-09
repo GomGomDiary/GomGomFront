@@ -10,9 +10,6 @@ const AnswerModal = ({ updateModal, selectedAnswerer, question }) => {
     updateModal(false);
   };
 
-  console.log(selectedAnswerer);
-  console.log(question);
-
   const arr = [];
 
   for (let i = 0; i < question.length; i++) {

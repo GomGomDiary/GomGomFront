@@ -2,12 +2,16 @@ import React, { useState } from 'react';
 import Modal from 'react-modal';
 import Styles from './CustomModal.module.css';
 
-const CustomModal = ({ message, updateModal }) => {
+const CustomModal = ({ message, updateModal, onNextStep }) => {
   const [modalIsOpen, setModalIsOpen] = useState(true);
 
   const handleClose = () => {
-    setModalIsOpen(false);
-    updateModal(false);
+    if (message === '이전 다이어리는 저장됐어요.') {
+      onNextStep();
+    } else {
+      setModalIsOpen(false);
+      updateModal(false);
+    }
   };
 
   return (

@@ -44,7 +44,7 @@ const Welcome = ({ onNextStep }) => {
   const navigate = useNavigate('');
 
   const axiosInstance = instance();
-  const updateClick = useRecoilValue(UpdateClick);
+  const [updateClick, setUpdateClick] = useRecoilState(UpdateClick);
 
   useEffect(() => {
     axiosInstance.get('/diary').then((response) => {
@@ -52,6 +52,7 @@ const Welcome = ({ onNextStep }) => {
         navigate(`/answerers/${diaryId}`);
       }
     });
+    setUpdateClick(false);
   }, []);
 
   return (

@@ -12,7 +12,6 @@ import Input from '../../components/Input';
 import Btn from '../../components/Btn';
 import WhiteBtn from '../../components/WhiteBtn';
 import CustomModal from '../../components/CustomModal';
-import ConfirmModal from '../../components/ConfirmModal';
 
 import instance from '../../api/customAxios';
 
@@ -105,8 +104,8 @@ const WriteCounterSign = ({ onNextStep, onPreviousStep, goToFirstStep }) => {
         <Btn text={'다음'} onClick={submitcountersign} />
       </div>
       {isRewrite && (
-        <ConfirmModal
-          message={'다시 만들면 이전 다이어리는 저장됩니다.'}
+        <CustomModal
+          message={'이전 다이어리는 저장됐어요.'}
           updateModal={handleModalClose}
           onNextStep={onNextStep}
         />
