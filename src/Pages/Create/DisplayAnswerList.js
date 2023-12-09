@@ -18,6 +18,8 @@ import { QuestionArr } from '../../store/Create/QuestionArr';
 import { Challenge } from '../../store/Create/Challenge';
 import { Questioner } from '../../store/Create/Questioner';
 import { OriginQuestionArr } from '../../store/Create/OriginQuestionArr';
+import { OriginQuestionNum } from '../../store/Create/OriginQuestionNum';
+import { QuestionNum } from '../../store/Create/QuestionNum';
 
 const DisplayAnswerList = ({ goToFirstStep }) => {
   const navigate = useNavigate();
@@ -90,8 +92,11 @@ const DisplayAnswerList = ({ goToFirstStep }) => {
   const [questionArr, setQuestionArr] = useRecoilState(QuestionArr);
   const [challenge, setChallenge] = useRecoilState(Challenge);
   const [countersign, setCountersign] = useRecoilState(CounterSign);
+  const [questionNum, setQuestionNum] = useRecoilState(QuestionNum);
   const [originQuestionArr, setOriginQuestionArr] =
     useRecoilState(OriginQuestionArr);
+  const [originQuestionNum, setOriginQuestionNum] =
+    useRecoilState(OriginQuestionNum);
 
   const handleNewDiary = async () => {
     const axiosInstance = instance();
@@ -105,6 +110,7 @@ const DisplayAnswerList = ({ goToFirstStep }) => {
       setQuestionArr(originQuestionArr);
       setChallenge('');
       setCountersign('');
+      setQuestionNum(originQuestionNum);
       navigate('/');
       goToFirstStep();
     }

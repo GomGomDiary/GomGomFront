@@ -8,7 +8,9 @@ import { Questioner } from '../store/Create/Questioner';
 import { CounterSign } from '../store/Create/CounterSign';
 import { QuestionArr } from '../store/Create/QuestionArr';
 import { Challenge } from '../store/Create/Challenge';
+import { QuestionNum } from '../store/Create/QuestionNum';
 import { OriginQuestionArr } from '../store/Create/OriginQuestionArr';
+import { OriginQuestionNum } from '../store/Create/OriginQuestionNum';
 
 const ConfirmModal = ({ message, updateModal, goToFirstStep, onNextStep }) => {
   const [modalIsOpen, setModalIsOpen] = useState(true);
@@ -18,9 +20,12 @@ const ConfirmModal = ({ message, updateModal, goToFirstStep, onNextStep }) => {
   const [questioner, setQuestioner] = useRecoilState(Questioner);
   const [questionArr, setQuestionArr] = useRecoilState(QuestionArr);
   const [challenge, setChallenge] = useRecoilState(Challenge);
+  const [questionNum, setQuestionNum] = useRecoilState(QuestionNum);
   const [countersign, setCountersign] = useRecoilState(CounterSign);
   const [originQuestionArr, setOriginQuestionArr] =
     useRecoilState(OriginQuestionArr);
+  const [originQuestionNum, setOriginQuestionNum] =
+    useRecoilState(OriginQuestionNum);
 
   const handleClose = () => {
     setModalIsOpen(false);
@@ -35,6 +40,7 @@ const ConfirmModal = ({ message, updateModal, goToFirstStep, onNextStep }) => {
     setQuestioner('');
     setQuestionArr(originQuestionArr);
     setChallenge('');
+    setQuestionNum(originQuestionNum);
     setCountersign('');
     goToFirstStep();
   };

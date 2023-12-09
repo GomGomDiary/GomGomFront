@@ -11,7 +11,7 @@ import Input from '../../components/Input';
 import CustomModal from '../../components/CustomModal';
 
 export const QuestionList = ({ onNextStep, onPreviousStep }) => {
-  const [questionNumber] = useRecoilState(QuestionNum);
+  const [questionNumber, setQuestionNumber] = useRecoilState(QuestionNum);
   const [questionArr, setQuestionArr] = useRecoilState(QuestionArr);
 
   /* 원래 배열에서 개수만 자른 거 */
