@@ -8,18 +8,15 @@ import CustomModal from '../../components/CustomModal';
 
 import { UserCookie } from '../../store/Create/UserCookie';
 import { getCookie } from '../../api/cookie';
-import { useRecoilState } from 'recoil';
+import { useRecoilState, useRecoilValue } from 'recoil';
 import { useNavigate } from 'react-router-dom';
 import { Questioner } from '../../store/Create/Questioner';
+import { QuestionArr } from '../../store/Create/QuestionArr';
 import { CounterSign } from '../../store/Create/CounterSign';
 import { Challenge } from '../../store/Create/Challenge';
 
 const Finish = () => {
   const [userCookie, setUserCookie] = useRecoilState(UserCookie);
-
-  const [questioner, setQuestioner] = useRecoilState(Questioner);
-  const [counterSign, setCounterSign] = useRecoilState(CounterSign);
-  const [challenge, setChallenge] = useRecoilState(Challenge);
 
   const navigate = useNavigate('');
 
@@ -28,9 +25,6 @@ const Finish = () => {
       try {
         const diaryId = await getCookie('diaryAddress');
         setUserCookie(diaryId);
-        setQuestioner('');
-        setChallenge('');
-        setCounterSign('');
       } catch (error) {
         console.error('error', error);
       }
