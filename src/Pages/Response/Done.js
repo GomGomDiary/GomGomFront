@@ -18,7 +18,9 @@ import { QuestionArr } from '../../store/Create/QuestionArr';
 import { Challenge } from '../../store/Create/Challenge';
 import { Questioner } from '../../store/Create/Questioner';
 import { CounterSign } from '../../store/Create/CounterSign';
+import { QuestionNum } from '../../store/Create/QuestionNum';
 import { OriginQuestionArr } from '../../store/Create/OriginQuestionArr';
+import { OriginQuestionNum } from '../../store/Create/OriginQuestionNum';
 
 const Done = ({ goToFirstStep }) => {
   const answererJWT = useRecoilValue(AnswererToken);
@@ -32,9 +34,12 @@ const Done = ({ goToFirstStep }) => {
   const [questioner, setQuestioner] = useRecoilState(Questioner);
   const [questionArr, setQuestionArr] = useRecoilState(QuestionArr);
   const [challenge, setChallenge] = useRecoilState(Challenge);
+  const [questionNum, setQuestionNum] = useRecoilState(QuestionNum);
   const [countersign, setCountersign] = useRecoilState(CounterSign);
   const [originQuestionArr, setOriginQuestionArr] =
     useRecoilState(OriginQuestionArr);
+  const [originQuestionNum, setOriginQuestionNum] =
+    useRecoilState(OriginQuestionNum);
 
   const handleBeforeNavigate = () => {
     setIsCorrected(true);
@@ -75,7 +80,10 @@ const Done = ({ goToFirstStep }) => {
     setQuestionArr(originQuestionArr);
     setChallenge('');
     setCountersign('');
+    setQuestionNum(originQuestionNum);
     goToFirstStep();
+
+    console.log();
   };
 
   const [isModalOpen, setIsModalOpen] = useState(false);
