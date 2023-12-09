@@ -125,7 +125,7 @@ const DisplayAnswerList = ({ goToFirstStep }) => {
   return (
     <div className={Styles.DisplayAnswerList}>
       {!isConnected ? (
-        <div>로딩중이에요.</div>
+        <div className={Styles.loading}>로딩중이에요.</div>
       ) : answererList.length ? (
         <div
           className={
