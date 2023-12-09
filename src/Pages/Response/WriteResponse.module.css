@@ -56,6 +56,11 @@
   width: 100%;
 }
 
+.answer {
+  width: 80%;
+  word-break: break-all;
+}
+
 .questionContent p {
   color: var(--point-color);
 }

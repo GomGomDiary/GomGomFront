@@ -106,7 +106,7 @@ const WriteResponse = ({ onNextStep, onPreviousStep }) => {
             <div className={Styles.middle}>
               <div className={Styles.questionContent}>
                 <p>✉️ {currentQuestionIndex + 1}번째 질문 ✉️</p>
-                <span>{currentQuestion}</span>
+                <span className={Styles.answer}>{currentQuestion}</span>
                 <Input
                   placeholder="100자 내외로 답장을 입력하세요."
                   value={response}
