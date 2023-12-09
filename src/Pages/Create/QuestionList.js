@@ -1,9 +1,10 @@
 import React, { useState, useMemo, useRef, useEffect } from 'react';
 
 import Styles from './QuestionList.module.css';
-import { useRecoilState } from 'recoil';
+import { useRecoilState, useRecoilValue } from 'recoil';
 import { QuestionNum } from '../../store/Create/QuestionNum';
 import { QuestionArr } from '../../store/Create/QuestionArr';
+import { OriginQuestionArr } from '../../store/Create/OriginQuestionArr';
 import Btn from '../../components/Btn';
 import WhiteBtn from '../../components/WhiteBtn';
 import Input from '../../components/Input';
@@ -12,6 +13,11 @@ import CustomModal from '../../components/CustomModal';
 export const QuestionList = ({ onNextStep, onPreviousStep }) => {
   const [questionNumber] = useRecoilState(QuestionNum);
   const [questionArr, setQuestionArr] = useRecoilState(QuestionArr);
+
+  /* 원래 배열에서 개수만 자른 거 */
+  const [originQuestionArr, setOriginQuestionArr] =
+    useRecoilState(OriginQuestionArr);
+  const originQuestion = originQuestionArr.slice(0, questionNumber);
 
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
 
