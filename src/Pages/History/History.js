@@ -65,7 +65,6 @@ const History = () => {
       setEnd(true);
     }
     setFetching(false);
-    console.log(nextList);
   };
 
   /* 스크롤 이벤트 핸들러 */
@@ -126,7 +125,7 @@ const History = () => {
           </div>
           {loading && (
             <div className={Styles.description}>
-              {end ? '더 이상 다이어리가 없어요.' : 'Loading...'}
+              {end ? '더 이상 다이어리가 없어요.' : '스크롤을 내려주세요!'}
             </div>
           )}
           {isError && (
