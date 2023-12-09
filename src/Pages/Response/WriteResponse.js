@@ -21,8 +21,7 @@ const WriteResponse = ({ onNextStep, onPreviousStep }) => {
   const [questionNumber, setQuestionNumber] = useState(0);
   const [questionArr, setQuestionArr] = useState([]);
 
-  const api = instance(answererJWT);
-  const navigate = useNavigate('');
+  const axiosInstance = instance(answererJWT);
 
   const [isWritten, setIsWritten] = useState(false);
 
@@ -31,28 +30,13 @@ const WriteResponse = ({ onNextStep, onPreviousStep }) => {
   };
 
   useEffect(() => {
-    api
-      .get(`/question/${diaryId}`)
+    axiosInstance
+      .get(`diary/question/${diaryId}`)
       .then((response) => {
         setQuestionArr(response.data.question);
         setQuestionNumber(response.data.questionLength);
       })
       .catch((error) => console.error(error));
-  }, []);
-
-  const [isMyself, setIsMyself] = useState(false);
-
-  const answerId = getCookie('diaryAddress');
-
-  const handleBeforeNavigate = () => {
-    setIsMyself(false);
-    navigate(`/answerers/${answerId}`);
-  };
-
-  useEffect(() => {
-    if (diaryId === answerId) {
-      setIsMyself(true);
-    }
   }, []);
 
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
@@ -122,7 +106,7 @@ const WriteResponse = ({ onNextStep, onPreviousStep }) => {
             <div className={Styles.middle}>
               <div className={Styles.questionContent}>
                 <p>✉️ {currentQuestionIndex + 1}번째 질문 ✉️</p>
-                <span>{currentQuestion}</span>
+                <span className={Styles.answer}>{currentQuestion}</span>
                 <Input
                   placeholder="100자 내외로 답장을 입력하세요."
                   value={response}
@@ -147,12 +131,6 @@ const WriteResponse = ({ onNextStep, onPreviousStep }) => {
                 스킵하기
               </button>
             </div>
-            {isMyself && (
-              <CustomModal
-                message={'자신의 다이어리엔 답할 수 없어요.'}
-                updateModal={handleBeforeNavigate}
-              />
-            )}
           </>
         )}
       </div>

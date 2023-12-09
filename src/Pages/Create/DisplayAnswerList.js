@@ -12,67 +12,40 @@ import WhiteBtn from '../../components/WhiteBtn';
 import { getCookie } from '../../api/cookie';
 import ResponseContent from '../../components/ResponseContent';
 import CustomModal from '../../components/CustomModal';
-import ConfirmModal from '../../components/ComfirmModal';
+import ConfirmModal from '../../components/ConfirmModal';
 
 const DisplayAnswerList = ({ goToFirstStep }) => {
   const navigate = useNavigate();
   const { diaryId } = useParams();
 
+  /* 다이어리 전역 상태 관리 */
   const [answererList, setAnswererList] = useState([]);
   const [answererCount, setAnswerCount] = useState(0);
   const [answer, setAnswer] = useRecoilState(Answer);
   const [question, setQuestion] = useRecoilState(Question);
   const [currentPage, setCurrentPage] = useState(1);
-  const [start, setStart] = useState(0);
-  const axiosInstance = instance();
 
+  /* 페이지네이션 */
+
+  const [start, setStart] = useState(0);
   const itemsPerPage = 5;
   const totalPages = Math.ceil(answererCount / itemsPerPage);
 
-  const [isOwner, setIsOwner] = useState('');
-  const [isNotOwner, setIsNotOwner] = useState(false);
-
-  const [isConnected, setIsConnected] = useState(false);
+  const axiosInstance = instance();
 
   useEffect(() => {
     axiosInstance
-      .get(`/answerers/${diaryId}/?start=${start}&take=${itemsPerPage}`)
+      .get(`diary/answerers/${diaryId}/?start=${start}&take=${itemsPerPage}`)
       .then((response) => {
         if (response.status === 200) {
           setIsConnected(true);
           setAnswererList(response.data.answererList);
-          setIsOwner(response.data._id);
+          setIsDiaryOwnerId(response.data._id);
           setAnswerCount(response.data.answerCount);
         }
       })
       .catch((e) => navigate('/error-route'));
   }, []);
-
-  const handleDisplayResponse = (answerId) => {
-    axiosInstance
-      .get(`/answer/${diaryId}/${answerId}`)
-      .then((response) => {
-        setAnswer(response.data.answer);
-        setQuestion(response.data.question);
-        navigate(`/answer/${diaryId}/${answerId}`);
-      })
-      .catch((error) => setIsNotOwner(true));
-  };
-
-  const [wantNewDiary, setWantNewDiary] = useState(false);
-
-  let host = window.location.origin;
-  let pathname = window.location.pathname.slice(11);
-
-  const handleNewDiary = async () => {
-    const axiosInstance = instance();
-
-    const { data: diaryData } = await axiosInstance.get('');
-
-    if (diaryData) {
-      setWantNewDiary(true);
-    }
-  };
 
   const handleNextPage = () => {
     if (currentPage < totalPages) {
@@ -88,12 +61,45 @@ const DisplayAnswerList = ({ goToFirstStep }) => {
     }
   };
 
+  /* 모달 관련 */
+  const [isDiaryOwnerId, setIsDiaryOwnerId] = useState('');
+  const [isAnswerer, setIsAnswerer] = useState(false);
+  const [isConnected, setIsConnected] = useState(false);
+  const [wantNewDiary, setWantNewDiary] = useState(false);
+
+  const handleDisplayResponse = (answerId) => {
+    axiosInstance
+      .get(`diary/answer/${diaryId}/${answerId}`)
+      .then((response) => {
+        setAnswer(response.data.answer);
+        setQuestion(response.data.question);
+        navigate(`/answer/${diaryId}/${answerId}`);
+      })
+      .catch((error) => setIsAnswerer(true));
+  };
+
+  let host = window.location.origin;
+  let pathname = window.location.pathname.slice(11);
+
+  const handleNewDiary = async () => {
+    const axiosInstance = instance();
+
+    const { data: diaryData } = await axiosInstance.get('diary/');
+
+    if (diaryData) {
+      setWantNewDiary(true);
+    } else {
+      navigate('/');
+      goToFirstStep();
+    }
+  };
+
   const correctAnswerer = getCookie('diaryAddress');
-  const [isCorrect, setIsCorrect] = useState(false);
+  const [isDiaryOwner, setIsDiaryOwner] = useState(false);
 
   useEffect(() => {
     if (correctAnswerer === diaryId) {
-      setIsCorrect(true);
+      setIsDiaryOwner(true);
     }
   }, []);
 
@@ -101,7 +107,7 @@ const DisplayAnswerList = ({ goToFirstStep }) => {
 
   const handleModalClose = () => {
     setIsCopied(false);
-    setIsNotOwner(false);
+    setIsAnswerer(false);
     setWantNewDiary(false);
   };
 
@@ -119,7 +125,7 @@ const DisplayAnswerList = ({ goToFirstStep }) => {
   return (
     <div className={Styles.DisplayAnswerList}>
       {!isConnected ? (
-        <div>로딩중이에요.</div>
+        <div className={Styles.loading}>로딩중이에요.</div>
       ) : answererList.length ? (
         <div
           className={
@@ -183,8 +189,12 @@ const DisplayAnswerList = ({ goToFirstStep }) => {
           <div className={Styles.noResponsecontent}>텅</div>
         </div>
       )}
-
-      {isCorrect && (
+      {!isDiaryOwner && (
+        <div className={Styles.commonBtns}>
+          <Btn text={'나도 만들기'} onClick={handleNewDiary} />
+        </div>
+      )}
+      {isDiaryOwner && (
         <div className={Styles.commonBtns}>
           <Btn text={'새로 만들기'} onClick={handleNewDiary} />
           <WhiteBtn
@@ -195,7 +205,7 @@ const DisplayAnswerList = ({ goToFirstStep }) => {
           />
         </div>
       )}
-      {isNotOwner && (
+      {isAnswerer && (
         <CustomModal
           message={'다이어리 주인만 볼 수 있어요.'}
           updateModal={handleModalClose}
@@ -209,7 +219,7 @@ const DisplayAnswerList = ({ goToFirstStep }) => {
       )}
       {wantNewDiary && (
         <ConfirmModal
-          message={'다이어리를 다시 만드시겠어요?'}
+          message={'다이어리를 만드시겠어요?'}
           updateModal={handleModalClose}
           goToFirstStep={goToFirstStep}
         />

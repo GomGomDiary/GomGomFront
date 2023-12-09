@@ -3,9 +3,9 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100px;
+  height: 80vh;
   width: 280px;
-  top: 15%;
+  top: 10%;
   left: 50%;
   transform: translateX(-50%);
   background-color: white;
@@ -59,4 +59,31 @@
 .okBtn:hover,
 .confirmBtn:hover {
   background-color: var(--hover-color);
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
+  overflow-y: scroll;
+  height: 60vh;
+  width: 280px;
+}
+
+.answerer {
+  font-size: 20px;
+}
+
+.qna div {
+  overflow-wrap: break-word;
+  padding: 3px 0;
+}
+
+.qna :nth-child(3n-2) {
+  color: var(--point-color);
+  font-size: 20px;
+}
+
+.qna :nth-child(3n) {
+  padding-bottom: 15px;
 }

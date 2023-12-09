@@ -1,6 +1,7 @@
-import React, { useRef, useState } from 'react';
+import React, { useState, useRef } from 'react';
 import Styles from './WriteCounterSign.module.css';
 import { useRecoilState, useRecoilValue } from 'recoil';
+import { useNavigate } from 'react-router-dom';
 
 import { CounterSign } from '../../store/Create/CounterSign';
 import { Questioner } from '../../store/Create/Questioner';
@@ -11,13 +12,14 @@ import Input from '../../components/Input';
 import Btn from '../../components/Btn';
 import WhiteBtn from '../../components/WhiteBtn';
 import CustomModal from '../../components/CustomModal';
+import ConfirmModal from '../../components/ConfirmModal';
 
 import instance from '../../api/customAxios';
 
 const WriteCounterSign = ({ onNextStep, onPreviousStep, goToFirstStep }) => {
   const [counterSign, setCounterSign] = useRecoilState(CounterSign);
   const CounterSignInputRef = useRef();
-  const [isSetted, setIsSetted] = useState(false);
+  const [isCountersignWritten, setIsCountersignWritten] = useState(false);
 
   const questioner = useRecoilValue(Questioner);
   const questionArr = useRecoilValue(QuestionArr);
@@ -34,45 +36,47 @@ const WriteCounterSign = ({ onNextStep, onPreviousStep, goToFirstStep }) => {
     }
   };
 
+  const [isRewrite, setIsRewrite] = useState(false);
+
   const submitcountersign = async () => {
     if (counterSign) {
       setCounterSign(counterSign);
       const axiosInstance = instance();
 
-      const { status: statusCode } = await axiosInstance.post('/question', {
-        question: questionArr,
-        questioner,
-        challenge,
-        countersign,
-      });
-
-      const { data: isCreated } = await axiosInstance.get('/');
+      const { status: statusCode } = await axiosInstance.post(
+        'diary/question',
+        {
+          question: questionArr,
+          questioner,
+          challenge,
+          countersign,
+        }
+      );
 
       if (statusCode === 201) {
         onNextStep();
         return;
       }
 
+      const { data: isCreated } = await axiosInstance.get('diary/');
+
       if (isCreated) {
-        if (window.confirm('다시 만들면 이전 다이어리는 저장됩니다.')) {
-          onNextStep();
-        } else {
-          goToFirstStep();
-        }
+        setIsRewrite(true);
       }
     } else {
-      setIsSetted(true);
+      setIsCountersignWritten(true);
       CounterSignInputRef.current.focus();
     }
   };
 
   const handleModalClose = () => {
-    setIsSetted(false);
+    setIsCountersignWritten(false);
+    setIsRewrite(false);
   };
 
   return (
     <div className={Styles.WriteCounterSignContainer}>
-      {isSetted && (
+      {isCountersignWritten && (
         <CustomModal
           message={'암호의 답을 입력해주세요.'}
           updateModal={handleModalClose}
@@ -100,6 +104,13 @@ const WriteCounterSign = ({ onNextStep, onPreviousStep, goToFirstStep }) => {
         <WhiteBtn text={'이전으로'} onClick={onPreviousStep} />
         <Btn text={'다음'} onClick={submitcountersign} />
       </div>
+      {isRewrite && (
+        <ConfirmModal
+          message={'다시 만들면 이전 다이어리는 저장됩니다.'}
+          updateModal={handleModalClose}
+          onNextStep={onNextStep}
+        />
+      )}
     </div>
   );
 };

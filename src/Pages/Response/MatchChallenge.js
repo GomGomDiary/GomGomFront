@@ -13,6 +13,7 @@ import { UserCookie } from '../../store/Create/UserCookie';
 import { Challenge } from '../../store/Create/Challenge';
 import { Questioner } from '../../store/Create/Questioner';
 import { AnswererToken } from '../../store/Response/AnswererToken';
+import { getCookie } from '../../api/cookie';
 
 const MatchChallenge = ({ onNextStep }) => {
   const [userCookie, setUserCookie] = useRecoilState(UserCookie);
@@ -33,12 +34,27 @@ const MatchChallenge = ({ onNextStep }) => {
     navigate('/');
   };
 
+  const handleDisplayAnswer = () => {
+    setIsMyself(false);
+    navigate(`/answerers/${diaryId}`);
+  };
+
+  const [isAlreadyAnswered, setIsAlreadyAnswered] = useState(false);
+
+  useEffect(() => {
+    axiosInstance.get(`/diary/${diaryId}`).then((response) => {
+      if (response.data === true) {
+        setIsAlreadyAnswered(true);
+      }
+    });
+  }, []);
+
   useEffect(() => {
     if (!!diaryId) {
       setUserCookie(diaryId);
 
       axiosInstance
-        .get(`/challenge/${diaryId}`)
+        .get(`diary/challenge/${diaryId}`)
         .then((response) => {
           if (response.status === 200) {
             setChallenge(response.data.challenge);
@@ -49,7 +65,7 @@ const MatchChallenge = ({ onNextStep }) => {
           setIsExisted(true);
         });
     }
-  }, [diaryId, setUserCookie, setChallenge, setQuestioner, navigate]);
+  }, []);
 
   const CountersignInput = useRef();
 
@@ -69,12 +85,22 @@ const MatchChallenge = ({ onNextStep }) => {
     setIsCorrected('');
   };
 
+  const [isMyself, setIsMyself] = useState(false);
+
+  const answerId = getCookie('diaryAddress');
+
+  useEffect(() => {
+    if (diaryId === answerId) {
+      setIsMyself(true);
+    }
+  }, []);
+
   /* 코드 중복 고민 필요 */
 
   const submitCountersign = () => {
     if (countersign) {
       axiosInstance
-        .post(`/countersign/${diaryId}`, { countersign })
+        .post(`diary/countersign/${diaryId}`, { countersign })
         .then((response) => {
           setAnswererToken(response.data.diaryToken);
           onNextStep();
@@ -94,7 +120,7 @@ const MatchChallenge = ({ onNextStep }) => {
       <div className={Styles.top}>
         <div>🔒</div>
         <div>
-          {useRecoilValue(Questioner)}님의 질문지를 보려면 <p></p>암호를 맞춰야
+          {useRecoilValue(Questioner)}님의 질문지를 <p></p>보려면 암호를 맞춰야
           한다곰!
         </div>
       </div>
@@ -124,6 +150,18 @@ const MatchChallenge = ({ onNextStep }) => {
         {isExisted && (
           <CustomModal
             message={'존재하지 않는 다이어리예요.'}
+            updateModal={handleBeforeNavigate}
+          />
+        )}
+        {isAlreadyAnswered && (
+          <CustomModal
+            message={'이미 답장한 다이어리예요.'}
+            updateModal={handleDisplayAnswer}
+          />
+        )}
+        {isMyself && (
+          <CustomModal
+            message={'자신의 다이어리엔 답할 수 없어요.'}
             updateModal={handleBeforeNavigate}
           />
         )}

@@ -24,7 +24,7 @@ const Welcome = ({ onNextStep }) => {
     }
   };
 
-  const [isWritten, setIsWritten] = useState(false);
+  const [isNameWritten, setIsNameWritten] = useState(false);
 
   const submitName = () => {
     if (questioner) {
@@ -32,12 +32,12 @@ const Welcome = ({ onNextStep }) => {
       onNextStep();
     } else {
       NameInputRef.current.focus();
-      setIsWritten(true);
+      setIsNameWritten(true);
     }
   };
 
   const handleModalClose = () => {
-    setIsWritten(false);
+    setIsNameWritten(false);
   };
 
   const diaryId = getCookie('diaryAddress');
@@ -47,7 +47,7 @@ const Welcome = ({ onNextStep }) => {
   const updateClick = useRecoilValue(UpdateClick);
 
   useEffect(() => {
-    axiosInstance.get('/').then((response) => {
+    axiosInstance.get('/diary').then((response) => {
       if (response.data === true && !updateClick) {
         navigate(`/answerers/${diaryId}`);
       }
@@ -77,7 +77,7 @@ const Welcome = ({ onNextStep }) => {
           maxLength={10}
         />
         <Btn text={'시작'} onClick={submitName} />
-        {isWritten && (
+        {isNameWritten && (
           <CustomModal
             message={`이름을 입력해주세요.`}
             updateModal={handleModalClose}
