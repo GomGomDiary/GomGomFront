@@ -6,6 +6,7 @@ import ConfettiEffect from './ConfettiEffect';
 const ResponseContent = ({ content }) => {
   const [isActive, setIsActive] = useState(false);
 
+  /*
   const handleTouchStart = () => {
     setIsActive(true);
   };
@@ -19,16 +20,15 @@ const ResponseContent = ({ content }) => {
     console.log('Touch End');
     setIsActive(true);
   };
+  */
 
   const handleMouseMove = _debounce(() => {
     setIsActive(true);
-    console.log('Mouse Move');
-  }, 300);
+  }, 100);
 
   const handleMouseLeave = () => {
     setTimeout(() => {
       setIsActive(false);
-      console.log('Mouse Leave');
     }, 5000);
   };
 
@@ -54,16 +54,21 @@ const ResponseContent = ({ content }) => {
         Math.floor((content - 6) / patterns.length) % patterns.length;
       return patterns[index];
     } else {
-      return null;
+      return '📭';
+    }
+  };
+
+  const infoMessage = () => {
+    if (DisplayContent() === '❤️‍🔥') {
+      return '축하한다곰! 모든 단계를 넘어섰다곰!';
+    } else {
+      return '다음 단계도 확인해보라곰!';
     }
   };
 
   return (
     <div
       className={Styles.ResponseContent}
-      onTouchStart={handleTouchStart}
-      onTouchMove={handleTouchMove}
-      onTouchEnd={handleTouchEnd}
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
     >
@@ -71,12 +76,12 @@ const ResponseContent = ({ content }) => {
       {isActive ? (
         <div>
           {DisplayContent()}
-          <div className={Styles.info}>Read the Letters!</div>
+          <div className={Styles.info}>{infoMessage()}</div>
         </div>
       ) : (
         <div className={Styles.contentEmoji}>
-          💌
-          <div className={Styles.info}>Open Me!</div>
+          📫
+          <div className={Styles.info}>답장 수에 따라 우체통이 달라진다곰!</div>
         </div>
       )}
     </div>
