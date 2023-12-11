@@ -89,15 +89,20 @@ const WriteCounterSign = ({ onNextStep, onPreviousStep, goToFirstStep }) => {
         <div>(ex. 0718, INFJ 등)</div>
       </div>
       <div className={Styles.middle}>
-        <Input
-          text={'다음'}
-          value={counterSign}
-          onChange={(e) => writecountersign(e)}
-          onKeyUp={handleKeyPress}
-          placeholder="50자 내외로 입력해주세요."
-          ref={CounterSignInputRef}
-          maxLength={50}
-        />
+        <div className={Styles.countersign}>
+          <Input
+            text={'다음'}
+            value={counterSign}
+            onChange={(e) => writecountersign(e)}
+            onKeyUp={handleKeyPress}
+            placeholder="50자 내외로 입력해주세요."
+            ref={CounterSignInputRef}
+            maxLength={50}
+          />
+          <div className={Styles.countersignLength}>
+            {counterSign.length}/50
+          </div>
+        </div>
       </div>
       <div className={Styles.bottom}>
         <WhiteBtn text={'이전으로'} onClick={onPreviousStep} />

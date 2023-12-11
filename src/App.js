@@ -2,7 +2,6 @@ import './App.css';
 import React from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 
-import Header from './Home/Header';
 import Main from './Home/Main';
 import { RecoilRoot } from 'recoil';
 import { CookiesProvider } from 'react-cookie';
@@ -15,7 +14,6 @@ function App() {
     <CookiesProvider>
       <RecoilRoot>
         <BrowserRouter>
-          <Header />
           <Routes>
             <Route path="/history" element={<History />} />
             <Route path="/history/:historyItemId" element={<HistoryItem />} />

@@ -22,7 +22,8 @@
 }
 
 .middle {
-  text-align: center;
+  display: flex;
+  justify-content: center;
 }
 
 .bottom {
@@ -42,4 +43,15 @@
   100% {
     transform: rotate(-10deg);
   }
+}
+
+.countersign {
+  width: 80%;
+  text-align: center;
+}
+
+.countersignLength {
+  font-size: 12px;
+  padding-top: 10px;
+  text-align: right;
 }

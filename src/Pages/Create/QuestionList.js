@@ -125,13 +125,18 @@ export const QuestionList = ({ onNextStep, onPreviousStep }) => {
               <div className={Styles.questionContent}>
                 <p>✉️ {currentQuestionIndex + 1}번째 질문 ✉️</p>
                 {isEdited ? (
-                  <Input
-                    placeholder="100자 내외로 질문을 수정하세요."
-                    value={editedQuestion}
-                    onChange={(e) => setEditedQuestion(e.target.value)}
-                    ref={editedQuestionInputRef}
-                    maxLength={100}
-                  />
+                  <div className={Styles.editedQuestion}>
+                    <Input
+                      placeholder="100자 내외로 질문을 수정하세요."
+                      value={editedQuestion}
+                      onChange={(e) => setEditedQuestion(e.target.value)}
+                      ref={editedQuestionInputRef}
+                      maxLength={100}
+                    />
+                    <div className={Styles.editedQuestionLength}>
+                      {editedQuestion.length}/100
+                    </div>
+                  </div>
                 ) : (
                   <span className={Styles.currentQuestion}>
                     {currentQuestion}

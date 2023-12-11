@@ -107,13 +107,18 @@ const WriteResponse = ({ onNextStep, onPreviousStep }) => {
               <div className={Styles.questionContent}>
                 <p>✉️ {currentQuestionIndex + 1}번째 질문 ✉️</p>
                 <span className={Styles.answer}>{currentQuestion}</span>
-                <Input
-                  placeholder="100자 내외로 답장을 입력하세요."
-                  value={response}
-                  onChange={(e) => setResponse(e.target.value)}
-                  ref={responseInputRef}
-                  maxLength={100}
-                />
+                <div className={Styles.responseAnswer}>
+                  <Input
+                    placeholder="100자 내외로 답장을 입력하세요."
+                    value={response}
+                    onChange={(e) => setResponse(e.target.value)}
+                    ref={responseInputRef}
+                    maxLength={100}
+                  />
+                  <div className={Styles.responseAnswerLength}>
+                    {response.length}/100
+                  </div>
+                </div>
               </div>
               <div className={Styles.Btns}>
                 <WhiteBtn text={'이전으로'} onClick={handlePrevious} />

@@ -4,6 +4,7 @@ import instance from '../../api/customAxios';
 import { useParams } from 'react-router-dom';
 import ResponseContent from '../../components/ResponseContent';
 import AnswerModal from '../../components/AnswerModal';
+import Header from '../../Home/Header';
 
 const HistoryItem = () => {
   const axiosInstance = instance();
@@ -47,6 +48,7 @@ const HistoryItem = () => {
 
   return (
     <div className={Styles.Main}>
+      <Header />
       <div className={Styles.center}>
         <section className={Styles.contentContainer}>
           <div className={Styles.content}>
