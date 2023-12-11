@@ -14,78 +14,118 @@ import WriteResponse from '../Pages/Response/WriteResponse';
 import Done from '../Pages/Response/Done';
 import DisplayAnswerList from '../Pages/Create/DisplayAnswerList';
 import DisplayAnswer from '../Pages/Create/DisplayAnswer';
+import Header from './Header';
 
 const Main = () => {
-  const [step, setStep] = useState(1);
+  const [questionerStep, setQuestionerStep] = useState('welcome');
+  const [answererStep, setAnswererStep] = useState('match');
   const { diaryId, answerId } = useParams();
 
   const onPreviousStep = () => {
-    if (step > 1) {
-      setStep(step - 1);
+    switch (questionerStep) {
+      case 'questionNumber':
+        setQuestionerStep('welcome');
+        break;
+      case 'questionList':
+        setQuestionerStep('questionNumber');
+        break;
+      case 'writeChallenge':
+        setQuestionerStep('questionList');
+        break;
+      case 'writeCounterSign':
+        setQuestionerStep('writeChallenge');
+        break;
+      case 'finish':
+        setQuestionerStep('writeCounterSign');
+        break;
+      default:
+        break;
+    }
+    switch (answererStep) {
+      case 'writeAnswererName':
+        setAnswererStep('match');
+        break;
+      case 'writeAnswererResponse':
+        setAnswererStep('writeAnswererName');
+        break;
+      default:
+        break;
     }
   };
 
   const renderStep = () => {
-    switch (step) {
-      case 1:
-        return <Welcome onNextStep={() => setStep(2)} />;
-      case 2:
-        return <QuestionNumber onNextStep={() => setStep(3)} />;
-      case 3:
+    switch (questionerStep) {
+      case 'welcome':
+        return (
+          <Welcome onNextStep={() => setQuestionerStep('questionNumber')} />
+        );
+      case 'questionNumber':
+        return (
+          <QuestionNumber
+            onNextStep={() => setQuestionerStep('questionList')}
+          />
+        );
+      case 'questionList':
         return (
           <QuestionList
-            onNextStep={() => setStep(4)}
+            onNextStep={() => setQuestionerStep('writeChallenge')}
             onPreviousStep={onPreviousStep}
           />
         );
-      case 4:
+      case 'writeChallenge':
         return (
           <WriteChallenge
-            onNextStep={() => setStep(5)}
+            onNextStep={() => setQuestionerStep('writeCounterSign')}
             onPreviousStep={onPreviousStep}
           />
         );
-      case 5:
+      case 'writeCounterSign':
         return (
           <WriteCounterSign
-            onNextStep={() => setStep(6)}
-            goToFirstStep={() => setStep(1)}
+            onNextStep={() => setQuestionerStep('finish')}
+            goToFirstStep={() => setQuestionerStep('welcome')}
             onPreviousStep={onPreviousStep}
           />
         );
-      case 6:
+      case 'finish':
         return (
           <Finish
-            onNextStep={() => setStep(7)}
-            goToFirstStep={() => setStep(1)}
+            onNextStep={() => setQuestionerStep('welcome')}
+            goToFirstStep={() => setQuestionerStep('welcome')}
             onPreviousStep={onPreviousStep}
           />
         );
+      case 'displayAnswerList':
+        return <DisplayAnswerList questionerStep={questionerStep} />;
       default:
         return null;
     }
   };
 
   const renderResponseStep = () => {
-    switch (step) {
-      case 1:
-        return <MatchChallenge onNextStep={() => setStep(2)} />;
-      case 2:
+    switch (answererStep) {
+      case 'match':
+        return (
+          <MatchChallenge
+            onNextStep={() => setAnswererStep('writeAnswererName')}
+          />
+        );
+      case 'writeAnswererName':
         return (
           <WriteAnswererName
-            onNextStep={() => setStep(3)}
+            onNextStep={() => setAnswererStep('writeAnswererResponse')}
             onPreviousStep={onPreviousStep}
           />
         );
-      case 3:
+      case 'writeAnswererResponse':
         return (
           <WriteResponse
-            onNextStep={() => setStep(4)}
+            onNextStep={() => setAnswererStep('done')}
             onPreviousStep={onPreviousStep}
           />
         );
-      case 4:
-        return <Done goToFirstStep={() => setStep(1)} />;
+      case 'done':
+        return <Done goToFirstStep={() => setAnswererStep('welcome')} />;
       default:
         return null;
     }
@@ -95,12 +135,20 @@ const Main = () => {
 
   return (
     <div className={Styles.Main}>
+      <Header
+        questionerStep={questionerStep}
+        answererStep={answererStep}
+        goToFirstStep={() => setQuestionerStep('welcome')}
+      />
       <div className={Styles.center}>
         <section className={Styles.contentContainer}>
           <div className={Styles.content}>
             {diaryId && answerId && <DisplayAnswer />}
-            {diaryId && answerers && (
-              <DisplayAnswerList goToFirstStep={() => setStep(1)} />
+            {diaryId && answerers && renderStep() && (
+              <DisplayAnswerList
+                goToFirstStep={() => setQuestionerStep('welcome')}
+                questionerStep={'displayAnswerList'}
+              />
             )}
             {!diaryId && renderStep()}
             {diaryId && !answerId && !answerers && renderResponseStep()}
