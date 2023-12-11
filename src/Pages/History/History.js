@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import CustomModal from '../../components/CustomModal';
 import { Questioner } from '../../store/Create/Questioner';
 import { useRecoilState } from 'recoil';
+import Header from '../../Home/Header';
 
 const History = () => {
   const axiosInstance = instance();
@@ -40,8 +41,8 @@ const History = () => {
 
   const handleModalClose = () => {
     setIsError(false);
-    setQuestioner('');
     navigate('/');
+    setQuestioner('');
   };
 
   /* 첫 데이터 next를 기준으로 다음 리스트 요청 */
@@ -103,6 +104,7 @@ const History = () => {
 
   return (
     <div className={Styles.Main}>
+      <Header />
       <div className={Styles.center}>
         <section className={Styles.content}>
           <div className={Styles.title}>
