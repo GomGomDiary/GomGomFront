@@ -53,15 +53,18 @@ const WriteChallenge = ({ onNextStep, onPreviousStep }) => {
         <div>(ex. 내 생일 4자리, 내 MBTI 대문자 등)</div>
       </div>
       <div className={Styles.middle}>
-        <Input
-          text={'다음'}
-          value={challenge}
-          onChange={(e) => writingChallenge(e)}
-          onKeyUp={handleKeyPress}
-          placeholder="50자 내외로 입력해주세요."
-          ref={challengeInputRef}
-          maxLength={50}
-        />
+        <div className={Styles.challenge}>
+          <Input
+            text={'다음'}
+            value={challenge}
+            onChange={(e) => writingChallenge(e)}
+            onKeyUp={handleKeyPress}
+            placeholder="50자 내외로 입력해주세요."
+            ref={challengeInputRef}
+            maxLength={50}
+          />
+          <div className={Styles.challengeLength}>{challenge.length}/50</div>
+        </div>
       </div>
       <div className={Styles.bottom}>
         <WhiteBtn text={'이전으로'} onClick={onPreviousStep} />
