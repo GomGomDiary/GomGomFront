@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import Styles from './Header.module.css';
 import { MdOutlineHistory } from 'react-icons/md';
+import { RiMenuLine } from 'react-icons/ri';
 import { useNavigate } from 'react-router-dom';
 
 import { useRecoilState } from 'recoil';
@@ -36,6 +37,7 @@ const Header = ({ questionerStep, answererStep }) => {
     useRecoilState(OriginQuestionNum);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isDropDownOpen, setIsDropDownOpen] = useState(false);
 
   const handleGoToMain = () => {
     if (
@@ -61,6 +63,18 @@ const Header = ({ questionerStep, answererStep }) => {
     setIsModalOpen(false);
   };
 
+  const handleDropdown = () => {
+    setIsDropDownOpen(!isDropDownOpen);
+  };
+
+  const handleGoToInsta = () => {
+    window.location.href = 'https://www.instagram.com/gom._.gom._.diary/';
+  };
+
+  const handleGoToForm = () => {
+    window.location.href = 'https://forms.gle/1TXShtN1kxS7zKqS6';
+  };
+
   return (
     <div className={Styles.Header}>
       <MdOutlineHistory
@@ -70,6 +84,13 @@ const Header = ({ questionerStep, answererStep }) => {
       <div className={Styles.title} onClick={handleGoToMain}>
         GomGom Diary 🐻💭
       </div>
+      <RiMenuLine className={Styles.menu} onClick={handleDropdown} />
+      {isDropDownOpen && (
+        <ul className={Styles.dropdown}>
+          <li onClick={handleGoToInsta}>공식 인스타그램</li>
+          <li onClick={handleGoToForm}>피드백</li>
+        </ul>
+      )}
       {isModalOpen && (
         <CustomModal
           message={'작성중에는 메인으로 갈 수 없어요.'}
