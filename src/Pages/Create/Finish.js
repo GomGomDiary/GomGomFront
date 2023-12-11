@@ -15,7 +15,7 @@ import { QuestionArr } from '../../store/Create/QuestionArr';
 import { CounterSign } from '../../store/Create/CounterSign';
 import { Challenge } from '../../store/Create/Challenge';
 
-const Finish = () => {
+const Finish = ({ goToFirstStep }) => {
   const [userCookie, setUserCookie] = useRecoilState(UserCookie);
 
   const navigate = useNavigate('');
@@ -58,6 +58,11 @@ const Finish = () => {
     setIsModalOpen(true);
   };
 
+  const handleGoToAnswerList = () => {
+    goToFirstStep();
+    navigate(`/answerers/${userCookie}`);
+  };
+
   return (
     <div>
       <ConfettiEffect />
@@ -89,10 +94,7 @@ const Finish = () => {
           )}
         </div>
         <div className={Styles.bottom}>
-          <Btn
-            text={'답변 현황 확인하기'}
-            onClick={() => navigate(`/answerers/${userCookie}`)}
-          />
+          <Btn text={'답변 현황 확인하기'} onClick={handleGoToAnswerList} />
         </div>
       </div>
     </div>
