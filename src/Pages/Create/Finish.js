@@ -10,10 +10,8 @@ import { UserCookie } from '../../store/Create/UserCookie';
 import { getCookie } from '../../api/cookie';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import { useNavigate } from 'react-router-dom';
-import { Questioner } from '../../store/Create/Questioner';
-import { QuestionArr } from '../../store/Create/QuestionArr';
-import { CounterSign } from '../../store/Create/CounterSign';
-import { Challenge } from '../../store/Create/Challenge';
+
+import { EventTrigger } from '../../gtag';
 
 const Finish = ({ goToFirstStep }) => {
   const [userCookie, setUserCookie] = useRecoilState(UserCookie);
@@ -39,6 +37,7 @@ const Finish = ({ goToFirstStep }) => {
       .writeText(link)
       .then(() => {
         setIsCopied(true);
+        EventTrigger('click', 'share', '공유하기', 1);
       })
       .catch((error) => {
         console.error('error', error);

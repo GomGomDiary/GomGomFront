@@ -14,6 +14,7 @@ import { Challenge } from '../../store/Create/Challenge';
 import { Questioner } from '../../store/Create/Questioner';
 import { AnswererToken } from '../../store/Response/AnswererToken';
 import { getCookie } from '../../api/cookie';
+import { EventTrigger } from '../../gtag';
 
 const MatchChallenge = ({ onNextStep }) => {
   const [userCookie, setUserCookie] = useRecoilState(UserCookie);
@@ -104,6 +105,7 @@ const MatchChallenge = ({ onNextStep }) => {
         .then((response) => {
           setAnswererToken(response.data.diaryToken);
           onNextStep();
+          EventTrigger('click', 'countersign', '답장 시작하기', 1);
         })
         .catch(() => {
           setIsCorrected('오답');

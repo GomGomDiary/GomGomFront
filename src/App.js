@@ -1,5 +1,5 @@
 import './App.css';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 
 import Main from './Home/Main';
@@ -9,7 +9,13 @@ import NotFound from './Pages/NotFound';
 import History from './Pages/History/History';
 import HistoryItem from './Pages/History/HistoryItem';
 
+import ReactGA from 'react-ga4';
+
 function App() {
+  useEffect(() => {
+    ReactGA.initialize(`${process.env.REACT_APP_GOOGLE_ANALYTICS_TRACKING_ID}`);
+  }, []);
+
   return (
     <CookiesProvider>
       <RecoilRoot>

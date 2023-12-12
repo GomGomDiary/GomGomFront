@@ -22,6 +22,8 @@ import { QuestionNum } from '../../store/Create/QuestionNum';
 import { OriginQuestionArr } from '../../store/Create/OriginQuestionArr';
 import { OriginQuestionNum } from '../../store/Create/OriginQuestionNum';
 
+import { EventTrigger } from '../../gtag';
+
 const Done = ({ goToFirstStep }) => {
   const answererJWT = useRecoilValue(AnswererToken);
   const answerer = useRecoilValue(Answerer);
@@ -83,7 +85,7 @@ const Done = ({ goToFirstStep }) => {
     setQuestionNum(originQuestionNum);
     goToFirstStep();
 
-    console.log();
+    EventTrigger('click', 'make', '나도 만들기', 1);
   };
 
   const [isModalOpen, setIsModalOpen] = useState(false);

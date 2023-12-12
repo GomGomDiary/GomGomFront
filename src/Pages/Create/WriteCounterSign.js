@@ -14,6 +14,7 @@ import WhiteBtn from '../../components/WhiteBtn';
 import CustomModal from '../../components/CustomModal';
 
 import instance from '../../api/customAxios';
+import { EventTrigger } from '../../gtag';
 
 const WriteCounterSign = ({ onNextStep, onPreviousStep, goToFirstStep }) => {
   const [counterSign, setCounterSign] = useRecoilState(CounterSign);
@@ -54,6 +55,7 @@ const WriteCounterSign = ({ onNextStep, onPreviousStep, goToFirstStep }) => {
 
       if (statusCode === 201) {
         onNextStep();
+        EventTrigger('click', 'end', '끝까지 만들기', 1);
         return;
       }
 
