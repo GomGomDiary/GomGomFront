@@ -64,14 +64,17 @@
 .correctAnswerer {
   color: var(--point-color);
   background-color: var(--main-color);
+  cursor: pointer;
 }
 
 .owner {
   color: black;
+  cursor: pointer;
 }
 
 .notOwner {
   color: lightgray;
+  cursor: pointer;
 }
 
 td {

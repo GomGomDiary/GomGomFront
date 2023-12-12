@@ -45,6 +45,7 @@ const DisplayAnswerList = ({ goToFirstStep }) => {
     axiosInstance
       .get(`diary/answerers/${diaryId}/?start=${start}&take=${itemsPerPage}`)
       .then((response) => {
+        console.log(response);
         if (response.status === 200) {
           setIsConnected(true);
           setAnswererList(response.data.answererList);
@@ -53,19 +54,23 @@ const DisplayAnswerList = ({ goToFirstStep }) => {
         }
       })
       .catch((e) => navigate('/error-route'));
-  }, []);
+  }, [currentPage, totalPages, start, diaryId]);
+
+  console.log(currentPage);
+  console.log(itemsPerPage);
+  console.log(totalPages);
 
   const handleNextPage = () => {
     if (currentPage < totalPages) {
-      setStart(start + itemsPerPage);
-      setCurrentPage(currentPage + 1);
+      setStart((prevStart) => prevStart + itemsPerPage);
+      setCurrentPage((prevPage) => prevPage + 1);
     }
   };
 
   const handlePrevPage = () => {
     if (currentPage > 1) {
-      setStart(start - itemsPerPage);
-      setCurrentPage(currentPage - 1);
+      setStart((prevStart) => prevStart - itemsPerPage);
+      setCurrentPage((prevPage) => prevPage - 1);
     }
   };
 
