@@ -8,7 +8,7 @@ import CustomModal from '../../components/CustomModal';
 
 import { UserCookie } from '../../store/Create/UserCookie';
 import { getCookie } from '../../api/cookie';
-import { useRecoilState, useRecoilValue } from 'recoil';
+import { useRecoilState } from 'recoil';
 import { useNavigate } from 'react-router-dom';
 
 import { EventTrigger } from '../../gtag';

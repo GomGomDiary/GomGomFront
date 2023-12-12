@@ -11,8 +11,6 @@ import CustomModal from '../../components/CustomModal';
 import { UserCookie } from '../../store/Create/UserCookie';
 import { AnswererToken } from '../../store/Response/AnswererToken';
 import { Response } from '../../store/Response/Response';
-import { useNavigate } from 'react-router-dom';
-import { getCookie } from '../../api/cookie';
 
 import { EventTrigger } from '../../gtag';
 

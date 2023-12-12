@@ -1,7 +1,6 @@
 import React, { useState, useRef } from 'react';
 import Styles from './WriteCounterSign.module.css';
 import { useRecoilState, useRecoilValue } from 'recoil';
-import { useNavigate } from 'react-router-dom';
 
 import { CounterSign } from '../../store/Create/CounterSign';
 import { Questioner } from '../../store/Create/Questioner';
@@ -16,7 +15,7 @@ import CustomModal from '../../components/CustomModal';
 import instance from '../../api/customAxios';
 import { EventTrigger } from '../../gtag';
 
-const WriteCounterSign = ({ onNextStep, onPreviousStep, goToFirstStep }) => {
+const WriteCounterSign = ({ onNextStep, onPreviousStep }) => {
   const [counterSign, setCounterSign] = useRecoilState(CounterSign);
   const CounterSignInputRef = useRef();
   const [isCountersignWritten, setIsCountersignWritten] = useState(false);

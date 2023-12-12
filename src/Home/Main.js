@@ -83,7 +83,6 @@ const Main = () => {
         return (
           <WriteCounterSign
             onNextStep={() => setQuestionerStep('finish')}
-            goToFirstStep={() => setQuestionerStep('welcome')}
             onPreviousStep={onPreviousStep}
           />
         );
