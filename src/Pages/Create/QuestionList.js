@@ -49,10 +49,12 @@ export const QuestionList = ({ onNextStep, onPreviousStep }) => {
   };
 
   const handlePrevious = () => {
-    if (currentQuestionIndex > 0) {
+    if (currentQuestionIndex > 0 && !isEdited) {
       setCurrentQuestionIndex(currentQuestionIndex - 1);
-    } else {
+    } else if (!isEdited) {
       onPreviousStep();
+    } else {
+      setIsCompleted(true);
     }
   };
 
