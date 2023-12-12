@@ -14,6 +14,8 @@ import { Response } from '../../store/Response/Response';
 import { useNavigate } from 'react-router-dom';
 import { getCookie } from '../../api/cookie';
 
+import { EventTrigger } from '../../gtag';
+
 const WriteResponse = ({ onNextStep, onPreviousStep }) => {
   const diaryId = useRecoilValue(UserCookie);
   const answererJWT = useRecoilValue(AnswererToken);
@@ -56,6 +58,12 @@ const WriteResponse = ({ onNextStep, onPreviousStep }) => {
     } else {
       onNextStep();
       setResponseArr([...responseArr, response]);
+      EventTrigger({
+        action: 'click',
+        category: 'success',
+        label: '답장 완료하기',
+        value: 1,
+      });
     }
   };
 

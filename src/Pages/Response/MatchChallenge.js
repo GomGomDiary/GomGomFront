@@ -105,7 +105,12 @@ const MatchChallenge = ({ onNextStep }) => {
         .then((response) => {
           setAnswererToken(response.data.diaryToken);
           onNextStep();
-          EventTrigger('click', 'countersign', '답장 시작하기', 1);
+          EventTrigger({
+            action: 'click',
+            category: 'countersign',
+            label: '답장 시작하기',
+            value: 1,
+          });
         })
         .catch(() => {
           setIsCorrected('오답');
