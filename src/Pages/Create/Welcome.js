@@ -32,7 +32,12 @@ const Welcome = ({ onNextStep }) => {
     if (questioner) {
       setQuestioner(questioner);
       onNextStep();
-      EventTrigger('click', 'start', '다이어리 만들기 시작', 1);
+      EventTrigger({
+        action: 'click',
+        category: 'start',
+        label: '다이어리 만들기 시작',
+        value: 1,
+      });
     } else {
       NameInputRef.current.focus();
       setIsNameWritten(true);

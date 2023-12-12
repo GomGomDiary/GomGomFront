@@ -37,7 +37,12 @@ const Finish = ({ goToFirstStep }) => {
       .writeText(link)
       .then(() => {
         setIsCopied(true);
-        EventTrigger('click', 'share', '공유하기', 1);
+        EventTrigger({
+          action: 'click',
+          category: 'share',
+          label: '링크 공유하기',
+          value: 1,
+        });
       })
       .catch((error) => {
         console.error('error', error);

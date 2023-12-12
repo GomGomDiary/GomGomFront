@@ -85,7 +85,12 @@ const Done = ({ goToFirstStep }) => {
     setQuestionNum(originQuestionNum);
     goToFirstStep();
 
-    EventTrigger('click', 'make', '나도 만들기', 1);
+    EventTrigger({
+      action: 'click',
+      category: 'make',
+      label: '나도 만들기',
+      value: 1,
+    });
   };
 
   const [isModalOpen, setIsModalOpen] = useState(false);

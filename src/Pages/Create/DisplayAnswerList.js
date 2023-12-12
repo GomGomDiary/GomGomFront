@@ -106,7 +106,12 @@ const DisplayAnswerList = ({ goToFirstStep }) => {
 
     if (diaryData) {
       setWantNewDiary(true);
-      EventTrigger('click', 'remake', '다이어리 새로 만들기', 1);
+      EventTrigger({
+        action: 'click',
+        category: 'remake',
+        label: '다이어리 새로 만들기',
+        value: 1,
+      });
     } else {
       setQuestioner('');
       setQuestionArr(originQuestionArr);
@@ -115,7 +120,12 @@ const DisplayAnswerList = ({ goToFirstStep }) => {
       setQuestionNum(originQuestionNum);
       navigate('/');
       goToFirstStep();
-      EventTrigger('click', 'make', '나도 만들기', 1);
+      EventTrigger({
+        action: 'click',
+        category: 'make',
+        label: '나도 만들기',
+        value: 1,
+      });
     }
   };
 
@@ -141,7 +151,12 @@ const DisplayAnswerList = ({ goToFirstStep }) => {
       .writeText(link)
       .then(() => {
         setIsCopied(true);
-        EventTrigger('click', 'share', '공유하기', 1);
+        EventTrigger({
+          action: 'click',
+          category: 'share',
+          label: '링크 공유하기',
+          value: 1,
+        });
       })
       .catch((error) => {
         console.error('error', error);
