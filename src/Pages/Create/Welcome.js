@@ -10,6 +10,8 @@ import instance from '../../api/customAxios';
 import { UpdateClick } from '../../store/Create/UpdateClick';
 import CustomModal from '../../components/CustomModal';
 
+import { EventTrigger } from '../../gtag';
+
 const Welcome = ({ onNextStep }) => {
   const [questioner, setQuestioner] = useRecoilState(Questioner);
   const NameInputRef = useRef();
@@ -30,6 +32,7 @@ const Welcome = ({ onNextStep }) => {
     if (questioner) {
       setQuestioner(questioner);
       onNextStep();
+      EventTrigger('click', 'start', '다이어리 만들기 시작', 1);
     } else {
       NameInputRef.current.focus();
       setIsNameWritten(true);

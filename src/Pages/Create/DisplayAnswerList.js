@@ -20,6 +20,7 @@ import { Questioner } from '../../store/Create/Questioner';
 import { OriginQuestionArr } from '../../store/Create/OriginQuestionArr';
 import { OriginQuestionNum } from '../../store/Create/OriginQuestionNum';
 import { QuestionNum } from '../../store/Create/QuestionNum';
+import { EventTrigger } from '../../gtag';
 
 const DisplayAnswerList = ({ goToFirstStep }) => {
   const navigate = useNavigate();
@@ -105,6 +106,7 @@ const DisplayAnswerList = ({ goToFirstStep }) => {
 
     if (diaryData) {
       setWantNewDiary(true);
+      EventTrigger('click', 'remake', '다이어리 새로 만들기', 1);
     } else {
       setQuestioner('');
       setQuestionArr(originQuestionArr);
@@ -113,6 +115,7 @@ const DisplayAnswerList = ({ goToFirstStep }) => {
       setQuestionNum(originQuestionNum);
       navigate('/');
       goToFirstStep();
+      EventTrigger('click', 'make', '나도 만들기', 1);
     }
   };
 
@@ -138,6 +141,7 @@ const DisplayAnswerList = ({ goToFirstStep }) => {
       .writeText(link)
       .then(() => {
         setIsCopied(true);
+        EventTrigger('click', 'share', '공유하기', 1);
       })
       .catch((error) => {
         console.error('error', error);
