@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { useRecoilState, useRecoilValue } from 'recoil';
+import { useRecoilState } from 'recoil';
 import { Questioner } from '../../store/Create/Questioner';
 import Styles from './Welcome.module.css';
 import Btn from '../../components/Btn';

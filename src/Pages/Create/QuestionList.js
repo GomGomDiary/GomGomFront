@@ -1,7 +1,7 @@
 import React, { useState, useMemo, useRef, useEffect } from 'react';
 
 import Styles from './QuestionList.module.css';
-import { useRecoilState, useRecoilValue } from 'recoil';
+import { useRecoilState } from 'recoil';
 import { QuestionNum } from '../../store/Create/QuestionNum';
 import { QuestionArr } from '../../store/Create/QuestionArr';
 import { OriginQuestionArr } from '../../store/Create/OriginQuestionArr';
