@@ -16,6 +16,17 @@ function App() {
     ReactGA.initialize(`${process.env.REACT_APP_GOOGLE_ANALYTICS_TRACKING_ID}`);
   }, []);
 
+  useEffect(() => {
+    // 현재 페이지의 URL 가져오기
+    const currentUrl = window.location.href;
+
+    // Open Graph 메타 태그 설정
+    const ogUrlMetaTag = document.querySelector('meta[property="og:url"]');
+    if (ogUrlMetaTag) {
+      ogUrlMetaTag.setAttribute('content', currentUrl);
+    }
+  }, []);
+
   return (
     <CookiesProvider>
       <RecoilRoot>
@@ -26,9 +37,8 @@ function App() {
             <Route path="/answerers/:diaryId" element={<Main />} />
             <Route path="/answer/:diaryId/:answerId" element={<Main />} />
             <Route path="/diary/:diaryId" element={<Main />} />
-
-            <Route path="/" element={<Main />} />
             <Route path="*" element={<NotFound />} />
+            <Route path="/" element={<Main />} />
           </Routes>
         </BrowserRouter>
       </RecoilRoot>
