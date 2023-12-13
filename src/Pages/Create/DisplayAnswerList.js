@@ -107,7 +107,7 @@ const DisplayAnswerList = ({ goToFirstStep }) => {
     if (diaryData) {
       setWantNewDiary(true);
       EventTrigger({
-        action: 'click',
+        action: '다이어리 새로 만들기',
         category: 'remake',
         label: '다이어리 새로 만들기',
         value: 1,
@@ -121,7 +121,7 @@ const DisplayAnswerList = ({ goToFirstStep }) => {
       navigate('/');
       goToFirstStep();
       EventTrigger({
-        action: 'click',
+        action: '나도 만들기',
         category: 'make',
         label: '나도 만들기',
         value: 1,
@@ -152,7 +152,7 @@ const DisplayAnswerList = ({ goToFirstStep }) => {
       .then(() => {
         setIsCopied(true);
         EventTrigger({
-          action: 'click',
+          action: '링크 공유하기',
           category: 'share',
           label: '링크 공유하기',
           value: 1,

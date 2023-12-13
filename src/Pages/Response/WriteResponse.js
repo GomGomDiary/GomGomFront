@@ -57,7 +57,7 @@ const WriteResponse = ({ onNextStep, onPreviousStep }) => {
       onNextStep();
       setResponseArr([...responseArr, response]);
       EventTrigger({
-        action: 'click',
+        action: '답장 완료하기',
         category: 'success',
         label: '답장 완료하기',
         value: 1,
