@@ -106,7 +106,7 @@ const MatchChallenge = ({ onNextStep }) => {
           setAnswererToken(response.data.diaryToken);
           onNextStep();
           EventTrigger({
-            action: 'click',
+            action: '답장 시작하기',
             category: 'countersign',
             label: '답장 시작하기',
             value: 1,

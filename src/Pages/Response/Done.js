@@ -86,7 +86,7 @@ const Done = ({ goToFirstStep }) => {
     goToFirstStep();
 
     EventTrigger({
-      action: 'click',
+      action: '나도 만들기',
       category: 'make',
       label: '나도 만들기',
       value: 1,

@@ -33,9 +33,9 @@ const Welcome = ({ onNextStep }) => {
       setQuestioner(questioner);
       onNextStep();
       EventTrigger({
-        action: 'click',
+        action: '다이어리 만들기',
         category: 'start',
-        label: '다이어리 만들기 시작',
+        label: '다이어리 만들기',
         value: 1,
       });
     } else {

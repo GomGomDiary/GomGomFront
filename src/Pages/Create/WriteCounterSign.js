@@ -55,7 +55,7 @@ const WriteCounterSign = ({ onNextStep, onPreviousStep }) => {
       if (statusCode === 201) {
         onNextStep();
         EventTrigger({
-          action: 'click',
+          action: '다이어리 완성하기',
           category: 'end',
           label: '다이어리 완성하기',
           value: 1,
