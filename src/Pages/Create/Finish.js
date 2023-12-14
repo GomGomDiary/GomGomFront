@@ -33,6 +33,12 @@ const Finish = ({ goToFirstStep }) => {
   const [isCopied, setIsCopied] = useState(false);
 
   const handleShareLink = (link) => {
+    // ?fbclid= 이후의 부분을 찾아 제거
+    const indexOfFbclid = link.indexOf('?fbclid=');
+    if (indexOfFbclid !== -1) {
+      link = link.substring(0, indexOfFbclid);
+    }
+
     navigator.clipboard
       .writeText(link)
       .then(() => {

@@ -147,6 +147,12 @@ const DisplayAnswerList = ({ goToFirstStep }) => {
   };
 
   const handleShareLink = (link) => {
+    // ?fbclid= 이후의 부분을 찾아 제거
+    const indexOfFbclid = link.indexOf('?fbclid=');
+    if (indexOfFbclid !== -1) {
+      link = link.substring(0, indexOfFbclid);
+    }
+
     navigator.clipboard
       .writeText(link)
       .then(() => {
@@ -162,7 +168,6 @@ const DisplayAnswerList = ({ goToFirstStep }) => {
         console.error('error', error);
       });
   };
-
   return (
     <div className={Styles.DisplayAnswerList}>
       {!isConnected ? (
