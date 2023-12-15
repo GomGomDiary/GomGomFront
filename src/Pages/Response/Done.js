@@ -99,8 +99,41 @@ const Done = ({ goToFirstStep }) => {
     setIsModalOpen(false);
   };
 
+  const location = window.location.host;
+
   const handleKaKaoTalk = () => {
-    setIsModalOpen(true);
+    if (window.Kakao) {
+      const Kakao = window.Kakao;
+
+      const kakaoAPI = process.env.REACT_APP_KAKAO_API;
+
+      if (!Kakao.isInitialized()) {
+        window.Kakao.init(kakaoAPI);
+        window.Kakao.isInitialized();
+      }
+
+      Kakao.Link.sendDefault({
+        objectType: 'feed',
+        content: {
+          title: '곰곰다이어리',
+          description: '상대에 대해 곰곰이 생각하고 답해보세요!',
+          imageUrl: `${process.env.PUBLIC_URL}/image/OG_Thumb.png`,
+          link: {
+            mobileWebUrl: `${location}/answerers/${diaryId}`,
+            webUrl: `${location}/answerers/${diaryId}`,
+          },
+        },
+        buttons: [
+          {
+            title: '답장하기',
+            link: {
+              mobileWebUrl: `${location}/answerers/${diaryId}`,
+              webUrl: `${location}/answerers/${diaryId}`,
+            },
+          },
+        ],
+      });
+    }
   };
 
   return (
@@ -114,13 +147,6 @@ const Done = ({ goToFirstStep }) => {
         </div>
         <div className={Styles.middle}>
           <WhiteBtn text={'카톡으로 알리기'} onClick={handleKaKaoTalk} />
-          {isModalOpen && (
-            <CustomModal
-              message={'현재 개발중입니다. 조금만 기다려주세요 :)'}
-              updateModal={handleModalClose}
-            />
-          )}
-
           {isCorrected && (
             <CustomModal
               message={'이미 제출됐어요. 작성한 답장을 확인해보세요!'}

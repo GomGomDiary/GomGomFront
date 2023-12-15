@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import Styles from './Finish.module.css';
+
 import ConfettiEffect from '../../components/ConfettiEffect';
 
 import Btn from '../../components/Btn';
@@ -65,7 +66,38 @@ const Finish = ({ goToFirstStep }) => {
   const location = window.location.href;
 
   const handleKaKaoTalk = () => {
-    setIsModalOpen(true);
+    if (window.Kakao) {
+      const Kakao = window.Kakao;
+
+      const kakaoAPI = process.env.REACT_APP_KAKAO_API;
+
+      if (!Kakao.isInitialized()) {
+        window.Kakao.init(kakaoAPI);
+        window.Kakao.isInitialized();
+      }
+
+      Kakao.Link.sendDefault({
+        objectType: 'feed',
+        content: {
+          title: '곰곰다이어리',
+          description: '상대에 대해 곰곰이 생각하고 답해보세요!',
+          imageUrl: `${process.env.PUBLIC_URL}/image/OG_Thumb.png`,
+          link: {
+            mobileWebUrl: `${location}diary/${userCookie}`,
+            webUrl: `${location}diary/${userCookie}`,
+          },
+        },
+        buttons: [
+          {
+            title: '답장하기',
+            link: {
+              mobileWebUrl: `${location}diary/${userCookie}`,
+              webUrl: `${location}diary/${userCookie}`,
+            },
+          },
+        ],
+      });
+    }
   };
 
   const handleGoToAnswerList = () => {
@@ -81,9 +113,11 @@ const Finish = ({ goToFirstStep }) => {
           <div>🎉</div>
           <div>곰곰다이어리가 완성됐다곰!</div>
           <div>완성된 다이어리를 공유해보세요.</div>
+          <div>반드시 아래 버튼으로 링크를 공유해주세요!</div>
         </div>
         <div className={Styles.middle}>
           <WhiteBtn
+            className={Styles.shareBtn}
             text={'링크로 공유하기'}
             onClick={() => {
               handleShareLink(`${location}diary/${userCookie}`);
