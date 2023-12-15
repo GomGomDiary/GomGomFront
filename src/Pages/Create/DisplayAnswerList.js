@@ -242,13 +242,13 @@ const DisplayAnswerList = ({ goToFirstStep }) => {
       )}
       {isDiaryOwner && (
         <div className={Styles.commonBtns}>
-          <Btn text={'새로 만들기'} onClick={handleNewDiary} />
           <WhiteBtn
             text={'링크로 공유하기'}
             onClick={() => {
               handleShareLink(`${host}/diary/${pathname}`);
             }}
           />
+          <Btn text={'새로 만들기'} onClick={handleNewDiary} />
         </div>
       )}
       {isAnswerer && (
