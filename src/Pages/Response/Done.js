@@ -99,7 +99,7 @@ const Done = ({ goToFirstStep }) => {
     setIsModalOpen(false);
   };
 
-  const location = window.location.host;
+  const location = window.location.origin;
 
   const handleKaKaoTalk = async () => {
     if (window.Kakao) {
