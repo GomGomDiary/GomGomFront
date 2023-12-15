@@ -168,6 +168,43 @@ const DisplayAnswerList = ({ goToFirstStep }) => {
         console.error('error', error);
       });
   };
+
+  console.log(`${host}/diary/${pathname}`);
+
+  const handleKaKaoTalk = async () => {
+    if (window.Kakao) {
+      const Kakao = window.Kakao;
+
+      const kakaoAPI = process.env.REACT_APP_KAKAO_API;
+
+      if (!Kakao.isInitialized()) {
+        await new Promise((resolve) => Kakao.init(kakaoAPI, resolve));
+      }
+
+      Kakao.Link.sendDefault({
+        objectType: 'feed',
+        content: {
+          title: '곰곰다이어리',
+          description: '상대에 대해 곰곰이 생각하고 답해보세요!',
+          imageUrl: `${process.env.PUBLIC_URL}/image/OG_Thumb.png`,
+          link: {
+            mobileWebUrl: `${host}/diary/${pathname}`,
+            webUrl: `${host}/diary/${pathname}`,
+          },
+        },
+        buttons: [
+          {
+            title: '답장하기',
+            link: {
+              mobileWebUrl: `${host}/diary/${pathname}`,
+              webUrl: `${host}/diary/${pathname}`,
+            },
+          },
+        ],
+      });
+    }
+  };
+
   return (
     <div className={Styles.DisplayAnswerList}>
       {!isConnected ? (
@@ -248,6 +285,7 @@ const DisplayAnswerList = ({ goToFirstStep }) => {
               handleShareLink(`${host}/diary/${pathname}`);
             }}
           />
+          <WhiteBtn text={'카톡으로 공유하기'} onClick={handleKaKaoTalk} />
           <Btn text={'새로 만들기'} onClick={handleNewDiary} />
         </div>
       )}
