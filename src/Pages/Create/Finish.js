@@ -65,15 +65,14 @@ const Finish = ({ goToFirstStep }) => {
 
   const location = window.location.href;
 
-  const handleKaKaoTalk = () => {
+  const handleKaKaoTalk = async () => {
     if (window.Kakao) {
       const Kakao = window.Kakao;
 
       const kakaoAPI = process.env.REACT_APP_KAKAO_API;
 
       if (!Kakao.isInitialized()) {
-        window.Kakao.init(kakaoAPI);
-        window.Kakao.isInitialized();
+        await new Promise((resolve) => Kakao.init(kakaoAPI, resolve));
       }
 
       Kakao.Link.sendDefault({

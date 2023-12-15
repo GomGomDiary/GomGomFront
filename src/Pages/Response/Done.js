@@ -101,15 +101,14 @@ const Done = ({ goToFirstStep }) => {
 
   const location = window.location.host;
 
-  const handleKaKaoTalk = () => {
+  const handleKaKaoTalk = async () => {
     if (window.Kakao) {
       const Kakao = window.Kakao;
 
       const kakaoAPI = process.env.REACT_APP_KAKAO_API;
 
       if (!Kakao.isInitialized()) {
-        window.Kakao.init(kakaoAPI);
-        window.Kakao.isInitialized();
+        await new Promise((resolve) => Kakao.init(kakaoAPI, resolve));
       }
 
       Kakao.Link.sendDefault({
@@ -125,7 +124,7 @@ const Done = ({ goToFirstStep }) => {
         },
         buttons: [
           {
-            title: '답장하기',
+            title: '답장 알리기',
             link: {
               mobileWebUrl: `${location}/answerers/${diaryId}`,
               webUrl: `${location}/answerers/${diaryId}`,
