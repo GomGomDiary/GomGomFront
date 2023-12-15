@@ -101,8 +101,6 @@ const Done = ({ goToFirstStep }) => {
 
   const location = window.location.origin;
 
-  console.log(location);
-
   const handleKaKaoTalk = async () => {
     if (window.Kakao) {
       const Kakao = window.Kakao;
