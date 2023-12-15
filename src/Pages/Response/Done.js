@@ -145,19 +145,10 @@ const Done = ({ goToFirstStep }) => {
           <div>{useRecoilValue(Questioner)}님에게 알려보세요!</div>
         </div>
         <div className={Styles.middle}>
-          <WhiteBtn text={'카톡으로 알리기'} onClick={handleKaKaoTalk} />
-          {isCorrected && (
-            <CustomModal
-              message={'이미 제출됐어요. 작성한 답장을 확인해보세요!'}
-              updateModal={handleBeforeNavigate}
-            />
-          )}
           <WhiteBtn
             text={'내 답장 확인하기'}
             onClick={() => handleDisplayAnswerList()}
           />
-        </div>
-        <div className={Styles.bottom}>
           <Btn text={'나도 만들기'} onClick={handleMakeGomgom} />
         </div>
       </div>

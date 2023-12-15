@@ -56,11 +56,8 @@ const Finish = ({ goToFirstStep }) => {
       });
   };
 
-  const [isModalOpen, setIsModalOpen] = useState(false);
-
   const handleModalClose = () => {
     setIsCopied(false);
-    setIsModalOpen(false);
   };
 
   const location = window.location.href;
@@ -129,12 +126,6 @@ const Finish = ({ goToFirstStep }) => {
             />
           )}
           <WhiteBtn text={'카톡으로 공유하기'} onClick={handleKaKaoTalk} />
-          {isModalOpen && (
-            <CustomModal
-              message={'현재 개발중입니다. 조금만 기다려주세요 :)'}
-              updateModal={handleModalClose}
-            />
-          )}
         </div>
         <div className={Styles.bottom}>
           <Btn text={'답변 현황 확인하기'} onClick={handleGoToAnswerList} />
