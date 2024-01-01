@@ -57,7 +57,7 @@ const HistoryItem = () => {
             </div>
             <div className={Styles.itemInfo}>
               <div className={Styles.title}>{questioner}님의 다이어리</div>
-              <div>가장 최근에 저장된 답장을 확인하라곰!</div>
+              <div>가장 오래된 답변 5개를 확인하라곰!</div>
               <div className={Styles.challengeAndCounterSign}>
                 우리가 설정한 암호: [{challenge}]
               </div>
