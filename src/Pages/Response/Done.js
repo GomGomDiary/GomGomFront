@@ -43,10 +43,7 @@ const Done = ({ goToFirstStep }) => {
   const [originQuestionNum, setOriginQuestionNum] =
     useRecoilState(OriginQuestionNum);
 
-  const handleBeforeNavigate = () => {
-    setIsCorrected(true);
-    navigate(`/answerers/${diaryId}`);
-  };
+  const [isAlreadyAnswered, setIsAlreadyAnswered] = useState(false);
 
   useEffect(() => {
     const fetchUserCookie = async () => {
@@ -62,7 +59,7 @@ const Done = ({ goToFirstStep }) => {
         );
       } catch (error) {
         if (error.response.status === 409) {
-          setIsCorrected(true);
+          setIsAlreadyAnswered(true);
         }
       }
     };
@@ -83,7 +80,6 @@ const Done = ({ goToFirstStep }) => {
     setChallenge('');
     setCountersign('');
     setQuestionNum(originQuestionNum);
-    goToFirstStep();
 
     EventTrigger({
       action: '나도 만들기',
@@ -91,48 +87,6 @@ const Done = ({ goToFirstStep }) => {
       label: '나도 만들기',
       value: 1,
     });
-  };
-
-  const [isModalOpen, setIsModalOpen] = useState(false);
-
-  const handleModalClose = () => {
-    setIsModalOpen(false);
-  };
-
-  const location = window.location.origin;
-
-  const handleKaKaoTalk = async () => {
-    if (window.Kakao) {
-      const Kakao = window.Kakao;
-
-      const kakaoAPI = process.env.REACT_APP_KAKAO_API;
-
-      if (!Kakao.isInitialized()) {
-        await new Promise((resolve) => Kakao.init(kakaoAPI, resolve));
-      }
-
-      Kakao.Link.sendDefault({
-        objectType: 'feed',
-        content: {
-          title: '곰곰다이어리',
-          description: '상대에 대해 곰곰이 생각하고 답해보세요!',
-          imageUrl: `${process.env.PUBLIC_URL}/image/OG_Thumb.png`,
-          link: {
-            mobileWebUrl: `${location}/answerers/${diaryId}`,
-            webUrl: `${location}/answerers/${diaryId}`,
-          },
-        },
-        buttons: [
-          {
-            title: '답장 알리기',
-            link: {
-              mobileWebUrl: `${location}/answerers/${diaryId}`,
-              webUrl: `${location}/answerers/${diaryId}`,
-            },
-          },
-        ],
-      });
-    }
   };
 
   return (
@@ -152,6 +106,12 @@ const Done = ({ goToFirstStep }) => {
           <Btn text={'나도 만들기'} onClick={handleMakeGomgom} />
         </div>
       </div>
+      {isAlreadyAnswered && (
+        <CustomModal
+          message={'이미 답장한 다이어리예요.'}
+          updateModal={() => handleDisplayAnswerList()}
+        />
+      )}
     </div>
   );
 };
