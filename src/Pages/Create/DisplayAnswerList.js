@@ -38,12 +38,12 @@ const DisplayAnswerList = ({ goToFirstStep }) => {
   const itemsPerPage = 5;
   const totalPages = Math.ceil(answererCount / itemsPerPage);
 
-  const [sortOrder, setSortOrder] = useState('asc');
+  const [sortOrder, setSortOrder] = useState('desc');
   const handleSelectSortOrder = (e) => {
-    if (e.target.value === '최신 순') {
-      setSortOrder('desc');
-    } else {
+    if (e.target.value === '오래된 순') {
       setSortOrder('asc');
+    } else {
+      setSortOrder('desc');
     }
   };
 
@@ -235,8 +235,8 @@ const DisplayAnswerList = ({ goToFirstStep }) => {
                 className={Styles.selectSortOrder}
                 onChange={handleSelectSortOrder}
               >
+                <option defaultValue={'최신 순'}>최신 순</option>
                 <option>오래된 순</option>
-                <option>최신 순</option>
               </select>
             </div>
             <table>
