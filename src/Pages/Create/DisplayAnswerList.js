@@ -34,16 +34,26 @@ const DisplayAnswerList = ({ goToFirstStep }) => {
   const [currentPage, setCurrentPage] = useState(1);
 
   /* 페이지네이션 */
-
   const [start, setStart] = useState(0);
   const itemsPerPage = 5;
   const totalPages = Math.ceil(answererCount / itemsPerPage);
+
+  const [sortOrder, setSortOrder] = useState('asc');
+  const handleSelectSortOrder = (e) => {
+    if (e.target.value === '최신 순') {
+      setSortOrder('desc');
+    } else {
+      setSortOrder('asc');
+    }
+  };
 
   const axiosInstance = instance();
 
   useEffect(() => {
     axiosInstance
-      .get(`diary/answerers/${diaryId}/?start=${start}&take=${itemsPerPage}`)
+      .get(
+        `diary/answerers/${diaryId}/?start=${start}&take=${itemsPerPage}&sortOrder=${sortOrder}`
+      )
       .then((response) => {
         if (response.status === 200) {
           setIsConnected(true);
@@ -53,7 +63,7 @@ const DisplayAnswerList = ({ goToFirstStep }) => {
         }
       })
       .catch((e) => navigate('/error-route'));
-  }, [currentPage, totalPages, start, diaryId]);
+  }, [currentPage, totalPages, start, diaryId, sortOrder]);
 
   const handleNextPage = () => {
     if (currentPage < totalPages) {
@@ -169,8 +179,6 @@ const DisplayAnswerList = ({ goToFirstStep }) => {
       });
   };
 
-  console.log(`${host}/diary/${pathname}`);
-
   const handleKaKaoTalk = async () => {
     if (window.Kakao) {
       const Kakao = window.Kakao;
@@ -222,6 +230,15 @@ const DisplayAnswerList = ({ goToFirstStep }) => {
             {answererCount}명이 질문에 답했다곰!
           </div>
           <div className={Styles.listContainer}>
+            <div className={Styles.selectSortOrderWrapper}>
+              <select
+                className={Styles.selectSortOrder}
+                onChange={handleSelectSortOrder}
+              >
+                <option>오래된 순</option>
+                <option>최신 순</option>
+              </select>
+            </div>
             <table>
               <tbody>
                 {answererList.map((person) => (
