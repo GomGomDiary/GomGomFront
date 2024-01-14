@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import Styles from './Header.module.css';
 import { MdOutlineHistory } from 'react-icons/md';
+import { FaBell } from 'react-icons/fa6';
 import { RiMenuLine } from 'react-icons/ri';
 import { useNavigate } from 'react-router-dom';
 
@@ -38,6 +39,7 @@ const Header = ({ questionerStep, answererStep }) => {
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isDropDownOpen, setIsDropDownOpen] = useState(false);
+  const [isReceivedMessage, setIsReceivedMessage] = useState(false);
 
   const handleGoToMain = () => {
     if (
@@ -75,6 +77,11 @@ const Header = ({ questionerStep, answererStep }) => {
     window.location.href = 'https://forms.gle/1TXShtN1kxS7zKqS6';
   };
 
+  // 채팅 알람
+  const handleAlarm = () => {
+    setIsReceivedMessage(!isReceivedMessage);
+  };
+
   return (
     <div className={Styles.Header}>
       <MdOutlineHistory
@@ -84,6 +91,14 @@ const Header = ({ questionerStep, answererStep }) => {
       <div className={Styles.title} onClick={handleGoToMain}>
         GomGom Diary 🐻💭
       </div>
+      <FaBell
+        className={
+          isReceivedMessage
+            ? `${Styles.haveNewMessage} ${Styles.noNewMessage}`
+            : Styles.noNewMessage
+        }
+        onClick={handleAlarm}
+      />
       <RiMenuLine className={Styles.menu} onClick={handleDropdown} />
       {isDropDownOpen && (
         <ul className={Styles.dropdown}>
