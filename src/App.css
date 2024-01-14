@@ -24,4 +24,6 @@ body {
   --text-color: #424242;
   --border-color: #cccccc;
   --background-color: #fafafa;
+  --receiveMessage-color: #ffe5a1;
+  --sendMessage-color: #ffd1d1;
 }
