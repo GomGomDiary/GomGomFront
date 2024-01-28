@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { forwardRef } from 'react';
 import Styles from './Input.module.css';
 
-const Input = React.forwardRef(
+const Input = forwardRef(
   ({ value, onChange, onKeyUp, placeholder, maxLength }, ref) => {
     return (
       <input
