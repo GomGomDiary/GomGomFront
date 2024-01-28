@@ -1,14 +1,18 @@
 import React from 'react';
 import Styles from './ReceiveMessage.module.css';
 
-const ReceiveMessage = () => {
+const ReceiveMessage = ({ receivedMessages }) => {
   return (
-    <div className={Styles.ReceiveMessage}>
-      <div className={Styles.receiver}>🍯 summermong</div>
-      <div className={Styles.rMessage}>
-        안녕하fadsfjklsdjfkalfjslflkasdj세요dfafdsfsdfs요요요
-      </div>
-      <div className={Styles.rTime}>오전 1:03</div>
+    <div>
+      {receivedMessages.map((msg, index) => (
+        <div key={index} className={Styles.ReceiveMessage}>
+          <div className={Styles.receiver}>🐻 {msg.sender}</div>
+          <div className={Styles.rMessage}>{msg.text}</div>
+          <div className={Styles.rTime}>
+            {msg.time.toLocaleTimeString().slice(0, -3)}
+          </div>
+        </div>
+      ))}
     </div>
   );
 };
