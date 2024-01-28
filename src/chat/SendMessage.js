@@ -1,14 +1,18 @@
 import React from 'react';
 import Styles from './SendMessage.module.css';
 
-const SendMessage = () => {
+const SendMessage = ({ messages }) => {
   return (
-    <div className={Styles.SendMessage}>
-      <div className={Styles.sender}>🐻 yoyoo</div>
-      <div className={Styles.sMessage}>
-        안녕하세요fdfaskfjsfklsdjldfafdsfsdfs요요요
-      </div>
-      <div className={Styles.sTime}>오전 1:03</div>
+    <div>
+      {messages.map((msg, index) => (
+        <div key={index} className={Styles.SendMessage}>
+          <div className={Styles.sender}>🐻 {msg.sender}</div>
+          <div className={Styles.sMessage}>{msg.text}</div>
+          <div className={Styles.sTime}>
+            {msg.time.toLocaleTimeString().slice(0, -3)}
+          </div>
+        </div>
+      ))}
     </div>
   );
 };
