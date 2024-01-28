@@ -25,6 +25,7 @@ import { EventTrigger } from '../../gtag';
 
 import { RoomId } from '../../store/Chat/RoomId';
 import { ChatToken } from '../../store/Chat/ChatToken';
+import { GuestAddress } from '../../store/Chat/GuestAddress';
 
 const DisplayAnswerList = ({ goToFirstStep }) => {
   const navigate = useNavigate();
@@ -64,6 +65,7 @@ const DisplayAnswerList = ({ goToFirstStep }) => {
           setAnswererList(response.data.answererList);
           setIsDiaryOwnerId(response.data._id);
           setAnswerCount(response.data.answerCount);
+          console.log(isDiaryOwnerId);
         }
       })
       .catch((e) => navigate('/error-route'));
@@ -163,6 +165,7 @@ const DisplayAnswerList = ({ goToFirstStep }) => {
   /* 채팅 기능 */
   const [roomId, setRoomId] = useRecoilState(RoomId);
   const [chatToken, setChatToken] = useRecoilState(ChatToken);
+  const [guestAddress, setGuestAddress] = useRecoilState(GuestAddress);
 
   useEffect(() => {
     const fetchChatToken = async () => {
@@ -177,7 +180,6 @@ const DisplayAnswerList = ({ goToFirstStep }) => {
         // console.error('Error fetching chat token:', error);
       }
     };
-
     fetchChatToken();
   }, []);
 
@@ -191,11 +193,13 @@ const DisplayAnswerList = ({ goToFirstStep }) => {
         if (chatRoomResponse.status === 201) {
           const newRoomId = chatRoomResponse.data.roomId;
           setRoomId(newRoomId);
+          console.log(newRoomId);
           alert('이제 채팅할 수 있어요.');
         }
       }
       setRoomId(roomId);
-      navigate('/chat/enter_room');
+      console.log(roomId);
+      setGuestAddress(answererId);
     } catch (error) {
       if (error && error.response.status === 400) {
         alert('권한이 없어요.');
@@ -203,6 +207,7 @@ const DisplayAnswerList = ({ goToFirstStep }) => {
         alert('아직 채팅방이 열리지 않았어요.');
       }
     }
+    navigate('/chat/enter_room');
   };
 
   /* fb 쿼리 파라미터 관련 & 링크 복사하기 */
