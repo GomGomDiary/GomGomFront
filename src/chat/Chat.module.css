@@ -14,13 +14,16 @@
   overflow-y: auto;
   display: flex;
   flex-direction: column;
-  padding: 5px;
-  padding-top: 35px;
+  padding: 35px 5px;
 }
 
 .messageInput {
   background-color: var(--border-color);
   border: none;
   height: 30px;
-  padding: 5px;
+  width: 100%;
+  padding: 10px;
+  box-sizing: border-box;
+  position: absolute;
+  bottom: 0;
 }
