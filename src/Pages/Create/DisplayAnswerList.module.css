@@ -32,7 +32,7 @@
   flex-direction: column;
   width: 100%;
   text-align: center;
-  gap: 25px;
+  gap: 15px;
 }
 
 .haveResponseImg {
@@ -44,7 +44,6 @@
 }
 
 .listContainer {
-  height: 170px;
   width: 250px;
   display: flex;
   flex-direction: column;
@@ -75,23 +74,37 @@
 
 .correctAnswerer {
   color: var(--point-color);
-  background-color: var(--main-color);
+  /* background-color: var(--main-color); */
   cursor: pointer;
+  width: 168px;
 }
 
 .owner {
   color: black;
   cursor: pointer;
+  width: 168px;
 }
 
 .notOwner {
   color: lightgray;
   cursor: pointer;
+  width: 168px;
 }
 
-td {
+.listTable {
   border-bottom: 1px solid var(--main-color);
-  padding: 5px;
+  padding: 8px;
+  cursor: pointer;
+  display: flex;
+  font-size: 16px;
+  align-items: center;
+}
+
+.chatIcon {
+  border: none;
+  background-color: transparent;
+  font-size: 16px;
+  cursor: pointer;
 }
 
 .pageBtns {
