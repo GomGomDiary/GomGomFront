@@ -22,6 +22,11 @@
 
 - 2023.10.29 ~ 2023.12.10
 
+
+<h2>🐻 시연 영상 </h2>
+
+<img src="https://github.com/GomGomDiary/GomGomFront/assets/124887974/9e4570a4-6e84-4dcf-9326-4811ab78232b.gif" />
+
 <h2>🐻 팀원 </h2>
 
 | <img src="https://img.dmitory.com/img/201810/6d1/qxm/6d1qxmdXEIamYoam4QeaYy.jpg" width="200" height="200" /> | <img src="https://avatars.githubusercontent.com/u/124887974?v=4" width="200" height="200" /> |
