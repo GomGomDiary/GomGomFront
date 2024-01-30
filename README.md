@@ -20,12 +20,16 @@
 
 <h2>🐻 기획 및 개발 기간 </h2>
 
-- 2023.10.29 ~ 2023.12.10
+- 2023.10.29 ~ 2023.12.10(1차 배포) ~ 진행중
 
+<h2>🐻 시연 영상(작업중) </h2>
 
-<h2>🐻 시연 영상 </h2>
+1. 다이어리 생성하기<p>
+   <img width="300px" src="https://github.com/GomGomDiary/GomGomFront/assets/124887974/74a553e8-0e9a-4918-a363-2008c349248e.gif" />
 
-<img src="https://github.com/GomGomDiary/GomGomFront/assets/124887974/9e4570a4-6e84-4dcf-9326-4811ab78232b.gif" />
+2. 다이어리 답장하기<p>
+   <img width="300px" src="https://github.com/GomGomDiary/GomGomFront/assets/124887974/ac76c95b-0998-441b-8ca7-2e026eb1e1b7.gif" />
+
 
 <h2>🐻 팀원 </h2>
 
