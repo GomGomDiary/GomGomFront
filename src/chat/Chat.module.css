@@ -1,10 +1,13 @@
+.Main {
+  max-height: 100vh;
+}
+
 .Chat {
   display: flex;
   flex-direction: column;
-  height: 100vh;
-  width: 320px;
+
+  width: 340px;
   position: relative;
-  background-color: white;
   margin: 0 auto;
   box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
 }
@@ -15,15 +18,28 @@
   display: flex;
   flex-direction: column;
   padding: 35px 5px;
+  height: 100vh;
+}
+
+.chatAlarm {
+  text-align: center;
+  color: var(--point-color);
+}
+
+.alarm {
+  padding: 30px 0 20px;
+}
+
+.hidden {
+  visibility: hidden;
 }
 
 .messageInput {
-  background-color: var(--border-color);
   border: none;
-  height: 30px;
-  width: 100%;
+  width: 340px;
   padding: 10px;
   box-sizing: border-box;
-  position: absolute;
+  position: fixed;
   bottom: 0;
+  background-color: var(--border-color);
 }
