@@ -65,7 +65,6 @@ const DisplayAnswerList = ({ goToFirstStep }) => {
           setAnswererList(response.data.answererList);
           setIsDiaryOwnerId(response.data._id);
           setAnswerCount(response.data.answerCount);
-          console.log(isDiaryOwnerId);
         }
       })
       .catch((e) => navigate('/error-route'));
@@ -160,6 +159,8 @@ const DisplayAnswerList = ({ goToFirstStep }) => {
     setIsCopied(false);
     setIsAnswerer(false);
     setWantNewDiary(false);
+    setChatNotAllow(false);
+    setChatNotOpen(false);
   };
 
   /* 채팅 기능 */
@@ -183,6 +184,10 @@ const DisplayAnswerList = ({ goToFirstStep }) => {
     fetchChatToken();
   }, []);
 
+  const [chatNotAllow, setChatNotAllow] = useState(false);
+  const [chatNotOpen, setChatNotOpen] = useState(false);
+  const [chatNowOpen, setChatNowOpen] = useState(false);
+
   const handleOpenChat = async (answererId, roomId) => {
     try {
       if (!roomId) {
@@ -192,22 +197,20 @@ const DisplayAnswerList = ({ goToFirstStep }) => {
         });
         if (chatRoomResponse.status === 201) {
           const newRoomId = chatRoomResponse.data.roomId;
+          setChatNowOpen(true);
           setRoomId(newRoomId);
-          console.log(newRoomId);
-          alert('이제 채팅할 수 있어요.');
         }
       }
       setRoomId(roomId);
-      console.log(roomId);
       setGuestAddress(answererId);
+      navigate('/chat/enter_room');
     } catch (error) {
       if (error && error.response.status === 400) {
-        alert('권한이 없어요.');
+        setChatNotAllow(true);
       } else if (error && error.response.status === 403) {
-        alert('아직 채팅방이 열리지 않았어요.');
+        setChatNotOpen(true);
       }
     }
-    navigate('/chat/enter_room');
   };
 
   /* fb 쿼리 파라미터 관련 & 링크 복사하기 */
@@ -392,6 +395,24 @@ const DisplayAnswerList = ({ goToFirstStep }) => {
             저장된 다이어리는 최근 답장 5개만 볼 수 있어요.`}
           updateModal={handleModalClose}
           goToFirstStep={goToFirstStep}
+        />
+      )}
+      {chatNotAllow && (
+        <CustomModal
+          message={`권한이 없어요.`}
+          updateModal={handleModalClose}
+        />
+      )}
+      {chatNotOpen && (
+        <CustomModal
+          message={`다이어리 주인이 아직 채팅방을 열지 않았어요.`}
+          updateModal={handleModalClose}
+        />
+      )}
+      {chatNowOpen && (
+        <CustomModal
+          message={`이제 채팅할 수 있어요. :)`}
+          updateModal={handleModalClose}
         />
       )}
     </div>
