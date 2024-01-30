@@ -24,12 +24,15 @@ const Chat = () => {
   const [questioner, setQuestioner] = useState('');
   const [answerer, setAnswerer] = useState('');
 
+  const [isEnter, setIsEnter] = useState(false);
+
   const guestAddress = useRecoilValue(GuestAddress);
   const diaryAddress = getCookie('diaryAddress');
 
+  const axiosInstance = instance();
+
   const getNicknames = async () => {
     try {
-      const axiosInstance = instance();
       const nicknames = await axiosInstance.get(`/chat/${roomId}`);
       setAnswerer(nicknames.data.answerer);
       setQuestioner(nicknames.data.questioner);
@@ -44,8 +47,6 @@ const Chat = () => {
       roomid: `${roomId}`,
     };
 
-    console.log(header);
-
     const newSocket = io.connect(`${process.env.REACT_APP_CHAT_WS}`, {
       extraHeaders: {
         ...header,
@@ -53,18 +54,16 @@ const Chat = () => {
     });
 
     newSocket.on('connect', () => {
-      console.log(`Socket.IO 연결 성공, ${roomId}, ${chatToken}`);
+      console.log(`roomId: ${roomId}, chatToken: ${chatToken}`);
       setSocket(newSocket);
     });
 
-    newSocket.emit('enter_room', { roomId });
-
     newSocket.on('exception', (e) => {
-      console.error('에러남: ', e);
+      console.error('에러 발생', e);
     });
 
     newSocket.on('disconnect', () => {
-      console.log('뒤로 돌아가기');
+      console.log('연결 끊어짐');
       navigate(-1);
     });
 
@@ -79,20 +78,156 @@ const Chat = () => {
 
   useEffect(() => {
     if (socket) {
-      socket.on('receive_message', (message) => {
+      socket.on('ready', () => {
+        console.log('레디 완료');
+        socket.emit('enter_room', { roomId });
+        setIsEnter(true);
+        console.log('엔터룸 완료');
+      });
+
+      if (isEnter) {
+        console.log('메세지 수신 준비 완료');
+        socket.on('receive_message', (message) => {
+          const newMessage = {
+            chat: message.chat,
+            nickname: message.nickname,
+            createdAt: new Date(),
+          };
+
+          setMessages((prevReceivedMessages) => [
+            ...prevReceivedMessages,
+            newMessage,
+          ]);
+        });
+      }
+    }
+  }, [isEnter, roomId, socket]);
+
+  const scrollToBottom = () => {
+    if (scrollContainerRef.current) {
+      scrollContainerRef.current.scrollTop =
+        scrollContainerRef.current.scrollHeight;
+    }
+  };
+
+  const handleMessageSend = (e) => {
+    if (socket && message.trim() !== '' && e.key === 'Enter') {
+      const nickname = guestAddress === diaryAddress ? answerer : questioner;
+
+      if (message.length <= 100) {
         const newMessage = {
-          chat: message.chat,
-          nickname: message.nickname,
-          time: new Date(),
+          nickname: nickname,
+          chat: message,
+          createdAt: new Date(),
+          isSender: true,
         };
 
-        setMessages((prevReceivedMessages) => [
-          ...prevReceivedMessages,
-          newMessage,
-        ]);
-      });
+        socket.emit('send_message', {
+          roomId: roomId,
+          chat: message,
+          nickname: nickname,
+        });
+
+        setMessages((prevMessages) => [...prevMessages, newMessage]);
+        setMessage('');
+        scrollToBottom();
+      } else {
+        alert('메세지는 100자 이내로 입력해주세요.');
+      }
     }
-  }, [socket]);
+  };
+
+  const handleMessageInput = (e) => {
+    setMessage(e.target.value);
+  };
+
+  /* 메세지 불러오기 */
+  const [isError, setIsError] = useState(false);
+  const [isEnd, setIsEnd] = useState(false);
+  const [saveMessages, setSaveMessages] = useState([]);
+  const [originNext, setOriginNext] = useState('');
+  const [loading, setLoading] = useState(false);
+
+  /* 처음 메세지 받아 오기 */
+  useEffect(() => {
+    fetchOriginMessages();
+  }, []);
+
+  const fetchOriginMessages = async () => {
+    try {
+      const loadMessage = await axiosInstance.get(
+        `/chat/message/${roomId}?take=5`
+      );
+      if (loadMessage.data.messageList.length === 0) {
+        setIsEnd(true);
+      } else {
+        setSaveMessages(loadMessage.data.messageList);
+        setOriginNext(loadMessage.data.next);
+        setLoading(true);
+      }
+    } catch (e) {
+      setIsEnd(true);
+    }
+  };
+
+  /* 처음 메세지 next를 기준으로 다음 메세지 리스트 요청 */
+  const fetchNextMessages = async (next) => {
+    if (next === undefined || !next) {
+      return [];
+    }
+
+    try {
+      const nextMessages = await axiosInstance.get(
+        `/chat/message/${roomId}?take=5&next=${next}`
+      );
+      const nextList = nextMessages.data.messageList;
+      return nextList;
+    } catch (e) {
+      return [];
+    }
+  };
+
+  /* 추가 데이터 받아오기 */
+  const [fetching, setFetching] = useState(false);
+
+  const fetchMoreMessages = async () => {
+    setFetching(true);
+    const nextMessagesList = await fetchNextMessages(originNext);
+
+    if (nextMessagesList.length > 0) {
+      setSaveMessages((prev) => [...nextMessagesList, ...prev]);
+      setOriginNext(nextMessagesList.next);
+      setIsEnd(false);
+    } else {
+      setIsEnd(true);
+      // alert('가져올 메시지가 없어요!');
+    }
+
+    setFetching(false);
+  };
+
+  const [prevScrollTop, setPrevScrollTop] = useState(0);
+
+  const handleScroll = () => {
+    let scrollTop = document.documentElement.scrollTop;
+
+    // 스크롤이 최상단에 닿았을 때만 추가 데이터 받기
+    if (scrollTop < prevScrollTop && fetching === false) {
+      fetchMoreMessages();
+    } else {
+      setLoading(true);
+    }
+
+    // 현재 스크롤 위치를 이전 스크롤 위치로 업데이트
+    setPrevScrollTop(scrollTop);
+  };
+
+  useEffect(() => {
+    window.addEventListener('scroll', handleScroll);
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, [prevScrollTop]);
 
   const scrollContainerRef = useRef(null);
 
@@ -101,55 +236,54 @@ const Chat = () => {
       scrollContainerRef.current.scrollTop =
         scrollContainerRef.current.scrollHeight;
     }
-  }, [messages]);
-
-  const handleMessageSend = (e) => {
-    if (socket && message.trim() !== '' && e.key === 'Enter') {
-      const nickname = guestAddress === diaryAddress ? answerer : questioner;
-
-      const newMessage = {
-        nickname: nickname,
-        chat: message,
-        time: new Date(),
-        isSender: true,
-      };
-
-      socket.emit('send_message', {
-        roomId: roomId,
-        chat: message,
-        nickname: nickname,
-      });
-
-      setMessages((prevMessages) => [...prevMessages, newMessage]);
-      setMessage('');
-    }
-  };
-
-  const handleMessageInput = (e) => {
-    setMessage(e.target.value);
-  };
+    console.log(
+      scrollContainerRef.current.scrollTop,
+      scrollContainerRef.current.scrollHeight
+    );
+  }, [messages, saveMessages, scrollContainerRef]);
 
   return (
-    <div className={Styles.Chat}>
+    <div className={Styles.Main}>
       <Header />
-      <div className={Styles.ChatContainer} ref={scrollContainerRef}>
-        {messages.map((message, i) => (
-          <div key={i}>
-            {message.isSender ? (
-              <SendMessage message={message} />
-            ) : (
-              <ReceiveMessage message={message} />
-            )}
-          </div>
-        ))}
+      <div className={Styles.Chat}>
+        <div className={Styles.ChatContainer} ref={scrollContainerRef}>
+          {loading && (
+            <div
+              className={`${Styles.chatAlarm} ${
+                isEnd ? Styles.hidden : Styles.alarm
+              }`}
+            >
+              {isEnd ? null : '스크롤을 움직여 이전 메세지를 확인해보세요.'}
+            </div>
+          )}
+          {saveMessages.map((message, i) => (
+            <div key={i}>
+              {message.isSender ? (
+                <SendMessage message={message} />
+              ) : (
+                <ReceiveMessage message={message} />
+              )}
+            </div>
+          ))}
+          {messages.map((message, i) => (
+            <div key={i}>
+              {message.isSender ? (
+                <SendMessage message={message} />
+              ) : (
+                <ReceiveMessage message={message} />
+              )}
+            </div>
+          ))}
+        </div>
+        <input
+          className={Styles.messageInput}
+          type="input"
+          value={message}
+          onChange={handleMessageInput}
+          onKeyUp={handleMessageSend}
+          placeholder="100자 이내로 입력해주세요."
+        />
       </div>
-      <input
-        className={Styles.messageInput}
-        type="input"
-        value={message}
-        onChange={handleMessageInput}
-        onKeyUp={handleMessageSend}
-      />
     </div>
   );
 };
