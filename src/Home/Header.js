@@ -63,6 +63,7 @@ const Header = ({ questionerStep, answererStep }) => {
 
   const handleModalClose = () => {
     setIsModalOpen(false);
+    setIsReceivedMessage(false);
   };
 
   const handleDropdown = () => {
@@ -109,6 +110,12 @@ const Header = ({ questionerStep, answererStep }) => {
       {isModalOpen && (
         <CustomModal
           message={'작성중에는 메인으로 갈 수 없어요.'}
+          updateModal={handleModalClose}
+        />
+      )}
+      {isReceivedMessage && (
+        <CustomModal
+          message={'개발중입니다. 조금만 기다려주세요!'}
           updateModal={handleModalClose}
         />
       )}
