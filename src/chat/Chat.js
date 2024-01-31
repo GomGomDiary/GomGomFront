@@ -11,6 +11,7 @@ import instance from '../api/customAxios';
 import { useNavigate } from 'react-router-dom';
 import { GuestAddress } from '../store/Chat/GuestAddress';
 import { getCookie } from '../api/cookie';
+import CustomModal from '../components/CustomModal';
 
 const Chat = () => {
   const chatToken = useRecoilValue(ChatToken);
@@ -110,6 +111,8 @@ const Chat = () => {
     }
   };
 
+  const [isScaleover, setIsScaleover] = useState(false);
+
   const handleMessageSend = (e) => {
     if (socket && message.trim() !== '' && e.key === 'Enter') {
       const nickname = guestAddress === diaryAddress ? answerer : questioner;
@@ -132,7 +135,7 @@ const Chat = () => {
         setMessage('');
         scrollToBottom();
       } else {
-        alert('메세지는 100자 이내로 입력해주세요.');
+        setIsScaleover(true);
       }
     }
   };
@@ -248,6 +251,10 @@ const Chat = () => {
     }
   }, [messages, saveMessages, scrollContainerRef]);
 
+  const handleModalClose = () => {
+    setIsScaleover(false);
+  };
+
   return (
     <div className={Styles.Main}>
       <Header />
@@ -290,6 +297,12 @@ const Chat = () => {
           placeholder="100자 이내로 입력해주세요."
         />
       </div>
+      {isScaleover && (
+        <CustomModal
+          message={`메세지는 100자 이내로 보내주세요.`}
+          updateModal={handleModalClose}
+        />
+      )}
     </div>
   );
 };
