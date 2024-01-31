@@ -8,6 +8,8 @@ const CustomModal = ({ message, updateModal, onNextStep }) => {
   const handleClose = () => {
     if (message === '이전 다이어리는 저장됐어요.') {
       onNextStep();
+    } else if (message === '이제 채팅할 수 있어요. :)') {
+      window.location.reload();
     } else {
       setModalIsOpen(false);
       updateModal(false);

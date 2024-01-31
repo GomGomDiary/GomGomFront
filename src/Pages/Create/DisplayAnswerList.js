@@ -199,7 +199,6 @@ const DisplayAnswerList = ({ goToFirstStep }) => {
           const newRoomId = chatRoomResponse.data.roomId;
           setChatNowOpen(true);
           setRoomId(newRoomId);
-          window.location.reload();
         }
       } else {
         setRoomId(roomId);
