@@ -1,0 +1,45 @@
+.Main {
+  max-height: 100vh;
+}
+
+.Chat {
+  display: flex;
+  flex-direction: column;
+
+  width: 340px;
+  position: relative;
+  margin: 0 auto;
+  box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.ChatContainer {
+  background-color: white;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  padding: 35px 5px;
+  height: 100vh;
+}
+
+.chatAlarm {
+  text-align: center;
+  color: var(--point-color);
+}
+
+.alarm {
+  padding: 30px 0 20px;
+}
+
+.hidden {
+  visibility: hidden;
+}
+
+.messageInput {
+  border: none;
+  width: 340px;
+  padding: 10px;
+  box-sizing: border-box;
+  position: fixed;
+  bottom: 0;
+  background-color: var(--border-color);
+}

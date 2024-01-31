@@ -13,6 +13,7 @@ import { getCookie } from '../../api/cookie';
 import ResponseContent from '../../components/ResponseContent';
 import CustomModal from '../../components/CustomModal';
 import ConfirmModal from '../../components/ConfirmModal';
+
 import { CounterSign } from '../../store/Create/CounterSign';
 import { QuestionArr } from '../../store/Create/QuestionArr';
 import { Challenge } from '../../store/Create/Challenge';
@@ -21,6 +22,10 @@ import { OriginQuestionArr } from '../../store/Create/OriginQuestionArr';
 import { OriginQuestionNum } from '../../store/Create/OriginQuestionNum';
 import { QuestionNum } from '../../store/Create/QuestionNum';
 import { EventTrigger } from '../../gtag';
+
+import { RoomId } from '../../store/Chat/RoomId';
+import { ChatToken } from '../../store/Chat/ChatToken';
+import { GuestAddress } from '../../store/Chat/GuestAddress';
 
 const DisplayAnswerList = ({ goToFirstStep }) => {
   const navigate = useNavigate();
@@ -154,10 +159,64 @@ const DisplayAnswerList = ({ goToFirstStep }) => {
     setIsCopied(false);
     setIsAnswerer(false);
     setWantNewDiary(false);
+    setChatNotAllow(false);
+    setChatNotOpen(false);
   };
 
+  /* 채팅 기능 */
+  const [roomId, setRoomId] = useRecoilState(RoomId);
+  const [chatToken, setChatToken] = useRecoilState(ChatToken);
+  const [guestAddress, setGuestAddress] = useRecoilState(GuestAddress);
+
+  useEffect(() => {
+    const fetchChatToken = async () => {
+      try {
+        /* 토큰 받기 */
+        const tokenResponse = await axiosInstance.post('/chat/token');
+        if (tokenResponse.status === 201) {
+          const _chatToken = tokenResponse.data.chatToken;
+          setChatToken(_chatToken);
+        }
+      } catch (error) {
+        // console.error('Error fetching chat token:', error);
+      }
+    };
+    fetchChatToken();
+  }, []);
+
+  const [chatNotAllow, setChatNotAllow] = useState(false);
+  const [chatNotOpen, setChatNotOpen] = useState(false);
+  const [chatNowOpen, setChatNowOpen] = useState(false);
+
+  const handleOpenChat = async (answererId, roomId) => {
+    try {
+      if (!roomId) {
+        /* 채팅방 생성 */
+        const chatRoomResponse = await axiosInstance.post('/chat', {
+          answererId,
+        });
+        if (chatRoomResponse.status === 201) {
+          const newRoomId = chatRoomResponse.data.roomId;
+          setChatNowOpen(true);
+          setRoomId(newRoomId);
+          window.location.reload();
+        }
+      } else {
+        setRoomId(roomId);
+        setGuestAddress(answererId);
+        navigate('/chat/enter_room');
+      }
+    } catch (error) {
+      if (error && error.response.status === 400) {
+        setChatNotAllow(true);
+      } else if (error && error.response.status === 403) {
+        setChatNotOpen(true);
+      }
+    }
+  };
+
+  /* fb 쿼리 파라미터 관련 & 링크 복사하기 */
   const handleShareLink = (link) => {
-    // ?fbclid= 이후의 부분을 찾아 제거
     const indexOfFbclid = link.indexOf('?fbclid=');
     if (indexOfFbclid !== -1) {
       link = link.substring(0, indexOfFbclid);
@@ -179,6 +238,7 @@ const DisplayAnswerList = ({ goToFirstStep }) => {
       });
   };
 
+  /* 카카오톡 공유 */
   const handleKaKaoTalk = async () => {
     if (window.Kakao) {
       const Kakao = window.Kakao;
@@ -239,26 +299,39 @@ const DisplayAnswerList = ({ goToFirstStep }) => {
                 <option>오래된 순</option>
               </select>
             </div>
-            <table>
-              <tbody>
-                {answererList.map((person) => (
-                  <tr key={person._id}>
-                    <td
-                      onClick={() => handleDisplayResponse(person._id)}
-                      className={
-                        person._id === correctAnswerer
-                          ? Styles.correctAnswerer
-                          : person._id === diaryId
-                          ? Styles.notOwner
-                          : Styles.owner
-                      }
-                    >
-                      {person.answerer} 님의 답장
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+            <div>
+              {answererList.map((person) => (
+                <div className={Styles.listTable} key={person._id}>
+                  <div
+                    onClick={() => handleDisplayResponse(person._id)}
+                    className={
+                      person._id === correctAnswerer
+                        ? Styles.correctAnswerer
+                        : person._id === diaryId
+                        ? Styles.notOwner
+                        : Styles.owner
+                    }
+                  >
+                    {person.answerer} 님의 답장
+                  </div>
+
+                  <button
+                    className={Styles.chatIcon}
+                    onClick={() => handleOpenChat(person._id, person.roomId)}
+                  >
+                    {person.roomId && person._id === correctAnswerer
+                      ? '💬'
+                      : !person.roomId && person._id === correctAnswerer
+                      ? '📭'
+                      : correctAnswerer === diaryId && person.roomId
+                      ? '💬'
+                      : correctAnswerer === diaryId && !person.roomId
+                      ? '📭'
+                      : null}
+                  </button>
+                </div>
+              ))}
+            </div>
           </div>
           <div className={Styles.pageBtns}>
             <button
@@ -324,6 +397,24 @@ const DisplayAnswerList = ({ goToFirstStep }) => {
             저장된 다이어리는 최근 답장 5개만 볼 수 있어요.`}
           updateModal={handleModalClose}
           goToFirstStep={goToFirstStep}
+        />
+      )}
+      {chatNotAllow && (
+        <CustomModal
+          message={`권한이 없어요.`}
+          updateModal={handleModalClose}
+        />
+      )}
+      {chatNotOpen && (
+        <CustomModal
+          message={`다이어리 주인이 아직 채팅방을 열지 않았어요.`}
+          updateModal={handleModalClose}
+        />
+      )}
+      {chatNowOpen && (
+        <CustomModal
+          message={`이제 채팅할 수 있어요. :)`}
+          updateModal={handleModalClose}
         />
       )}
     </div>

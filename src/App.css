@@ -15,6 +15,11 @@
 body {
   height: 100%;
   background-color: var(--background-color);
+  -ms-overflow-style: none;
+}
+
+::-webkit-scrollbar {
+  display: none;
 }
 
 :root {
@@ -24,4 +29,6 @@ body {
   --text-color: #424242;
   --border-color: #cccccc;
   --background-color: #fafafa;
+  --receiveMessage-color: #ffe5a1;
+  --sendMessage-color: #ffd1d1;
 }
