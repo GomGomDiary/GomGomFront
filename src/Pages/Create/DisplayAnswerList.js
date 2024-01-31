@@ -3,7 +3,7 @@ import Styles from './DisplayAnswerList.module.css';
 import instance from '../../api/customAxios';
 
 import { useParams } from 'react-router-dom';
-import { useRecoilState, useRecoilValue } from 'recoil';
+import { useRecoilState } from 'recoil';
 import { Answer } from '../../store/Create/Answer';
 import { Question } from '../../store/Create/Question';
 import { useNavigate } from 'react-router-dom';
