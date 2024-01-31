@@ -54,7 +54,7 @@ const Chat = () => {
     });
 
     newSocket.on('connect', () => {
-      console.log(`roomId: ${roomId}, chatToken: ${chatToken}`);
+      // console.log(`roomId: ${roomId}, chatToken: ${chatToken}`);
       setSocket(newSocket);
     });
 
@@ -79,14 +79,14 @@ const Chat = () => {
   useEffect(() => {
     if (socket) {
       socket.on('ready', () => {
-        console.log('레디 완료');
+        // console.log('레디 완료');
         socket.emit('enter_room', { roomId });
         setIsEnter(true);
-        console.log('엔터룸 완료');
+        // console.log('엔터룸 완료');
       });
 
       if (isEnter) {
-        console.log('메세지 수신 준비 완료');
+        // console.log('메세지 수신 준비 완료');
         socket.on('receive_message', (message) => {
           const newMessage = {
             chat: message.chat,
@@ -142,7 +142,6 @@ const Chat = () => {
   };
 
   /* 메세지 불러오기 */
-  const [isError, setIsError] = useState(false);
   const [isEnd, setIsEnd] = useState(false);
   const [saveMessages, setSaveMessages] = useState([]);
   const [originNext, setOriginNext] = useState('');
@@ -158,11 +157,13 @@ const Chat = () => {
       const loadMessage = await axiosInstance.get(
         `/chat/message/${roomId}?take=5`
       );
+      // 받아온 메세지가 없으면 종료
       if (loadMessage.data.messageList.length === 0) {
         setIsEnd(true);
       } else {
+        // 받아온 메세지가 있으면 업데이트 & next 업데이트 & 로딩중
         setSaveMessages(loadMessage.data.messageList);
-        setOriginNext(loadMessage.data.next);
+        setOriginNext(loadMessage.data.next); // 업데이트
         setLoading(true);
       }
     } catch (e) {
@@ -172,15 +173,18 @@ const Chat = () => {
 
   /* 처음 메세지 next를 기준으로 다음 메세지 리스트 요청 */
   const fetchNextMessages = async (next) => {
+    // next 값이 없으면 빈 배열 반환 (+next 값이 같아 종료된 경우)
     if (next === undefined || !next) {
       return [];
     }
 
     try {
+      // next를 기준으로 메세지 요청
       const nextMessages = await axiosInstance.get(
         `/chat/message/${roomId}?take=5&next=${next}`
       );
       const nextList = nextMessages.data.messageList;
+      setOriginNext(nextMessages.data.next);
       return nextList;
     } catch (e) {
       return [];
@@ -189,21 +193,27 @@ const Chat = () => {
 
   /* 추가 데이터 받아오기 */
   const [fetching, setFetching] = useState(false);
+  const [prevNext, setPrevNext] = useState('');
 
   const fetchMoreMessages = async () => {
     setFetching(true);
     const nextMessagesList = await fetchNextMessages(originNext);
 
+    // 새로 받아온 메세지가 있을 경우 누적으로 저장 & next 값 갱신
     if (nextMessagesList.length > 0) {
       setSaveMessages((prev) => [...nextMessagesList, ...prev]);
-      setOriginNext(nextMessagesList.next);
       setIsEnd(false);
     } else {
       setIsEnd(true);
-      // alert('가져올 메시지가 없어요!');
+    }
+
+    // 이전과 현재 next 값이 같으면 요청을 보내지 않고 종료
+    if (prevNext === originNext) {
+      return [];
     }
 
     setFetching(false);
+    setPrevNext(originNext);
   };
 
   const [prevScrollTop, setPrevScrollTop] = useState(0);
@@ -236,10 +246,6 @@ const Chat = () => {
       scrollContainerRef.current.scrollTop =
         scrollContainerRef.current.scrollHeight;
     }
-    console.log(
-      scrollContainerRef.current.scrollTop,
-      scrollContainerRef.current.scrollHeight
-    );
   }, [messages, saveMessages, scrollContainerRef]);
 
   return (
