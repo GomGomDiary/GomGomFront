@@ -199,11 +199,13 @@ const DisplayAnswerList = ({ goToFirstStep }) => {
           const newRoomId = chatRoomResponse.data.roomId;
           setChatNowOpen(true);
           setRoomId(newRoomId);
+          window.location.reload();
         }
+      } else {
+        setRoomId(roomId);
+        setGuestAddress(answererId);
+        navigate('/chat/enter_room');
       }
-      setRoomId(roomId);
-      setGuestAddress(answererId);
-      navigate('/chat/enter_room');
     } catch (error) {
       if (error && error.response.status === 400) {
         setChatNotAllow(true);
