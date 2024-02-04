@@ -17,7 +17,6 @@ export const QuestionList = ({ onNextStep, onPreviousStep }) => {
   /* 원래 배열에서 개수만 자른 거 */
   const [originQuestionArr, setOriginQuestionArr] =
     useRecoilState(OriginQuestionArr);
-  const originQuestion = originQuestionArr.slice(0, questionNumber);
 
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
 
@@ -25,7 +24,7 @@ export const QuestionList = ({ onNextStep, onPreviousStep }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [editedQuestion, setEditedQuestion] = useState('');
 
-  const selectedQuestion = questionArr.slice(0, questionNumber);
+  const selectedQuestion = originQuestionArr.slice(0, questionNumber);
 
   const [editedList, setEditedList] = useState([...selectedQuestion]);
   const updatedList = [...editedList];
