@@ -17,15 +17,27 @@ function App() {
     ReactGA.initialize(`${process.env.REACT_APP_GOOGLE_ANALYTICS_TRACKING_ID}`);
   }, []);
 
-  useEffect(() => {
-    // 현재 페이지의 URL 가져오기
-    const currentUrl = window.location.href;
+  // useEffect(() => {
+  //   // 현재 페이지의 URL 가져오기
+  //   const currentUrl = window.location.href;
 
-    // Open Graph 메타 태그 설정
-    const ogUrlMetaTag = document.querySelector('meta[property="og:url"]');
-    if (ogUrlMetaTag) {
-      ogUrlMetaTag.setAttribute('content', currentUrl);
-    }
+  //   // Open Graph 메타 태그 설정
+  //   const ogUrlMetaTag = document.querySelector('meta[property="og:url"]');
+  //   if (ogUrlMetaTag) {
+  //     ogUrlMetaTag.setAttribute('content', currentUrl);
+  //   }
+  // }, []);
+
+  useEffect(() => {
+    const script = document.createElement('script');
+    script.src = 'https://developers.kakao.com/sdk/js/kakao.js';
+    script.async = true;
+
+    document.body.appendChild(script);
+
+    return () => {
+      document.body.removeChild(script);
+    };
   }, []);
 
   return (
