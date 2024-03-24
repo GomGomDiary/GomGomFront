@@ -282,8 +282,6 @@ const DisplayAnswerList = ({ goToFirstStep }) => {
     }
   };
 
-  console.log(answererList.length);
-
   return (
     <div className={Styles.DisplayAnswerList}>
       {!isConnected ? (
