@@ -39,27 +39,20 @@ const DisplayAnswerList = ({ goToFirstStep }) => {
   const [currentPage, setCurrentPage] = useState(1);
 
   /* 페이지네이션 */
-  const [start, setStart] = useState(0);
   const itemsPerPage = 5;
   const totalPages = Math.ceil(answererCount / itemsPerPage);
-
+  const pageRange = 5; // 한 번에 보여줄 페이지 수
   const [sortOrder, setSortOrder] = useState('desc');
-  const handleSelectSortOrder = (e) => {
-    if (e.target.value === '오래된 순') {
-      setSortOrder('asc');
-    } else {
-      setSortOrder('desc');
-    }
-  };
 
   const axiosInstance = instance();
 
   useEffect(() => {
+    const start = (currentPage - 1) * itemsPerPage;
     axiosInstance
       .get(
         `diary/answerers/${diaryId}/?start=${start}&take=${itemsPerPage}&sortOrder=${sortOrder}`
       )
-      .then((response) => {
+      .then(response => {
         if (response.status === 200) {
           setIsConnected(true);
           setAnswererList(response.data.answererList);
@@ -67,20 +60,37 @@ const DisplayAnswerList = ({ goToFirstStep }) => {
           setAnswerCount(response.data.answerCount);
         }
       })
-      .catch((e) => navigate('/error-route'));
-  }, [currentPage, totalPages, start, diaryId, sortOrder]);
+      .catch(e => navigate('/error-route'));
+  }, [currentPage, diaryId, sortOrder]);
 
-  const handleNextPage = () => {
-    if (currentPage < totalPages) {
-      setStart((prevStart) => prevStart + itemsPerPage);
-      setCurrentPage((prevPage) => prevPage + 1);
+  const handlePageClick = pageNumber => {
+    if (pageNumber <= totalPages) {
+      setCurrentPage(pageNumber);
     }
   };
 
-  const handlePrevPage = () => {
-    if (currentPage > 1) {
-      setStart((prevStart) => prevStart - itemsPerPage);
-      setCurrentPage((prevPage) => prevPage - 1);
+  const generatePageNumbers = () => {
+    const pageNumbers = [];
+    const totalPagesToShow = Math.min(pageRange, totalPages);
+    const currentPageGroup = Math.ceil(currentPage / totalPagesToShow);
+    const firstPageInGroup = (currentPageGroup - 1) * totalPagesToShow + 1;
+    let endPage = currentPageGroup * totalPagesToShow;
+
+    if (endPage > totalPages) {
+      endPage = totalPages;
+    }
+
+    for (let i = firstPageInGroup; i <= endPage; i++) {
+      pageNumbers.push(i);
+    }
+    return pageNumbers;
+  };
+
+  const handleSelectSortOrder = e => {
+    if (e.target.value === '오래된 순') {
+      setSortOrder('asc');
+    } else {
+      setSortOrder('desc');
     }
   };
 
@@ -90,15 +100,15 @@ const DisplayAnswerList = ({ goToFirstStep }) => {
   const [isConnected, setIsConnected] = useState(false);
   const [wantNewDiary, setWantNewDiary] = useState(false);
 
-  const handleDisplayResponse = (answerId) => {
+  const handleDisplayResponse = answerId => {
     axiosInstance
       .get(`diary/answer/${diaryId}/${answerId}`)
-      .then((response) => {
+      .then(response => {
         setAnswer(response.data.answer);
         setQuestion(response.data.question);
         navigate(`/answer/${diaryId}/${answerId}`);
       })
-      .catch((error) => setIsAnswerer(true));
+      .catch(error => setIsAnswerer(true));
   };
 
   let host = window.location.origin;
@@ -215,7 +225,7 @@ const DisplayAnswerList = ({ goToFirstStep }) => {
   };
 
   /* fb 쿼리 파라미터 관련 & 링크 복사하기 */
-  const handleShareLink = (link) => {
+  const handleShareLink = link => {
     const indexOfFbclid = link.indexOf('?fbclid=');
     if (indexOfFbclid !== -1) {
       link = link.substring(0, indexOfFbclid);
@@ -232,7 +242,7 @@ const DisplayAnswerList = ({ goToFirstStep }) => {
           value: 1,
         });
       })
-      .catch((error) => {
+      .catch(error => {
         console.error('error', error);
       });
   };
@@ -245,7 +255,7 @@ const DisplayAnswerList = ({ goToFirstStep }) => {
       const kakaoAPI = process.env.REACT_APP_KAKAO_API;
 
       if (!Kakao.isInitialized()) {
-        await new Promise((resolve) => Kakao.init(kakaoAPI, resolve));
+        await new Promise(resolve => Kakao.init(kakaoAPI, resolve));
       }
 
       Kakao.Link.sendDefault({
@@ -272,11 +282,13 @@ const DisplayAnswerList = ({ goToFirstStep }) => {
     }
   };
 
+  console.log(answererList.length);
+
   return (
     <div className={Styles.DisplayAnswerList}>
       {!isConnected ? (
         <div className={Styles.loading}>로딩중이에요.</div>
-      ) : answererList.length ? (
+      ) : answererList.length > 0 ? (
         <div
           className={
             answererList.length ? Styles.haveResponse : Styles.noResponse
@@ -299,7 +311,7 @@ const DisplayAnswerList = ({ goToFirstStep }) => {
               </select>
             </div>
             <div>
-              {answererList.map((person) => (
+              {answererList.map(person => (
                 <div className={Styles.listTable} key={person._id}>
                   <div
                     onClick={() => handleDisplayResponse(person._id)}
@@ -333,20 +345,35 @@ const DisplayAnswerList = ({ goToFirstStep }) => {
             </div>
           </div>
           <div className={Styles.pageBtns}>
-            <button
-              className={Styles.preBtn}
-              onClick={handlePrevPage}
-              disabled={currentPage === 1}
-            >
-              {'<'}
-            </button>
-            <button
-              className={Styles.nextBtn}
-              onClick={handleNextPage}
-              disabled={currentPage === totalPages || totalPages === 0}
-            >
-              {'>'}
-            </button>
+            {currentPage > 1 && (
+              <button onClick={() => handlePageClick(currentPage - 1)}>
+                {'<'}
+              </button>
+            )}
+            {generatePageNumbers().map(pageNumber => (
+              <button
+                key={pageNumber}
+                onClick={() => handlePageClick(pageNumber)}
+                className={
+                  pageNumber === currentPage ? Styles.currentPage : null
+                }
+              >
+                {pageNumber}
+              </button>
+            ))}
+            {currentPage <= totalPages && (
+              <button
+                onClick={() => {
+                  if (answererList.length >= 5) {
+                    handlePageClick(currentPage + 1);
+                  }
+                }}
+                className={answererList.length < 5 ? Styles.isEndBtn : null}
+                disabled={answererList.length < 5 ? true : false}
+              >
+                {'>'}
+              </button>
+            )}
           </div>
         </div>
       ) : (
