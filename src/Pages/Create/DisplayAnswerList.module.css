@@ -107,23 +107,24 @@
   cursor: pointer;
 }
 
-.pageBtns {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-}
-
-.preBtn,
-.nextBtn {
+.pageBtns button {
   border: none;
   background-color: var(--main-color);
   border-radius: 100%;
-  width: 30px;
-  height: 30px;
+  width: 20px;
+  height: 20px;
   color: white;
   font-size: 16px;
   cursor: pointer;
+  margin: 3px;
+}
+
+.pageBtns .currentPage {
+  background-color: var(--point-color);
+}
+
+.pageBtns .isEndBtn {
+  background-color: lightgray;
 }
 
 .commonBtns {
