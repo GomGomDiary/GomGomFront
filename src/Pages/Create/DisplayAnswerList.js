@@ -345,11 +345,16 @@ const DisplayAnswerList = ({ goToFirstStep }) => {
             </div>
           </div>
           <div className={Styles.pageBtns}>
-            {currentPage > 1 && (
-              <button onClick={() => handlePageClick(currentPage - 1)}>
-                {'<'}
-              </button>
-            )}
+            <button
+              onClick={() =>
+                handlePageClick(currentPage > 1 ? currentPage - 1 : 1)
+              }
+              disabled={currentPage <= 1}
+              className={currentPage <= 1 ? Styles.isEndBtn : ''}
+            >
+              {'<'}
+            </button>
+
             {generatePageNumbers().map(pageNumber => (
               <button
                 key={pageNumber}
