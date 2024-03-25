@@ -1,45 +1,51 @@
-<h1>🐻 GOMGOM DIARY 💌</h1>
+# [🐻 곰곰 다이어리](https://gomgomdiary.site/)
+> 곰곰 다이어리는 상대에 대해 곰곰이 생각하고 답하는 문답 공유 사이트입니다.
 
-> 상대에 대해 곰곰이 생각하고 답하는 곰곰 다이어리
+<a href="https://gomgomdiary.site/">
+<img width="344" alt="image" src="https://github.com/GomGomDiary/GomGomFront/assets/124887974/1e51346e-5c57-4f4a-bc4e-f0e0c207b9c0">
+</a>
 
-1. 질문의 개수와 내용을 정해 다이어리를 만들어보세요.
-2. 나와 관련된 특별한 암호를 설정해보세요.
-3. 소중한 친구, 가족, 연인과 공유해 많은 답변을 모아보세요.
-4. 답변의 개수에 따라 우체통의 이모지가 달라집니다.
-
-<h2>🐻 배포 링크 </h2>
-
-<img src="https://img.shields.io/badge/AmazonECS-FF9900?style=flat-square&logo=AmazonECS&logoColor=white"/> <img src="https://img.shields.io/badge/Vercel-000000?style=flat-square&logo=Vercel&logoColor=white"/>
-
-- https://gomgomdiary.site/
-
-<h2>🐻 피그마 & 개발 기록 링크 </h2>
-
-- 피그마 ([클릭](https://www.figma.com/file/pAsCM4uEgsCYwCNH907xps/Yoyoo-%26-summermong?type=design&node-id=0-1&mode=design&t=N4pwOJY5is1YHGme-0))
-- 개발 기록 (작성중)
-
-<h2>🐻 기획 및 개발 기간 </h2>
-
-- 2023.10.29 ~ 2023.12.10(1차 배포) ~ 진행중
-
-<h2>🐻 시연 영상(작업중) </h2>
-
-1. 다이어리 생성하기<p>
-   <img width="300px" src="https://github.com/GomGomDiary/GomGomFront/assets/124887974/74a553e8-0e9a-4918-a363-2008c349248e.gif" />
-
-2. 다이어리 답장하기<p>
-   <img width="300px" src="https://github.com/GomGomDiary/GomGomFront/assets/124887974/ac76c95b-0998-441b-8ca7-2e026eb1e1b7.gif" />
+1. 질문의 개수와 내용을 정해 다이어리 💌 를 만들어보세요.
+2. 나와 관련된 특별한 암호를 설정해보세요. 😏
+3. 소중한 친구, 가족, 연인과 공유해 많은 답변을 모아보세요. 👥
+4. 답변의 개수에 따라 우체통의 이모지가 달라집니다. 📪
+<hr />
 
 
-<h2>🐻 팀원 </h2>
+<!-- TOC -->
+### Contents
+* [곰곰 다이어리 시연](#곰곰-다이어리-시연)
+* [곰곰 다이어리 기술 스택](#곰곰-다이어리-기술-스택)
+* [곰곰 다이어리 정보](#곰곰-다이어리-정보)
+<br />
+<!-- TOC -->
 
-| <img src="https://img.dmitory.com/img/201810/6d1/qxm/6d1qxmdXEIamYoam4QeaYy.jpg" width="200" height="200" /> | <img src="https://avatars.githubusercontent.com/u/124887974?v=4" width="200" height="200" /> |
-| :----------------------------------------------------------------------------------------------------------: | :------------------------------------------------------------------------------------------: |
-|                                                yoyoo(유영석)                                                 |                                       summermong(황윤)                                       |
-|                                                   Backend                                                    |                                           Frontend                                           |
 
-<h2>🐻 기술 스택 </h2>
+## 곰곰 다이어리 시연
+1. 다이어리 생성 (질문 개수, 질문 내용 커스텀 가능)
 
+https://github.com/GomGomDiary/GomGomFront/assets/124887974/3ee6e313-6b56-4c98-88c2-424ec27c181f
+
+2. 답장하기 (질문에 대한 답변 스킵 가능)
+
+https://github.com/GomGomDiary/GomGomFront/assets/124887974/6acfbbb9-68cd-4fe7-9718-c30c9fe6b5f2
+
+3. 공유하기 (링크 공유 / 카카오톡 공유 가능)
+
+https://github.com/GomGomDiary/GomGomFront/assets/124887974/f1f1f21f-8c5a-42cb-9c0c-3ba026695598
+
+4. 채팅하기
+
+https://github.com/GomGomDiary/GomGomFront/assets/124887974/441e4321-c592-418a-bb60-125ecb45aab3
+
+5. 지난 다이어리 조회하기
+
+https://github.com/GomGomDiary/GomGomFront/assets/124887974/1d34ba37-c710-4843-87bc-f1db664c937b
+
+<br />
+
+
+## 곰곰 다이어리 기술 스택
 | Stack                                                                                                                    | Desc                         |
 | :----------------------------------------------------------------------------------------------------------------------- | :--------------------------- |
 | <img src="https://img.shields.io/badge/React-61DAFB?style=flat-square&logo=React&logoColor=white"/>                      | React                        |
@@ -52,20 +58,26 @@
 | <img src="https://img.shields.io/badge/KakaoTalk-FFCD00?style=flat-square&logo=KakaoTalk&logoColor=white"/>              | 카카오톡 메세지 공유하기 API |
 | <img src="https://img.shields.io/badge/Google Analytics-E37400?style=flat-square&logo=GoogleAnalytics&logoColor=white"/> | GA4 연결                     |
 
-<h2>🐻 구현 기능 </h2>
 
-- 다이어리 만들기
-  - 이름 작성, 질문 개수 설정, 질문 업데이트, 챌린지 & 카운터 사인 생성, 컨페티 효과
-- 답장하기
-  - 이름 작성, 챌린지 작성, 답변 작성, 컨페티 효과
-- 공유하기
-  - 링크 복사 & 카카오톡 메세지 공유하기
-- 답변 조회하기
-  - 오프셋 기반 페이지네이션
-- 이전 다이어리 확인하기
-  - 커서 기반 페이지네이션(무한 스크롤)
+<br />
 
-<h2>🐻 커밋 컨벤션 </h2>
+
+## 곰곰 다이어리 정보
+* [배포 링크](https://gomgomdiary.site/)
+* [피그마 링크](https://www.figma.com/file/pAsCM4uEgsCYwCNH907xps/Yoyoo-%26-summermong?type=design&node-id=0-1&mode=design&t=N4pwOJY5is1YHGme-0)
+  
+* 개발 기간
+  * v1.0.0: 23.10.29 ~ 23.12.29
+ 
+* 개발 인원
+
+| <img src="https://img.dmitory.com/img/201810/6d1/qxm/6d1qxmdXEIamYoam4QeaYy.jpg" width="200" height="200" /> | <img src="https://avatars.githubusercontent.com/u/124887974?v=4" width="200" height="200" /> |
+| :----------------------------------------------------------------------------------------------------------: | :------------------------------------------------------------------------------------------: |
+|                                                yoyoo(유영석)                                                 |                                       summermong(황윤)                                       |
+|                                                   Backend                                                    |                                           Frontend                                           |
+
+
+* 코드 컨벤션
 
 | Type     | Desc                                                                          |
 | :------- | :---------------------------------------------------------------------------- |
@@ -76,14 +88,12 @@
 | REFACTOR | Refactoring production code                                                   |
 | TEST     | Adding tests, refactoring test; no production code change                     |
 | CHORE    | Updating build tasks, package manager configs, etc; no production code change |
-
-<h2>🐻 폴더 구조 </h2>
-
-<details>
-  <summary><b>자세히 보기</b></summary>
   
+<details>
+  <summary><b>폴더 구조</b></summary>
+    
 ```📦src
- ┣ 📂Home
+┣ 📂Home
  ┃ ┣ 📜Header.js
  ┃ ┣ 📜Header.module.css
  ┃ ┣ 📜Main.js
