@@ -75,9 +75,9 @@ const Finish = ({ goToFirstStep }) => {
       Kakao.Link.sendDefault({
         objectType: 'feed',
         content: {
-          title: '곰곰다이어리',
+          title: '곰곰 다이어리',
           description: '상대에 대해 곰곰이 생각하고 답해보세요!',
-          imageUrl: 'https://gomgomdiary.site/image/OG_Thumb.png',
+          imageUrl: `${location}image/OG_Thumb.png`,
           link: {
             mobileWebUrl: `${location}diary/${userCookie}`,
             webUrl: `${location}diary/${userCookie}`,
