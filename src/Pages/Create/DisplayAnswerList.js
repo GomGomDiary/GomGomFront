@@ -247,6 +247,10 @@ const DisplayAnswerList = ({ goToFirstStep }) => {
       });
   };
 
+  const location = window.location.origin;
+
+  console.log(`${location}/image/OG_Thumb.png`);
+
   /* 카카오톡 공유 */
   const handleKaKaoTalk = async () => {
     if (window.Kakao) {
@@ -263,7 +267,7 @@ const DisplayAnswerList = ({ goToFirstStep }) => {
         content: {
           title: '곰곰다이어리',
           description: '상대에 대해 곰곰이 생각하고 답해보세요!',
-          imageUrl: `${process.env.PUBLIC_URL}/image/OG_Thumb.png`,
+          imageUrl: `${location}/image/OG_Thumb.png`,
           link: {
             mobileWebUrl: `${host}/diary/${pathname}`,
             webUrl: `${host}/diary/${pathname}`,
