@@ -33,7 +33,7 @@ const Finish = ({ goToFirstStep }) => {
 
   const [isCopied, setIsCopied] = useState(false);
 
-  const handleShareLink = (link) => {
+  const handleShareLink = link => {
     // ?fbclid= 이후의 부분을 찾아 제거
     const indexOfFbclid = link.indexOf('?fbclid=');
     if (indexOfFbclid !== -1) {
@@ -51,7 +51,7 @@ const Finish = ({ goToFirstStep }) => {
           value: 1,
         });
       })
-      .catch((error) => {
+      .catch(error => {
         console.error('error', error);
       });
   };
@@ -69,7 +69,7 @@ const Finish = ({ goToFirstStep }) => {
       const kakaoAPI = process.env.REACT_APP_KAKAO_API;
 
       if (!Kakao.isInitialized()) {
-        await new Promise((resolve) => Kakao.init(kakaoAPI, resolve));
+        await new Promise(resolve => Kakao.init(kakaoAPI, resolve));
       }
 
       Kakao.Link.sendDefault({
@@ -77,7 +77,7 @@ const Finish = ({ goToFirstStep }) => {
         content: {
           title: '곰곰다이어리',
           description: '상대에 대해 곰곰이 생각하고 답해보세요!',
-          imageUrl: `${process.env.PUBLIC_URL}/image/OG_Thumb.png`,
+          imageUrl: 'https://gomgomdiary.site/image/OG_Thumb.png',
           link: {
             mobileWebUrl: `${location}diary/${userCookie}`,
             webUrl: `${location}diary/${userCookie}`,
