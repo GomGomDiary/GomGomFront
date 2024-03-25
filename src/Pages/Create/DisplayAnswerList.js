@@ -249,8 +249,6 @@ const DisplayAnswerList = ({ goToFirstStep }) => {
 
   const location = window.location.origin;
 
-  console.log(`${location}/image/OG_Thumb.png`);
-
   /* 카카오톡 공유 */
   const handleKaKaoTalk = async () => {
     if (window.Kakao) {
