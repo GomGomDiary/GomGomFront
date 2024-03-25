@@ -32,7 +32,7 @@ https://github.com/GomGomDiary/GomGomFront/assets/124887974/6acfbbb9-68cd-4fe7-9
 
 3. 공유하기 (링크 공유 / 카카오톡 공유 가능)
 
-https://github.com/GomGomDiary/GomGomFront/assets/124887974/f1f1f21f-8c5a-42cb-9c0c-3ba026695598
+https://github.com/GomGomDiary/GomGomFront/assets/124887974/f084eea6-4254-4c53-b6fc-26f35b45a10d
 
 4. 채팅하기
 
