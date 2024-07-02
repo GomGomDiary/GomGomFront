@@ -154,7 +154,7 @@ const Main = () => {
             {diaryId && !answerId && !answerers && renderResponseStep()}
           </div>
         </section>
-        <Ad unit={'DAN-r1sYkZGnJ5PXZEf8'} width={320} height={50} />
+        <Ad unit={'DAN-ZGJjaUD6AoC29nFb'} width={320} height={50} />
       </div>
     </div>
   );
