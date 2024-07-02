@@ -26,14 +26,12 @@ const ResponseContent = ({ content }) => {
     setIsActive(true);
   }, 100);
 
-  const handleMouseLeave = () => {
-    setTimeout(() => {
-      setIsActive(false);
-    }, 5000);
-  };
+  const handleMouseLeave = _debounce(() => {
+    setIsActive(false);
+  }, 5000);
 
   const DisplayContent = () => {
-    if (content >= 1 && content <= 5) {
+    if (content > 0 && content < 6) {
       switch (content) {
         case 1:
           return '💙';
@@ -48,10 +46,10 @@ const ResponseContent = ({ content }) => {
         default:
           return null;
       }
-    } else if (content >= 6 && content <= 30) {
+    } else if (content >= 6) {
       const patterns = ['🩷', '💓', '💗', '💖', '❤️‍🔥'];
       const index =
-        Math.floor((content - 6) / patterns.length) % patterns.length;
+        Math.floor((content - 5) / patterns.length - 1) % patterns.length;
       return patterns[index];
     } else {
       return '📭';
