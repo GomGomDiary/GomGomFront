@@ -3,12 +3,12 @@
   border: var(--main-color) 1px solid;
   background-color: white;
   border-radius: 20px;
-  padding: 10px;
+  padding: 8px;
   color: var(--point-color);
   width: 150px;
   margin: 0 auto;
   cursor: pointer;
-  font-size: 16px;
+  font-size: 14px;
 }
 
 .WhiteBtn:hover {

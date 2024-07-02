@@ -14,7 +14,7 @@
 
 body {
   height: 100%;
-  background-color: var(--background-color);
+  background-color: white;
   -ms-overflow-style: none;
 }
 

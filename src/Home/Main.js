@@ -15,6 +15,7 @@ import Done from '../Pages/Response/Done';
 import DisplayAnswerList from '../Pages/Create/DisplayAnswerList';
 import DisplayAnswer from '../Pages/Create/DisplayAnswer';
 import Header from './Header';
+import Ad from '../api/Ad';
 
 const Main = () => {
   const [questionerStep, setQuestionerStep] = useState('welcome');
@@ -153,6 +154,7 @@ const Main = () => {
             {diaryId && !answerId && !answerers && renderResponseStep()}
           </div>
         </section>
+        <Ad unit={'DAN-ZGJjaUD6AoC29nFb'} width={320} height={50} />
       </div>
     </div>
   );

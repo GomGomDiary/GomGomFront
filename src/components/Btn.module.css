@@ -3,12 +3,12 @@
   border: none;
   background-color: var(--point-color);
   border-radius: 20px;
-  padding: 10px;
+  padding: 8px;
   color: white;
   width: 150px;
   margin: 0 auto;
   cursor: pointer;
-  font-size: 16px;
+  font-size: 14px;
 }
 
 .Btn:hover {
