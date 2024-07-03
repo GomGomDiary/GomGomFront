@@ -124,6 +124,10 @@ const DisplayAnswerList = ({ goToFirstStep }) => {
   const [originQuestionNum, setOriginQuestionNum] =
     useRecoilState(OriginQuestionNum);
 
+  const handleGoToHome = () => {
+    navigate('/');
+  };
+
   const handleNewDiary = async () => {
     const axiosInstance = instance();
 
@@ -396,6 +400,7 @@ const DisplayAnswerList = ({ goToFirstStep }) => {
       {!isDiaryOwner && (
         <div className={Styles.commonBtns}>
           <Btn text={'나도 만들기'} onClick={handleNewDiary} />
+          <WhiteBtn text={'내 다이어리 확인하기'} onClick={handleGoToHome} />
         </div>
       )}
       {isDiaryOwner && (
