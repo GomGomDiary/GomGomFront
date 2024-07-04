@@ -69,7 +69,7 @@ const Finish = ({ goToFirstStep }) => {
       const kakaoAPI = process.env.REACT_APP_KAKAO_API;
 
       if (!Kakao.isInitialized()) {
-        await new Promise(resolve => Kakao.init(kakaoAPI, resolve));
+        Kakao.init(kakaoAPI);
       }
 
       Kakao.Link.sendDefault({
