@@ -30,38 +30,49 @@ const ResponseContent = ({ content }) => {
     setIsActive(false);
   }, 5000);
 
+  // const DisplayContent = () => {
+
+  //   if (content === 1)
+
+  // }
+
+  const contentArr = [
+    { emoji: '🖤', text: '1단계 돌파! 3명 이상이면 다음 단계라곰!' },
+    { emoji: '🩶', text: '2단계 돌파! 5명 이상이면 다음 단계라곰!' },
+    { emoji: '🤍', text: '3단계 돌파! 7명 이상이면 다음 단계라곰!' },
+    { emoji: '💜', text: '4단계 돌파! 9명 이상이면 다음 단계라곰!' },
+    { emoji: '💙', text: '5단계 돌파! 11명 이상이면 다음 단계라곰!' },
+    { emoji: '🩵', text: '6단계 돌파! 13명 이상이면 다음 단계라곰!' },
+    { emoji: '💚', text: '7단계 돌파! 15명 이상이면 다음 단계라곰!' },
+    { emoji: '💛', text: '8단계 돌파! 17명 이상이면 다음 단계라곰!' },
+    { emoji: '🧡', text: '9단계 돌파! 19명 이상이면 다음 단계라곰!' },
+    { emoji: '❤️', text: '10단계 돌파! 25명 이상이면 다음 단계라곰!' },
+    { emoji: '🩷', text: '11단계 돌파! 30명 이상이면 다음 단계라곰!' },
+    { emoji: '💝', text: '12단계 돌파! 40명 이상이면 다음 단계라곰!' },
+    { emoji: '💖', text: '13단계 돌파! 55명 이상이면 다음 단계라곰!' },
+    { emoji: '💗', text: '14단계 돌파! 75명 이상이면 다음 단계라곰!' },
+    { emoji: '❤️‍🔥', text: '15단계 돌파! 99명 이상이면 다음 단계라곰!' },
+    { emoji: '🐻🍀', text: '축하한다곰! 마지막 단계까지 왔다곰!' },
+  ];
+
+  const thresholds = [3, 5, 7, 9, 11, 13, 15, 17, 19, 25, 30, 40, 55, 75, 99];
+
   const DisplayContent = () => {
-    if (content > 0 && content < 6) {
-      switch (content) {
-        case 1:
-          return '💙';
-        case 2:
-          return '💚';
-        case 3:
-          return '💛';
-        case 4:
-          return '🧡';
-        case 5:
-          return '❤️';
-        default:
-          return null;
+    for (let i = 0; i < thresholds.length; i++) {
+      if (content < thresholds[i]) {
+        return contentArr[i].emoji;
       }
-    } else if (content >= 6) {
-      const patterns = ['🩷', '💓', '💗', '💖', '❤️‍🔥'];
-      const index =
-        Math.floor((content - 5) / patterns.length - 1) % patterns.length;
-      return patterns[index];
-    } else {
-      return '📭';
     }
+    return contentArr[contentArr.length - 1].emoji;
   };
 
   const infoMessage = () => {
-    if (DisplayContent() === '❤️‍🔥') {
-      return '축하한다곰! 모든 단계를 넘어섰다곰!';
-    } else {
-      return '다음 단계도 확인해보라곰!';
+    for (let i = 0; i < thresholds.length; i++) {
+      if (content < thresholds[i]) {
+        return contentArr[i].text;
+      }
     }
+    return contentArr[contentArr.length - 1].text;
   };
 
   return (
