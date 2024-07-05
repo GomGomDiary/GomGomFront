@@ -50,7 +50,7 @@ function App() {
             <Route path="/answerers/:diaryId" element={<Main />} />
             <Route path="/answer/:diaryId/:answerId" element={<Main />} />
             <Route path="/diary/:diaryId" element={<Main />} />
-            <Route path="/chat/enter_room" element={<Chat />} />
+            {/* <Route path="/chat/enter_room" element={<Chat />} /> */}
             <Route path="*" element={<NotFound />} />
             <Route path="/" element={<Main />} />
           </Routes>
