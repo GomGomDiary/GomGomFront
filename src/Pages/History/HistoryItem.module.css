@@ -14,7 +14,7 @@
   align-items: center;
   width: 100vw;
   min-height: 100vh;
-  background-color: var(--background-color);
+  background-color: white;
 }
 
 .contentContainer {
@@ -28,7 +28,6 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
 }
 
 .content {
