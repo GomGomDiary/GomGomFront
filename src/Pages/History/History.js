@@ -6,10 +6,27 @@ import CustomModal from '../../components/CustomModal';
 import { Questioner } from '../../store/Create/Questioner';
 import { useRecoilState } from 'recoil';
 import Header from '../../Home/Header';
+import { getCookie, setCookie } from '../../api/cookie';
 
 const History = () => {
   const axiosInstance = instance();
   const navigate = useNavigate('');
+
+  const diaryId = getCookie('diaryAddress');
+  const diaryUser = getCookie('diaryUser');
+  const localDiaryId = localStorage.getItem('diaryAddress');
+  const localDiaryUser = localStorage.getItem('diaryUser');
+
+  useEffect(() => {
+    // 쿠키에 있는 값이 로컬 스토리지로, 로컬 스토리지에 있는 값이 쿠키로 이동
+    if (diaryId || diaryUser) {
+      localStorage.setItem('diaryAddress', diaryId);
+      localStorage.setItem('diaryUser', diaryUser);
+    } else if (localDiaryId || localDiaryUser) {
+      setCookie('diaryAddress', localDiaryId);
+      setCookie('diaryUser', localDiaryUser);
+    }
+  }, [diaryId, diaryUser, localDiaryId, localDiaryUser]);
 
   const [isError, setIsError] = useState(false);
   const [originNext, setOriginNext] = useState('');
@@ -46,7 +63,7 @@ const History = () => {
   };
 
   /* 첫 데이터 next를 기준으로 다음 리스트 요청 */
-  const fetchNextList = async (next) => {
+  const fetchNextList = async next => {
     try {
       const response = await axiosInstance.get(`history?next=${next}&take=5`);
       const nextList = response.data.historyList;
@@ -65,7 +82,7 @@ const History = () => {
     const nextList = await fetchNextList(originNext);
 
     if (nextList.length > 0) {
-      setHistoryList((prevList) => [...prevList, ...nextList]);
+      setHistoryList(prevList => [...prevList, ...nextList]);
       setEnd(false);
     } else {
       setEnd(true);
@@ -95,7 +112,14 @@ const History = () => {
     };
   });
 
-  const navigateHistoryItem = async (userId) => {
+  const navigateHistoryItem = async userId => {
+    if (!getCookie('diaryAddress') || !getCookie('diaryUser')) {
+      if (diaryId || diaryUser) {
+        setCookie('diaryAddress', localDiaryId);
+        setCookie('diaryUser', localDiaryUser);
+      }
+    }
+
     const { data: getId } = await axiosInstance.get(`history/${userId}`);
 
     const historyItemId = getId._id;

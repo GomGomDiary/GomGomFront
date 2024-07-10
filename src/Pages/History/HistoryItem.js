@@ -5,10 +5,27 @@ import { useParams } from 'react-router-dom';
 import ResponseContent from '../../components/ResponseContent';
 import AnswerModal from '../../components/AnswerModal';
 import Header from '../../Home/Header';
+import { getCookie, setCookie } from '../../api/cookie';
 
 const HistoryItem = () => {
   const axiosInstance = instance();
   const { historyItemId } = useParams();
+
+  const diaryId = getCookie('diaryAddress');
+  const diaryUser = getCookie('diaryUser');
+  const localDiaryId = localStorage.getItem('diaryAddress');
+  const localDiaryUser = localStorage.getItem('diaryUser');
+
+  useEffect(() => {
+    // 쿠키에 있는 값이 로컬 스토리지로, 로컬 스토리지에 있는 값이 쿠키로 이동
+    if (diaryId || diaryUser) {
+      localStorage.setItem('diaryAddress', diaryId);
+      localStorage.setItem('diaryUser', diaryUser);
+    } else if (localDiaryId || localDiaryUser) {
+      setCookie('diaryAddress', localDiaryId);
+      setCookie('diaryUser', localDiaryUser);
+    }
+  }, [diaryId, diaryUser, localDiaryId, localDiaryUser]);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedAnswerer, setSelectedAnswerer] = useState(null);
@@ -36,7 +53,7 @@ const HistoryItem = () => {
     getHistoryInfo();
   }, []);
 
-  const handleModalOpen = (selectedAnswerer) => {
+  const handleModalOpen = selectedAnswerer => {
     setSelectedAnswerer(selectedAnswerer);
     setIsModalOpen(true);
   };
@@ -64,7 +81,7 @@ const HistoryItem = () => {
             </div>
 
             <div className={Styles.listContainer}>
-              {answererList.map((person) => (
+              {answererList.map(person => (
                 <ul
                   key={person._id}
                   className={Styles.answerer}
