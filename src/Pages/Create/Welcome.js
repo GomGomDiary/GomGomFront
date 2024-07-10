@@ -4,23 +4,22 @@ import { Questioner } from '../../store/Create/Questioner';
 import Styles from './Welcome.module.css';
 import Btn from '../../components/Btn';
 import Input from '../../components/Input';
-import { getCookie } from '../../api/cookie';
+import { getCookie, setCookie } from '../../api/cookie';
 import { useNavigate } from 'react-router-dom';
 import instance from '../../api/customAxios';
 import { UpdateClick } from '../../store/Create/UpdateClick';
 import CustomModal from '../../components/CustomModal';
-
 import { EventTrigger } from '../../gtag';
 
 const Welcome = ({ onNextStep }) => {
   const [questioner, setQuestioner] = useRecoilState(Questioner);
   const NameInputRef = useRef();
 
-  const writeName = (e) => {
+  const writeName = e => {
     setQuestioner(e.target.value);
   };
 
-  const handleKeyPress = (e) => {
+  const handleKeyPress = e => {
     if (e.key === 'Enter') {
       submitName();
     }
@@ -49,18 +48,41 @@ const Welcome = ({ onNextStep }) => {
   };
 
   const diaryId = getCookie('diaryAddress');
-  const navigate = useNavigate('');
+  const diaryUser = getCookie('diaryUser');
+  const localDiaryId = localStorage.getItem('diaryAddress');
+  const localDiaryUser = localStorage.getItem('diaryUser');
 
+  const navigate = useNavigate();
   const axiosInstance = instance();
   const [updateClick, setUpdateClick] = useRecoilState(UpdateClick);
 
   useEffect(() => {
-    axiosInstance.get('/diary').then((response) => {
-      if (response.data === true && !updateClick) {
-        navigate(`/answerers/${diaryId}`);
+    // 쿠키에 있는 값이 로컬 스토리지로, 로컬 스토리지에 있는 값이 쿠키로 이동
+    if (diaryId || diaryUser) {
+      localStorage.setItem('diaryAddress', diaryId);
+      localStorage.setItem('diaryUser', diaryUser);
+    } else if (localDiaryId || localDiaryUser) {
+      setCookie('diaryAddress', localDiaryId);
+      setCookie('diaryUser', localDiaryUser);
+    }
+  }, [diaryId, diaryUser, localDiaryId, localDiaryUser]);
+
+  useEffect(() => {
+    const checkDiary = async () => {
+      try {
+        const response = await axiosInstance.get('/diary');
+        if (response.data === true && !updateClick) {
+          const redirectDiaryId = diaryId || localDiaryId;
+          localStorage.setItem('diaryAddress', redirectDiaryId); // 로컬 스토리지에 저장
+          navigate(`/answerers/${redirectDiaryId}`);
+        }
+      } catch (error) {
+        console.error('다이어리 확인 중 오류 발생:', error);
       }
-    });
-    setUpdateClick(false);
+      setUpdateClick(false);
+    };
+
+    checkDiary();
   }, []);
 
   return (
@@ -72,14 +94,13 @@ const Welcome = ({ onNextStep }) => {
       <section className={Styles.section}>
         <div>반갑다곰!</div>
         <p></p>질문을 만들고 특별한 암호를 설정한 뒤<p></p>소중한 친구, 가족,
-        연인과 공유해서
-        <p></p>많은 답변과 추억을 쌓아보라곰!
+        연인과 공유해서<p></p>많은 답변과 추억을 쌓아보라곰!
       </section>
       <div className={Styles.nameInput}>
         <Input
           type="text"
           value={questioner}
-          onChange={(e) => writeName(e)}
+          onChange={writeName}
           onKeyUp={handleKeyPress}
           placeholder="10자 이내로 이름을 입력하세요."
           ref={NameInputRef}

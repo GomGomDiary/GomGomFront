@@ -9,7 +9,7 @@ import { Question } from '../../store/Create/Question';
 import { useNavigate } from 'react-router-dom';
 import Btn from '../../components/Btn';
 import WhiteBtn from '../../components/WhiteBtn';
-import { getCookie } from '../../api/cookie';
+import { getCookie, setCookie } from '../../api/cookie';
 import ResponseContent from '../../components/ResponseContent';
 import CustomModal from '../../components/CustomModal';
 import ConfirmModal from '../../components/ConfirmModal';
@@ -30,6 +30,22 @@ import { GuestAddress } from '../../store/Chat/GuestAddress';
 const DisplayAnswerList = ({ goToFirstStep }) => {
   const navigate = useNavigate();
   const { diaryId } = useParams();
+
+  const diaryIdCookie = getCookie('diaryAddress');
+  const diaryUser = getCookie('diaryUser');
+  const localDiaryId = localStorage.getItem('diaryAddress');
+  const localDiaryUser = localStorage.getItem('diaryUser');
+
+  useEffect(() => {
+    // 쿠키에 있는 값이 로컬 스토리지로, 로컬 스토리지에 있는 값이 쿠키로 이동
+    if (diaryIdCookie || diaryUser) {
+      localStorage.setItem('diaryAddress', diaryIdCookie);
+      localStorage.setItem('diaryUser', diaryUser);
+    } else if (localDiaryId || localDiaryUser) {
+      setCookie('diaryAddress', localDiaryId);
+      setCookie('diaryUser', localDiaryUser);
+    }
+  }, [diaryIdCookie, diaryUser, localDiaryId, localDiaryUser]);
 
   /* 다이어리 전역 상태 관리 */
   const [answererList, setAnswererList] = useState([]);

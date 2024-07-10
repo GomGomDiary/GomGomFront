@@ -24,6 +24,11 @@ const Finish = ({ goToFirstStep }) => {
       try {
         const diaryId = await getCookie('diaryAddress');
         setUserCookie(diaryId);
+        // 추가
+
+        const diaryUser = getCookie('diaryUser');
+        localStorage.setItem('diaryAddress', diaryId);
+        localStorage.setItem('diaryUser', diaryUser);
       } catch (error) {
         console.error('error', error);
       }
