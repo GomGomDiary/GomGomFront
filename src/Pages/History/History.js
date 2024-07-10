@@ -113,6 +113,13 @@ const History = () => {
   });
 
   const navigateHistoryItem = async userId => {
+    if (!getCookie('diaryAddress') || !getCookie('diaryUser')) {
+      if (diaryId || diaryUser) {
+        setCookie('diaryAddress', localDiaryId);
+        setCookie('diaryUser', localDiaryUser);
+      }
+    }
+
     const { data: getId } = await axiosInstance.get(`history/${userId}`);
 
     const historyItemId = getId._id;

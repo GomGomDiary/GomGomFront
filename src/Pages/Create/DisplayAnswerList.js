@@ -47,6 +47,29 @@ const DisplayAnswerList = ({ goToFirstStep }) => {
     }
   }, [diaryIdCookie, diaryUser, localDiaryId, localDiaryUser]);
 
+  const correctAnswerer = getCookie('diaryAddress');
+  const [isDiaryOwner, setIsDiaryOwner] = useState(false);
+
+  useEffect(() => {
+    if (correctAnswerer === diaryId) {
+      setIsDiaryOwner(true);
+    }
+  }, []);
+
+  // const correctAnswerer = getCookie('diaryAddress');
+  // const [isDiaryOwner, setIsDiaryOwner] = useState(false);
+
+  // useEffect(() => {
+  //   if (
+  //     diaryIdCookie ||
+  //     diaryUser ||
+  //     localDiaryId ||
+  //     localDiaryUser === diaryId
+  //   ) {
+  //     setIsDiaryOwner(true);
+  //   }
+  // }, []);
+
   /* 다이어리 전역 상태 관리 */
   const [answererList, setAnswererList] = useState([]);
   const [answererCount, setAnswerCount] = useState(0);
@@ -116,15 +139,27 @@ const DisplayAnswerList = ({ goToFirstStep }) => {
   const [isConnected, setIsConnected] = useState(false);
   const [wantNewDiary, setWantNewDiary] = useState(false);
 
-  const handleDisplayResponse = answerId => {
-    axiosInstance
-      .get(`diary/answer/${diaryId}/${answerId}`)
-      .then(response => {
+  const handleDisplayResponse = async answerId => {
+    if (!getCookie('diaryAddress') || !getCookie('diaryUser')) {
+      if (diaryIdCookie || diaryUser) {
+        setCookie('diaryAddress', localDiaryId);
+        setCookie('diaryUser', localDiaryUser);
+      }
+    }
+
+    try {
+      const redirectDiaryId = diaryId || localDiaryId;
+      const response = await axiosInstance.get(
+        `diary/answer/${redirectDiaryId}/${answerId}`
+      );
+      if (response) {
         setAnswer(response.data.answer);
         setQuestion(response.data.question);
-        navigate(`/answer/${diaryId}/${answerId}`);
-      })
-      .catch(error => setIsAnswerer(true));
+        navigate(`/answer/${redirectDiaryId}/${answerId}`);
+      }
+    } catch (error) {
+      setIsAnswerer(true);
+    }
   };
 
   let host = window.location.origin;
@@ -173,15 +208,6 @@ const DisplayAnswerList = ({ goToFirstStep }) => {
       });
     }
   };
-
-  const correctAnswerer = getCookie('diaryAddress');
-  const [isDiaryOwner, setIsDiaryOwner] = useState(false);
-
-  useEffect(() => {
-    if (correctAnswerer === diaryId) {
-      setIsDiaryOwner(true);
-    }
-  }, []);
 
   const [isCopied, setIsCopied] = useState(false);
 
