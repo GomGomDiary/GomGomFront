@@ -40,7 +40,7 @@ const EventModal = () => {
           곰곰 다이어리에서 상품을 받아가라곰! 🎁
         </div>
         <img
-          src="/image/eventPopup.png"
+          src="/image/eventPopup.webp"
           alt="이벤트 이미지"
           width={200}
           height={200}
