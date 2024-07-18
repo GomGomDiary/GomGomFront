@@ -57,7 +57,8 @@
 }
 
 .okBtn:hover,
-.confirmBtn:hover {
+.confirmBtn:hover,
+.eventBtn:hover {
   background-color: var(--hover-color);
 }
 
@@ -66,4 +67,83 @@
   white-space: pre-line;
   text-align: center;
   line-height: 1.2;
+}
+
+.EventModal {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 350px;
+  width: 290px;
+  top: 15%;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: white;
+  border: 1px solid var(--point-color);
+  padding: 20px;
+}
+
+.event {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  padding-bottom: 10px;
+}
+
+.eventBtns {
+  padding-top: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: center;
+}
+
+.eventText {
+  text-align: center;
+}
+
+.closeBtn {
+  border: none;
+  background-color: var(--point-color);
+  border-radius: 20px;
+  padding: 5px;
+  color: white;
+  width: 200px;
+  height: 30px;
+  cursor: pointer;
+}
+
+.eventBtn {
+  border: var(--point-color) 1px solid;
+  background-color: white;
+  border-radius: 20px;
+  padding: 5px;
+  color: var(--point-color);
+  width: 200px;
+  height: 30px;
+  cursor: pointer;
+  animation: fontAnimation 1s infinite;
+}
+
+@keyframes fontAnimation {
+  0% {
+    transform: scale(1.05);
+  }
+  50% {
+    transform: scale(1);
+  }
+  100% {
+    transform: scale(1.05);
+  }
+}
+
+.noShowBtn {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  margin: 10px;
+  border: none;
+  background-color: transparent;
 }
