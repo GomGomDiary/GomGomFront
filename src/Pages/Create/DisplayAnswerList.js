@@ -26,6 +26,8 @@ import { EventTrigger } from '../../gtag';
 import { RoomId } from '../../store/Chat/RoomId';
 import { ChatToken } from '../../store/Chat/ChatToken';
 import { GuestAddress } from '../../store/Chat/GuestAddress';
+import EventModal from '../../components/EventModal';
+import { Cookies } from 'react-cookie';
 
 const DisplayAnswerList = ({ goToFirstStep }) => {
   const navigate = useNavigate();
@@ -330,6 +332,8 @@ const DisplayAnswerList = ({ goToFirstStep }) => {
     }
   };
 
+  const noEventShow = getCookie('isEventNoShow');
+
   return (
     <div className={Styles.DisplayAnswerList}>
       {!isConnected ? (
@@ -439,6 +443,7 @@ const DisplayAnswerList = ({ goToFirstStep }) => {
           <div className={Styles.noResponsecontent}>텅</div>
         </div>
       )}
+      {!noEventShow && <EventModal />}
       {!isDiaryOwner && (
         <div className={Styles.commonBtns}>
           <Btn text={'나도 만들기'} onClick={handleNewDiary} />
