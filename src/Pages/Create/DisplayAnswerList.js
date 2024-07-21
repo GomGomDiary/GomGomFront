@@ -332,7 +332,7 @@ const DisplayAnswerList = ({ goToFirstStep }) => {
     }
   };
 
-  const noEventShow = getCookie('isEventNoShow');
+  // const noEventShow = getCookie('isEventNoShow');
 
   return (
     <div className={Styles.DisplayAnswerList}>
@@ -443,7 +443,7 @@ const DisplayAnswerList = ({ goToFirstStep }) => {
           <div className={Styles.noResponsecontent}>텅</div>
         </div>
       )}
-      {!noEventShow && <EventModal />}
+      {/* {!noEventShow && <EventModal />} */}
       {!isDiaryOwner && (
         <div className={Styles.commonBtns}>
           <Btn text={'나도 만들기'} onClick={handleNewDiary} />
