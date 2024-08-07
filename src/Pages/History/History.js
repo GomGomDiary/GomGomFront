@@ -120,7 +120,9 @@ const History = () => {
       }
     }
 
-    const { data: getId } = await axiosInstance.get(`history/${userId}`);
+    const { data: getId } = await axiosInstance.get(
+      `history/${userId}?take=5&start=5`
+    );
 
     const historyItemId = getId._id;
     navigate(`/history/${historyItemId}`);
