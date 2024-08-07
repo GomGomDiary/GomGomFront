@@ -91,3 +91,23 @@
   color: var(--point-color);
   text-align: right;
 }
+
+.pageBtns button {
+  border: none;
+  background-color: var(--main-color);
+  border-radius: 100%;
+  width: 20px;
+  height: 20px;
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
+  margin: 3px;
+}
+
+.pageBtns .currentPage {
+  background-color: var(--point-color);
+}
+
+.pageBtns .isEndBtn {
+  background-color: lightgray;
+}

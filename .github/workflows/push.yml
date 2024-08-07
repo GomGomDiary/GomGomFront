@@ -8,7 +8,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
       - name: build using docker compose
-        run: docker-compose -p gomgom_front -f docker-compose.test.yml up --build --force-recreate --abort-on-container-exit
+        run: docker compose -p gomgom_front -f docker-compose.test.yml up --build --force-recreate --abort-on-container-exit
   push:
     if: github.event.repository.url != 'https://github.com/Yoowatney/GomGomFront' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/staging')
     needs: build
@@ -16,8 +16,8 @@ jobs:
     container: pandoc/latex
     steps:
       - uses: actions/checkout@v4
-      - name : Create directory
-        run : sh ./build.sh || ls -al
+      - name: Create directory
+        run: sh ./build.sh || ls -al
           echo ${{ github.event.repository.name }}
       - name: Pushes to another repository
         id: push_directory
@@ -26,7 +26,7 @@ jobs:
           API_TOKEN_GITHUB: ${{ secrets.API_TOKEN_GITHUB }}
         with:
           source-directory: .
-          destination-github-username: "Yoowatney"
-          destination-repository-name: "GomGomFront"
+          destination-github-username: 'Yoowatney'
+          destination-repository-name: 'GomGomFront'
           commit-message: ${{ github.event.commits[0].message }}
           target-branch: main

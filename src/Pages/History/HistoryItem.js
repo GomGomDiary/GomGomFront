@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import Styles from './HistoryItem.module.css';
+import Style from '../Create/DisplayAnswer.module.css';
 import instance from '../../api/customAxios';
 import { useParams } from 'react-router-dom';
 import ResponseContent from '../../components/ResponseContent';
@@ -17,7 +18,6 @@ const HistoryItem = () => {
   const localDiaryUser = localStorage.getItem('diaryUser');
 
   useEffect(() => {
-    // 쿠키에 있는 값이 로컬 스토리지로, 로컬 스토리지에 있는 값이 쿠키로 이동
     if (diaryId || diaryUser) {
       localStorage.setItem('diaryAddress', diaryId);
       localStorage.setItem('diaryUser', diaryUser);
@@ -35,23 +35,29 @@ const HistoryItem = () => {
   const [numOfAnswerers, setNumOfAnswerers] = useState(0);
   const [question, setQuestion] = useState([]);
   const [answererList, setAnswererList] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
 
   useEffect(() => {
     const getHistoryInfo = async () => {
-      const handleInfo = await axiosInstance.get(`history/${historyItemId}`);
+      const handleInfo = await axiosInstance.get(
+        `history/${historyItemId}?take=5&start=${(currentPage - 1) * 5}`
+      );
       const challenge = handleInfo.data.challenge;
       setChallenge(challenge);
       const questioner = handleInfo.data.questioner;
       setQuestioner(questioner);
-      const numOfAnswerers = handleInfo.data.answerList.length;
+      const numOfAnswerers = handleInfo.data.numberOfAnswerers;
       setNumOfAnswerers(numOfAnswerers);
       const answererList = handleInfo.data.answerList;
       setAnswererList(answererList);
       const question = handleInfo.data.question;
       setQuestion(question);
+
+      setTotalPages(Math.ceil(numOfAnswerers / 5));
     };
     getHistoryInfo();
-  }, []);
+  }, [currentPage, historyItemId]);
 
   const handleModalOpen = selectedAnswerer => {
     setSelectedAnswerer(selectedAnswerer);
@@ -61,6 +67,18 @@ const HistoryItem = () => {
   const handleModalClose = () => {
     setIsModalOpen(false);
     setSelectedAnswerer(null);
+  };
+
+  const handlePageClick = pageNumber => {
+    setCurrentPage(pageNumber);
+  };
+
+  const generatePageNumbers = () => {
+    const pageNumbers = [];
+    for (let i = 1; i <= totalPages; i++) {
+      pageNumbers.push(i);
+    }
+    return pageNumbers;
   };
 
   return (
@@ -74,13 +92,12 @@ const HistoryItem = () => {
             </div>
             <div className={Styles.itemInfo}>
               <div className={Styles.title}>{questioner}님의 다이어리</div>
-              <div>가장 오래된 답변 5개를 확인하라곰!</div>
               <div className={Styles.challengeAndCounterSign}>
                 우리가 설정한 암호: [{challenge}]
               </div>
             </div>
 
-            <div className={Styles.listContainer}>
+            <div className={Styles.listTable}>
               {answererList.map(person => (
                 <ul
                   key={person._id}
@@ -100,6 +117,34 @@ const HistoryItem = () => {
                   question={question}
                 />
               )}
+            </div>
+
+            <div className={Styles.pageBtns}>
+              <button
+                onClick={() => handlePageClick(currentPage - 1)}
+                disabled={currentPage <= 1}
+                className={currentPage <= 1 ? Styles.isEndBtn : ''}
+              >
+                {'<'}
+              </button>
+              {generatePageNumbers().map(pageNumber => (
+                <button
+                  key={pageNumber}
+                  onClick={() => handlePageClick(pageNumber)}
+                  className={
+                    pageNumber === currentPage ? Styles.currentPage : null
+                  }
+                >
+                  {pageNumber}
+                </button>
+              ))}
+              <button
+                className={answererList.length < 5 ? Styles.isEndBtn : null}
+                disabled={answererList.length < 5 ? true : false}
+                onClick={() => handlePageClick(currentPage + 1)}
+              >
+                {'>'}
+              </button>
             </div>
           </div>
         </section>
