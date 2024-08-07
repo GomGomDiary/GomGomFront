@@ -477,7 +477,7 @@ const DisplayAnswerList = ({ goToFirstStep }) => {
       {wantNewDiary && (
         <ConfirmModal
           message={`새로 만들면 이전 다이어리는 저장됩니다.
-            저장된 다이어리는 최근 답장 5개만 볼 수 있어요.`}
+            (왼쪽 시계를 클릭하면 이전 다이어리를 볼 수 있어요!)`}
           updateModal={handleModalClose}
           goToFirstStep={goToFirstStep}
         />
