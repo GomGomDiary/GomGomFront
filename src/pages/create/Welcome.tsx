@@ -1,5 +1,5 @@
-import Button from '../../Components/Button';
-import Input from '../../Components/Input';
+import Button from '../../components/Button';
+import Input from '../../components/Input';
 import styles from './Welcome.module.css';
 
 const Welcome = () => {

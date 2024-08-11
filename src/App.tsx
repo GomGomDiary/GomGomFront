@@ -1,9 +1,9 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { RecoilRoot } from 'recoil';
 import { CookiesProvider } from 'react-cookie';
-import Layout from './Design/Layout';
-import Welcome from './Pages/Create/Welcome';
-import QuestionNumber from './Pages/Create/QuestionNumber';
+import Layout from './design/Layout';
+import Welcome from './pages/create/Welcome';
+import QuestionNumber from './pages/create/QuestionNumber';
 
 const App = () => {
   return (
