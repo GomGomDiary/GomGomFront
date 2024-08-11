@@ -1,0 +1,47 @@
+.headerbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  display: flex;
+  padding: 5px;
+  height: 35px;
+  background-color: var(--main-color);
+  align-items: center;
+  justify-content: center;
+  color: white;
+  z-index: 999;
+  /* box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2); */
+}
+
+.history {
+  position: absolute;
+  font-size: 20px;
+  cursor: pointer;
+  left: 0;
+  margin-left: 10px;
+}
+
+.title {
+  cursor: pointer;
+  position: relative;
+}
+
+.menu {
+  position: absolute;
+  font-size: 20px;
+  cursor: pointer;
+  right: 0;
+  margin-right: 10px;
+}
+
+.noNewMessage {
+  position: absolute;
+  cursor: pointer;
+  right: 40px;
+}
+
+.haveNewMessage {
+  fill: var(--point-color);
+  animation: alarmAnimation 0.5s infinite;
+}
