@@ -2,10 +2,10 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { RecoilRoot } from 'recoil';
 import { CookiesProvider } from 'react-cookie';
 import Welcome from './Pages/Create/Welcome';
-import Layout from './design/Layout';
+import Layout from './Design/Layout';
 import QuestionNumber from './Pages/Create/QuestionNumber';
 
-function App() {
+const App = () => {
   return (
     <CookiesProvider>
       <RecoilRoot>
@@ -20,5 +20,5 @@ function App() {
       </RecoilRoot>
     </CookiesProvider>
   );
-}
+};
 export default App;

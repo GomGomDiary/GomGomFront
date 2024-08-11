@@ -1,8 +1,8 @@
-import Button from '../../components/Button';
-import Input from '../../components/Input';
+import Button from '../../Components/Button';
+import Input from '../../Components/Input';
 import styles from './Welcome.module.css';
 
-export default function Welcome() {
+const Welcome = () => {
   return (
     <div className={styles.Welcome}>
       <div className={styles.title}>
@@ -26,4 +26,6 @@ export default function Welcome() {
       </div>
     </div>
   );
-}
+};
+
+export default Welcome;
