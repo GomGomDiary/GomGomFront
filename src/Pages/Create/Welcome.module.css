@@ -1,25 +1,22 @@
-@import '../../App.css';
-
 .Welcome {
   display: flex;
   flex-direction: column;
+  text-align: center;
   gap: 50px;
 }
 
 .Welcome .title {
   font-size: 20px;
-  text-align: center;
   line-height: 1.2;
 }
 
-.Welcome .title :first-child {
+.Welcome .title div {
   animation: fontAnimation 1s infinite;
   font-size: 40px;
 }
 
 .Welcome .section {
   line-height: 1.6;
-  text-align: center;
 }
 
 .Welcome .section div {
@@ -28,7 +25,6 @@
   color: var(--point-color);
   padding: 10px 0px;
   font-weight: bold;
-  text-align: center;
 }
 
 .Welcome .nameInput {
