@@ -1,13 +1,18 @@
-.QuestionNumber {
+.questionNumber {
   display: flex;
   flex-direction: column;
   gap: 60px;
 }
 
 .title {
-  font-size: 20px;
+  font-size: 18px;
   text-align: center;
-  line-height: 1.2;
+  line-height: 1.6;
+}
+
+.title :first-child {
+  font-size: 20px;
+  color: var(--point-color);
 }
 
 .circle {
@@ -17,20 +22,24 @@
   gap: 10px;
 }
 
-.circle button {
-  border: 1px solid var(--border-color);
-  background-color: white;
-  width: 50px;
-  height: 50px;
-  border-radius: 25px;
-  cursor: pointer;
+.circle {
+  .minus,
+  .plus {
+    border: 1px solid var(--border-color);
+    background-color: white;
+    width: 50px;
+    height: 50px;
+    border-radius: 25px;
+    cursor: pointer;
+
+    &:hover {
+      background-color: var(--main-color);
+      transform: scale(1.2);
+    }
+  }
 }
 
-.circle button:hover {
-  background-color: var(--main-color);
-}
-
-.circle div {
+.circle .number {
   display: flex;
   justify-content: center;
   align-items: center;

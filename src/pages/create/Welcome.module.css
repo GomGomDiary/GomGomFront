@@ -1,25 +1,25 @@
-.Welcome {
+.welcome {
   display: flex;
   flex-direction: column;
   text-align: center;
   gap: 50px;
 }
 
-.Welcome .title {
+.welcome .title {
   font-size: 20px;
   line-height: 1.2;
 }
 
-.Welcome .title div {
+.welcome .title div {
   animation: fontAnimation 1s infinite;
   font-size: 40px;
 }
 
-.Welcome .section {
+.welcome .section {
   line-height: 1.6;
 }
 
-.Welcome .section div {
+.welcome .section div {
   font-size: 18px;
   line-height: 1.4;
   color: var(--point-color);
@@ -27,7 +27,7 @@
   font-weight: bold;
 }
 
-.Welcome .nameInput {
+.welcome .nameInput {
   display: flex;
   flex-direction: column;
   gap: 30px;

@@ -47,7 +47,7 @@ const Welcome = () => {
     <AnimatePresence>
       {!isExiting && (
         <motion.div
-          className={styles.Welcome}
+          className={styles.welcome}
           initial="initial"
           exit="exit"
           variants={pageVariants}

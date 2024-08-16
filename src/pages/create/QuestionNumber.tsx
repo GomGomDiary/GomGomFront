@@ -35,8 +35,9 @@ const QuestionNumber = () => {
   };
 
   return (
-    <div className={styles.QuestionNumber}>
+    <div className={styles.questionNumber}>
       <div className={styles.title}>
+        <p>다이어리의 질문을 만들어보자곰!</p>
         <p>최소 3개부터 최대 10개로</p>
         <p>질문 개수를 정해달라곰!</p>
       </div>
