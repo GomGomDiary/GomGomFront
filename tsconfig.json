@@ -17,6 +17,7 @@
       "@/*": ["src/*"]
     }
   },
+  "extensions": [".js", ".jsx", ".ts", ".tsx"],
   "include": ["src"],
   "exclude": ["node_modules", "build", "coverage"]
 }
