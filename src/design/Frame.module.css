@@ -1,6 +1,14 @@
 .frame {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.frameChildren {
   color: black;
-  margin-top: 40px;
+  padding-top: 40px;
+  width: 340px;
   height: calc(100vh - 80px);
   display: flex;
   flex-direction: column;
