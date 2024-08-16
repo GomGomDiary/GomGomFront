@@ -1,9 +1,9 @@
-import { forwardRef } from 'react';
+import { ChangeEventHandler, forwardRef } from 'react';
 import styles from './Input.module.css';
 
 export interface InputProps {
   value?: string;
-  onChange?: () => void;
+  onChange?: ChangeEventHandler<HTMLInputElement>;
   onKeyUp?: () => void;
   placeholder?: string;
   maxLength?: number;
