@@ -5,7 +5,7 @@ import styles from './Welcome.module.css';
 import { useAtom } from 'jotai';
 import { questionerAtom } from '@/store/create/questioner';
 import { ChangeEvent, useRef, useState } from 'react';
-import { motion, AnimatePresence, animate } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 
 const Welcome = () => {
   const navigate = useNavigate();
