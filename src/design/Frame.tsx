@@ -1,4 +1,4 @@
-import Ad from '../api/Ad';
+import Ad from '@/api/ad';
 import styles from './Frame.module.css';
 import Headerbar from './Headerbar';
 
