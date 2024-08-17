@@ -1,6 +1,5 @@
 import { useNavigate } from 'react-router-dom';
-import Button from '@/components/Button';
-import Input from '@/components/Input';
+import { Button, Dialog, Input } from '@/components';
 import styles from './Welcome.module.css';
 import { useAtom } from 'jotai';
 import { questionerAtom } from '@/store/create/questioner';
@@ -18,6 +17,10 @@ const Welcome = () => {
   };
 
   const [isNameWritten, setIsNameWritten] = useState(false);
+
+  const handleModalClose = () => {
+    setIsNameWritten(false);
+  };
 
   const handleSubmitName = () => {
     if (questioner) {
@@ -40,11 +43,14 @@ const Welcome = () => {
   const pageTransition = {
     type: 'tween',
     ease: 'anticipate',
-    duration: 1.2,
+    duration: 1.0,
   };
 
   return (
     <AnimatePresence>
+      {isNameWritten && (
+        <Dialog message="이름을 입력해주세요." updateModal={handleModalClose} />
+      )}
       {!isExiting && (
         <motion.div
           className={styles.welcome}
