@@ -9,7 +9,7 @@ export interface InputProps {
   maxLength?: number;
 }
 
-const Input = forwardRef<HTMLInputElement, InputProps>(
+export const Input = forwardRef<HTMLInputElement, InputProps>(
   ({ value, onChange, onKeyUp, placeholder, maxLength }, ref) => {
     return (
       <input
@@ -25,5 +25,3 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
     );
   }
 );
-
-export default Input;

@@ -7,7 +7,7 @@ export interface DialogProps {
   updateModal: (isOpen: boolean) => void;
 }
 
-const Dialog = ({ message, updateModal }: DialogProps) => {
+export const Dialog = ({ message, updateModal }: DialogProps) => {
   const [modalIsOpen, setModalIsOpen] = useState(true);
 
   const handleClose = () => {
@@ -35,4 +35,3 @@ const Dialog = ({ message, updateModal }: DialogProps) => {
     </Modal>
   );
 };
-export default Dialog;

@@ -6,7 +6,7 @@ export interface ButtonProps {
   variant?: 'default' | 'white';
 }
 
-const Button = ({ text, onClick, variant }: ButtonProps) => {
+export const Button = ({ text, onClick, variant }: ButtonProps) => {
   let className = variant === 'default' ? styles.button : styles.whiteButton;
 
   return (
@@ -15,5 +15,3 @@ const Button = ({ text, onClick, variant }: ButtonProps) => {
     </button>
   );
 };
-
-export default Button;
