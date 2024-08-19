@@ -5,6 +5,7 @@ import Welcome from './pages/create/Welcome';
 import QuestionNumber from './pages/create/QuestionNumber';
 import QuestionList from './pages/create/QuestionList';
 import WriteChallenge from './pages/create/WriteChallenge';
+import WriteCountersign from './pages/create/WriteCountersign';
 
 const App = () => {
   return (
@@ -16,6 +17,7 @@ const App = () => {
             <Route path="/question-number" element={<QuestionNumber />} />
             <Route path="/question-list" element={<QuestionList />} />
             <Route path="/challenge" element={<WriteChallenge />} />
+            <Route path="/countersign" element={<WriteCountersign />} />
           </Route>
         </Routes>
       </BrowserRouter>
