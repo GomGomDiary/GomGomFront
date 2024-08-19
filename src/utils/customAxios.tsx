@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const instance = (answererJWT: string) => {
+const instance = (answererJWT?: string) => {
   const axiosInstance = axios.create({
     baseURL: process.env.REACT_APP_SERVER_URL,
     withCredentials: true,
