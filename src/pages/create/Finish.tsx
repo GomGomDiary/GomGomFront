@@ -12,6 +12,12 @@ import { useNavigate } from 'react-router-dom';
 
 import { EventTrigger } from '@/utils/gtag';
 
+declare global {
+  interface Window {
+    Kakao: any;
+  }
+}
+
 const Finish = () => {
   const [userCookie, setUserCookie] = useAtom(userCookieAtom);
 
