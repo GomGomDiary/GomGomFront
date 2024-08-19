@@ -23,11 +23,11 @@ const WriteChallenge = () => {
 
   const challengeInputRef = useRef<HTMLInputElement>(null);
 
-  const writingChallenge = (e: ChangeEvent<HTMLInputElement>) => {
+  const handleWriteChallenge = (e: ChangeEvent<HTMLInputElement>) => {
     setChallenge(e.target.value);
   };
 
-  const submitChallenge = () => {
+  const handleSubmitChallenge = () => {
     if (challenge) {
       setIsExiting(true);
       setTimeout(() => {
@@ -91,7 +91,7 @@ const WriteChallenge = () => {
             <div className={styles.challenge}>
               <Input
                 value={challenge}
-                onChange={e => writingChallenge(e)}
+                onChange={e => handleWriteChallenge(e)}
                 placeholder="50자 내외로 입력해주세요."
                 ref={challengeInputRef}
                 maxLength={50}
@@ -107,7 +107,11 @@ const WriteChallenge = () => {
               variant="white"
               onClick={handlePrevious}
             />
-            <Button text={'다음'} variant="default" onClick={submitChallenge} />
+            <Button
+              text={'다음'}
+              variant="default"
+              onClick={handleSubmitChallenge}
+            />
           </div>
         </motion.div>
       )}
