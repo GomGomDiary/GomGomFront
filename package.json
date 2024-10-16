@@ -19,10 +19,10 @@
     "react-dom": "^18.2.0",
     "react-ga4": "^2.1.0",
     "react-icons": "^4.12.0",
-    "react-modal": "^3.16.1",
     "react-router-dom": "^6.16.0",
     "react-scripts": "5.0.1",
     "socket.io-client": "^4.7.4",
+    "styled-components": "^6.1.13",
     "web-vitals": "^2.1.4"
   },
   "scripts": {
