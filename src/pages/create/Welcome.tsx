@@ -1,15 +1,14 @@
 import { useNavigate } from 'react-router-dom';
-import { Button, Dialog, Input } from '@/components';
-import styles from './Welcome.module.css';
+import { Button, Modal, Input } from '@/components';
 import { useAtom } from 'jotai';
 import { questionerAtom } from '@/store/create/questioner';
-import { ChangeEvent, useRef, useState } from 'react';
+import { ChangeEvent, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import styled, { keyframes } from 'styled-components';
 
 const Welcome = () => {
   const navigate = useNavigate();
   const [questioner, setQuestioner] = useAtom(questionerAtom);
-  const nameInputRef = useRef<HTMLInputElement>(null);
   const [isExiting, setIsExiting] = useState(false);
 
   const handleWriteName = (e: ChangeEvent<HTMLInputElement>) => {
@@ -30,7 +29,6 @@ const Welcome = () => {
         navigate('/question-number');
       }, 1000);
     } else {
-      nameInputRef.current?.focus();
       setIsNameWritten(true);
     }
   };
@@ -49,33 +47,38 @@ const Welcome = () => {
   return (
     <AnimatePresence>
       {isNameWritten && (
-        <Dialog message="이름을 입력해주세요." updateModal={handleModalClose} />
+        <Modal message="이름을 입력해주세요." updateModal={handleModalClose} />
       )}
       {!isExiting && (
-        <motion.div
-          className={styles.welcome}
+        <WelcomeContainer
           initial="initial"
           exit="exit"
           variants={pageVariants}
           transition={pageTransition}
+          key="Welcome"
         >
-          <div className={styles.title}>
-            <div>🐻💭</div>
-            <p>상대에 대해 곰곰이 생각하고</p>
-            <p>답하는 곰곰 다이어리</p>
-          </div>
-          <section className={styles.section}>
-            <div>반갑다곰!</div>
-            <p>질문을 만들고 특별한 암호를 설정한 뒤</p>
-            <p>소중한 친구, 가족, 연인과 공유해서</p>
-            <p>많은 답변과 추억을 쌓아보라곰!</p>
-          </section>
-          <div className={styles.nameInput}>
+          <Title>
+            <Emoji>🐻💭</Emoji>
+            <Subtitle>
+              상대에 대해 곰곰이 생각하고
+              <br />
+              답하는 곰곰 다이어리
+            </Subtitle>
+          </Title>
+          <Description>
+            <Introduction>반갑다곰!</Introduction>
+            <Subtitle>
+              질문을 만들고 특별한 암호를 설정한 뒤<br />
+              소중한 친구, 가족, 연인과 공유해서
+              <br />
+              많은 답변과 추억을 쌓아보라곰!
+            </Subtitle>
+          </Description>
+          <NameInput>
             <Input
               value={questioner}
               onChange={handleWriteName}
               placeholder="10자 이내로 이름을 입력하세요."
-              ref={nameInputRef}
               maxLength={10}
             />
             <Button
@@ -83,11 +86,61 @@ const Welcome = () => {
               variant="default"
               onClick={handleSubmitName}
             />
-          </div>
-        </motion.div>
+          </NameInput>
+        </WelcomeContainer>
       )}
     </AnimatePresence>
   );
 };
 
 export default Welcome;
+
+const SwingAnimation = keyframes`
+  0% {
+    transform: rotate(-5deg);
+  }
+  50% {
+    transform: rotate(5deg);
+  }
+  100% {
+    transform: rotate(-5deg);
+  }
+`;
+
+const WelcomeContainer = styled(motion.div)`
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  gap: 50px;
+`;
+
+const Title = styled.div`
+  font-size: 20px;
+  line-height: 1.2;
+`;
+
+const Emoji = styled.div`
+  animation: ${SwingAnimation} 1s infinite;
+  font-size: 40px;
+`;
+
+const Subtitle = styled.div``;
+
+const Description = styled.section`
+  line-height: 1.6;
+`;
+
+const Introduction = styled.div`
+  font-size: 18px;
+  line-height: 1.4;
+  color: var(--point-color);
+  padding: 10px 0px;
+  font-weight: bold;
+`;
+
+const NameInput = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  margin: 0 auto;
+`;

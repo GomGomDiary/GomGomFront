@@ -1,14 +1,14 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
-import styles from './QuestionList.module.css';
 import { useAtomValue, useSetAtom } from 'jotai';
 import { questionNumberAtom } from '@/store/create/questionNumber';
-import { Button, Dialog, Input } from '@/components';
+import { Button, Modal, Input } from '@/components';
 import { questionArrAtom } from '@/store/create/questionArr';
 import { originQuestionArrAtom } from '@/store/create/originQuestionArr';
 
 import { questionerAtom } from '@/store/create/questioner';
 import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
+import styled from 'styled-components';
 
 const QuestionList = () => {
   const navigate = useNavigate();
@@ -36,30 +36,7 @@ const QuestionList = () => {
   const editedQuestionInputRef = useRef(null);
 
   const [isModified, setIsModified] = useState(false);
-
-  const [back, setBack] = useState(false);
   const [isExiting, setIsExiting] = useState(false);
-
-  const questionVariant = {
-    entry: (back: number) => ({
-      x: back ? -200 : 200,
-      opacity: 0,
-      transition: { duration: 0.6 },
-      scale: 1,
-    }),
-    center: {
-      opacity: 1,
-      x: 0,
-      transition: { duration: 0.6 },
-      scale: 1,
-    },
-    exit: (back: number) => ({
-      x: back ? 200 : -200,
-      opacity: 0,
-      scale: 1,
-      transition: { duration: 0.6 },
-    }),
-  };
 
   const pageVariants = {
     initial: { opacity: 1, x: 0 },
@@ -75,7 +52,6 @@ const QuestionList = () => {
   const handleNextQuestion = () => {
     if (currentQuestionIndex < questionNumber - 1 && !isEditing) {
       setCurrentQuestionIndex(currentQuestionIndex + 1);
-      setBack(false);
     } else if (isEditing) {
       setIsModified(true);
     } else {
@@ -96,7 +72,6 @@ const QuestionList = () => {
       }, 1000);
     } else if (currentQuestionIndex > 0 && !isEditing) {
       setCurrentQuestionIndex(currentQuestionIndex - 1);
-      setBack(true);
     } else {
       setIsModified(true);
     }
@@ -133,96 +108,138 @@ const QuestionList = () => {
   return (
     <AnimatePresence>
       {!isExiting && (
-        <motion.div
-          className={styles.questionListContainer}
+        <QuestionListContainer
           initial="initial"
           exit="exit"
           variants={pageVariants}
           transition={pageTransition}
         >
-          <div className={styles.questionList}>
+          <ListContent>
             {currentQuestionIndex < questionNumber && (
               <>
                 {isModified && (
-                  <Dialog
+                  <Modal
                     message="질문을 완성해주세요."
                     updateModal={handleModalClose}
                   />
                 )}
-                <AnimatePresence mode="wait" custom={back}>
-                  <motion.div
-                    custom={back}
-                    key={currentQuestionIndex}
-                    initial="entry"
-                    animate="center"
-                    exit="exit"
-                    variants={questionVariant}
-                    className={styles.top}
-                  >
-                    <div className={styles.progressBar}>
-                      <div
-                        className={styles.progress}
-                        style={{ width: `${calculateProgress}%` }}
-                      ></div>
-                    </div>
-
-                    <div className={styles.middle}>
-                      <div className={styles.questionContent}>
-                        <p>✉️ {currentQuestionIndex + 1}번째 질문 ✉️</p>
-                        {isEditing ? (
-                          <div className={styles.editedQuestion}>
-                            <Input
-                              placeholder="100자 내외로 질문을 수정하세요."
-                              value={editedQuestion}
-                              onChange={e => setEditedQuestion(e.target.value)}
-                              ref={editedQuestionInputRef}
-                              maxLength={100}
-                            />
-                            <div className={styles.editedQuestionLength}>
-                              {editedQuestion.length}/100
-                            </div>
-                          </div>
-                        ) : (
-                          <span className={styles.currentQuestion}>
-                            {currentQuestion}
-                          </span>
-                        )}
-                        <div className={styles.btns}>
-                          {!isEditing ? (
-                            <Button
-                              text={'질문 수정하기'}
-                              variant="default"
-                              onClick={handleModifyQuestion}
-                            />
-                          ) : (
-                            <Button
-                              text={'수정 완료'}
-                              variant="default"
-                              onClick={handleSaveQuestion}
-                            />
-                          )}
-                          <Button
-                            text={'이전으로'}
-                            variant="white"
-                            onClick={handlePreviousQuestion}
-                          />
-                          <Button
-                            text={'다음 질문'}
-                            variant="white"
-                            onClick={handleNextQuestion}
-                          />
-                        </div>
-                      </div>
-                    </div>
-                  </motion.div>
-                </AnimatePresence>
+                <Progressbar>
+                  <Progress width={calculateProgress} />
+                </Progressbar>
+                <QuestionContainer>
+                  <Title>✉️ {currentQuestionIndex + 1}번째 질문 ✉️</Title>
+                  {isEditing ? (
+                    <EditedQuestion>
+                      <Input
+                        placeholder="100자 내외로 질문을 수정하세요."
+                        value={editedQuestion}
+                        onChange={e => setEditedQuestion(e.target.value)}
+                        ref={editedQuestionInputRef}
+                        maxLength={100}
+                      />
+                      <EditedQuestionLength>
+                        {editedQuestion.length}/100
+                      </EditedQuestionLength>
+                    </EditedQuestion>
+                  ) : (
+                    <CurrentQuestion>{currentQuestion}</CurrentQuestion>
+                  )}
+                  <Buttons>
+                    {!isEditing ? (
+                      <Button
+                        text={'질문 수정하기'}
+                        variant="default"
+                        onClick={handleModifyQuestion}
+                      />
+                    ) : (
+                      <Button
+                        text={'수정 완료'}
+                        variant="default"
+                        onClick={handleSaveQuestion}
+                      />
+                    )}
+                    <Button
+                      text={'이전으로'}
+                      variant="white"
+                      onClick={handlePreviousQuestion}
+                    />
+                    <Button
+                      text={'다음 질문'}
+                      variant="white"
+                      onClick={handleNextQuestion}
+                    />
+                  </Buttons>
+                </QuestionContainer>
               </>
             )}
-          </div>
-        </motion.div>
+          </ListContent>
+        </QuestionListContainer>
       )}
     </AnimatePresence>
   );
 };
 
 export default QuestionList;
+
+const QuestionListContainer = styled(motion.div)`
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+`;
+
+const ListContent = styled.div`
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  text-align: center;
+  gap: 50px;
+`;
+
+const Progressbar = styled.div`
+  width: 90%;
+  height: 20px;
+  margin: 0 auto;
+  border-radius: 20px;
+  background-color: var(--border-color);
+`;
+
+const Progress = styled.div<{ width: number }>`
+  width: ${({ width }) => width}%;
+  height: 100%;
+  border-radius: 20px;
+  background-color: var(--point-color);
+  transition: width 0.6s ease-in-out;
+`;
+
+const QuestionContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 50px;
+  font-size: 20px;
+  align-items: center;
+  width: 100%;
+`;
+
+const Title = styled.div`
+  color: var(--point-color);
+`;
+
+const EditedQuestion = styled.div``;
+
+const EditedQuestionLength = styled.div`
+  font-size: 12px;
+  padding-top: 10px;
+  text-align: right;
+`;
+
+const CurrentQuestion = styled.div`
+  width: 80%;
+  word-break: break-all;
+`;
+
+const Buttons = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 80%;
+`;

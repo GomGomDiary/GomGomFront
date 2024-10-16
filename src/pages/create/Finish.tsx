@@ -1,8 +1,7 @@
 import { useEffect, useState } from 'react';
-import styles from './Finish.module.css';
 
 import ConfettiEffect from '@/design/ConfettiEffect';
-import { Button, Dialog } from '@/components';
+import { Button, Modal } from '@/components';
 
 import { userCookieAtom } from '@/store/create/userCookie';
 import { getCookie } from '@/utils/cookie';
@@ -11,14 +10,22 @@ import { useAtom } from 'jotai';
 import { useNavigate } from 'react-router-dom';
 
 import { EventTrigger } from '@/utils/gtag';
-
-declare global {
-  interface Window {
-    Kakao: any;
-  }
-}
+import styled, { keyframes } from 'styled-components';
+import { initializeKakao, sendKakaoLink } from '@/utils/kakao';
 
 const Finish = () => {
+  useEffect(() => {
+    const script = document.createElement('script');
+    script.src = 'https://developers.kakao.com/sdk/js/kakao.js';
+    script.async = true;
+
+    document.body.appendChild(script);
+
+    return () => {
+      document.body.removeChild(script);
+    };
+  }, []);
+
   const [userCookie, setUserCookie] = useAtom(userCookieAtom);
 
   const navigate = useNavigate();
@@ -28,7 +35,6 @@ const Finish = () => {
       try {
         const diaryId = await getCookie('diaryAddress');
         setUserCookie(diaryId);
-        // 추가
 
         const diaryUser = getCookie('diaryUser');
         localStorage.setItem('diaryAddress', diaryId);
@@ -65,38 +71,15 @@ const Finish = () => {
 
   const location = window.location.href;
 
-  const handleKaKaoTalk = async () => {
-    if (window.Kakao) {
-      const Kakao = window.Kakao;
+  const handleKakaoTalk = async () => {
+    initializeKakao();
 
-      const kakaoAPI = process.env.REACT_APP_KAKAO_API;
+    const description = '상대에 대해 곰곰이 생각하고 답해보세요!';
+    const imageUrl = `${location}image/OG_Thumb.png`;
+    const buttonTitle = '답장하기';
+    const link = `${location}diary/${userCookie}`;
 
-      if (!Kakao.isInitialized()) {
-        Kakao.init(kakaoAPI);
-      }
-
-      Kakao.Link.sendDefault({
-        objectType: 'feed',
-        content: {
-          title: '곰곰 다이어리',
-          description: '상대에 대해 곰곰이 생각하고 답해보세요!',
-          imageUrl: `${location}image/OG_Thumb.png`,
-          link: {
-            mobileWebUrl: `${location}diary/${userCookie}`,
-            webUrl: `${location}diary/${userCookie}`,
-          },
-        },
-        buttons: [
-          {
-            title: '답장하기',
-            link: {
-              mobileWebUrl: `${location}diary/${userCookie}`,
-              webUrl: `${location}diary/${userCookie}`,
-            },
-          },
-        ],
-      });
-    }
+    sendKakaoLink(description, imageUrl, link, buttonTitle);
   };
 
   const handleGoToAnswerList = () => {
@@ -104,16 +87,20 @@ const Finish = () => {
   };
 
   return (
-    <div>
+    <>
       <ConfettiEffect />
-      <div className={styles.Finish}>
-        <div className={styles.top}>
-          <div>🎉</div>
-          <div>곰곰다이어리가 완성됐다곰!</div>
-          <div>완성된 다이어리를 공유해보세요.</div>
-          <div>반드시 아래 버튼으로 링크를 공유해주세요!</div>
-        </div>
-        <div className={styles.middle}>
+      <FinishContainer>
+        <Title>
+          <Emoji>🎉</Emoji>
+          <Subtitle>곰곰다이어리가 완성됐다곰!</Subtitle>
+          <Description>
+            완성된 다이어리를 공유해보세요.
+            <br />
+            반드시 아래 버튼으로 링크를 공유해주세요!
+            <br />
+          </Description>
+        </Title>
+        <Buttons>
           <Button
             text={'링크로 공유하기'}
             variant="white"
@@ -121,28 +108,69 @@ const Finish = () => {
               handleShareLink(`${location}diary/${userCookie}`);
             }}
           />
-          {isCopied && (
-            <Dialog
-              message={'링크를 복사했어요.'}
-              updateModal={handleModalClose}
-            />
-          )}
+
           <Button
             text={'카톡으로 공유하기'}
             variant="white"
-            onClick={handleKaKaoTalk}
+            onClick={handleKakaoTalk}
           />
-        </div>
-        <div className={styles.bottom}>
           <Button
             text={'답변 현황 확인하기'}
             variant="default"
             onClick={handleGoToAnswerList}
           />
-        </div>
-      </div>
-    </div>
+          {isCopied && (
+            <Modal
+              message={'링크를 복사했어요.'}
+              updateModal={handleModalClose}
+            />
+          )}
+        </Buttons>
+      </FinishContainer>
+    </>
   );
 };
 
 export default Finish;
+
+const SwingAnimation = keyframes`
+  0% {
+    transform: rotate(-10deg);
+  }
+  50% {
+    transform: rotate(15deg);
+  }
+  100% {
+    transform: rotate(-10deg);
+  }
+`;
+
+const FinishContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 50px;
+`;
+
+const Title = styled.div`
+  text-align: center;
+  line-height: 1.6;
+`;
+
+const Emoji = styled.div`
+  font-size: 40px;
+  animation: ${SwingAnimation} 0.8s infinite;
+`;
+
+const Subtitle = styled.div`
+  font-size: 25px;
+  color: var(--point-color);
+`;
+
+const Description = styled.div``;
+
+const Buttons = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin: 0 auto;
+`;

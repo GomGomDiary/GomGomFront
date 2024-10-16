@@ -1,5 +1,4 @@
-import { useState, useRef, ChangeEvent } from 'react';
-import styles from './WriteCountersign.module.css';
+import { useState, ChangeEvent } from 'react';
 
 import { questionerAtom } from '@/store/create/questioner';
 import { questionArrAtom } from '@/store/create/questionArr';
@@ -7,16 +6,16 @@ import { challengeAtom } from '@/store/create/challenge';
 import { countersignAtom } from '@/store/create/countersign';
 import { motion, AnimatePresence } from 'framer-motion';
 
-import { Button, Dialog, Input } from '@/components';
+import { Button, Modal, Input } from '@/components';
 import instance from '@/utils/customAxios';
 import { useAtom, useAtomValue } from 'jotai';
 import { useNavigate } from 'react-router-dom';
+import styled, { keyframes } from 'styled-components';
 
 const WriteCountersign = () => {
   const navigate = useNavigate();
   const [countersign, setCountersign] = useAtom(countersignAtom);
   const [isCountersignWritten, setIsCountersignWritten] = useState(false);
-  const countersignInputRef = useRef<HTMLInputElement>(null);
 
   const questioner = useAtomValue(questionerAtom);
   const questionArr = useAtomValue(questionArrAtom);
@@ -69,58 +68,58 @@ const WriteCountersign = () => {
       );
 
       if (statusCode === 201) {
-        return;
+        navigate('/finish');
       }
 
-      const { data: isCreated } = await axiosInstance.get('diary/');
+      const { data: isDiaryCreated } = await axiosInstance.get('diary/');
 
-      if (isCreated) {
+      if (isDiaryCreated) {
         setIsRewrite(true);
       }
     } else {
       setIsCountersignWritten(true);
-      countersignInputRef.current?.focus();
     }
   };
 
   return (
     <AnimatePresence>
       {!isExiting && (
-        <motion.div
+        <WriteCountersignContainer
           initial="initial"
           exit="exit"
           variants={pageVariants}
           transition={pageTransition}
-          className={styles.writeCountersignContainer}
+          key="WriteCountersign"
         >
           {isCountersignWritten && (
-            <Dialog
+            <Modal
               message={'암호의 답을 입력해주세요.'}
               updateModal={handleModalClose}
             />
           )}
-          <div className={styles.top}>
-            <div>🔑</div>
-            <div>거의 다 왔다곰!</div>
-            <div>우리만의 암호를 아는 사람만 답장할 수 있도록</div>
-            <div>암호의 답을 정확하게 입력해주세요.</div>
-            <div>(ex. 0718, INFJ 등)</div>
-          </div>
-          <div className={styles.middle}>
-            <div className={styles.countersign}>
+          <Title>
+            <Emoji>🔑</Emoji>
+            <Subtitle>거의 다 왔다곰!</Subtitle>
+            <Description>
+              우리만의 암호를 아는 사람만 답장할 수 있도록
+              <br />
+              암호의 답을 정확하게 입력해주세요.
+              <br />
+              (ex. 0718, INFJ 등)
+            </Description>
+          </Title>
+          <CountersignContent>
+            <Countersign>
               <Input
                 value={countersign}
                 onChange={e => handleWriteCountersign(e)}
                 placeholder="50자 내외로 입력해주세요."
-                ref={countersignInputRef}
                 maxLength={50}
               />
-              <div className={styles.countersignLength}>
-                {countersign.length}/50
-              </div>
-            </div>
-          </div>
-          <div className={styles.bottom}>
+              <CountersignLength>{countersign.length}/50</CountersignLength>
+            </Countersign>
+          </CountersignContent>
+          <Buttons>
             <Button
               text={'이전으로'}
               variant="white"
@@ -131,17 +130,75 @@ const WriteCountersign = () => {
               variant="default"
               onClick={handleSubmitCountersign}
             />
-          </div>
+          </Buttons>
           {isRewrite && (
-            <Dialog
+            <Modal
               message={'이전 다이어리는 저장됐어요.'}
               updateModal={handleModalClose}
             />
           )}
-        </motion.div>
+        </WriteCountersignContainer>
       )}
     </AnimatePresence>
   );
 };
 
 export default WriteCountersign;
+
+const SwingAnimation = keyframes`
+  0% {
+    transform: rotate(-10deg);
+  }
+  50% {
+    transform: rotate(15deg);
+  }
+  100% {
+    transform: rotate(-10deg);
+  }
+`;
+
+const WriteCountersignContainer = styled(motion.div)`
+  display: flex;
+  flex-direction: column;
+  gap: 60px;
+`;
+
+const Title = styled.div`
+  text-align: center;
+  line-height: 1.6;
+`;
+
+const Emoji = styled.div`
+  font-size: 40px;
+  animation: ${SwingAnimation} 0.8s infinite;
+`;
+
+const Subtitle = styled.div`
+  font-size: 25px;
+  color: var(--point-color);
+`;
+
+const Description = styled.div``;
+
+const CountersignContent = styled.div`
+  display: flex;
+  justify-content: center;
+`;
+
+const Countersign = styled.div`
+  width: 80%;
+  text-align: center;
+`;
+
+const CountersignLength = styled.div`
+  font-size: 12px;
+  padding-top: 10px;
+  text-align: right;
+`;
+
+const Buttons = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin: 0 auto;
+`;

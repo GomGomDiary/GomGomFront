@@ -1,5 +1,5 @@
 import { ChangeEventHandler, forwardRef } from 'react';
-import styles from './Input.module.css';
+import styled from 'styled-components';
 
 export interface InputProps {
   value?: string;
@@ -12,8 +12,7 @@ export interface InputProps {
 export const Input = forwardRef<HTMLInputElement, InputProps>(
   ({ value, onChange, onKeyUp, placeholder, maxLength }, ref) => {
     return (
-      <input
-        className={styles.input}
+      <StyledInput
         type="text"
         value={value}
         onChange={onChange}
@@ -25,3 +24,12 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
     );
   }
 );
+
+const StyledInput = styled.input`
+  border: none;
+  border-bottom: 1px solid var(--border-color);
+  text-align: center;
+  padding: 5px;
+  width: 200px;
+  font-size: 16px;
+`;
