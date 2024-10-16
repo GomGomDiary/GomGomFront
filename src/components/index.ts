@@ -1,3 +1,3 @@
 export * from './button/Button';
-export * from './dialog/Dialog';
+export * from './modal/Modal';
 export * from './input/Input';
