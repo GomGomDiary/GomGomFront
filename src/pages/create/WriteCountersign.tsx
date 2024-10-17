@@ -1,16 +1,20 @@
-import { useState, ChangeEvent } from 'react';
-
-import { questionerAtom } from '@/store/create/questioner';
-import { questionArrAtom } from '@/store/create/questionArr';
-import { challengeAtom } from '@/store/create/challenge';
-import { countersignAtom } from '@/store/create/countersign';
-import { motion, AnimatePresence } from 'framer-motion';
-
-import { Button, Modal, Input } from '@/components';
-import instance from '@/utils/customAxios';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { AnimatePresence, motion } from 'framer-motion';
 import { useAtom, useAtomValue } from 'jotai';
+import { ChangeEvent, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import styled, { keyframes } from 'styled-components';
+import styled from 'styled-components';
+
+import { Button, Input, Modal } from '@/components';
+import { pageTransition, pageVariants } from '@/design';
+import { TitleSection } from '@/design/TitleSection';
+import {
+  challengeAtom,
+  countersignAtom,
+  questionArrAtom,
+  questionerAtom,
+} from '@/store/create';
+import instance from '@/utils/customAxios';
 
 const WriteCountersign = () => {
   const navigate = useNavigate();
@@ -18,11 +22,51 @@ const WriteCountersign = () => {
   const [isCountersignWritten, setIsCountersignWritten] = useState(false);
 
   const questioner = useAtomValue(questionerAtom);
+
+  // NOTE: 다이어리 생성 중 이탈 시 메인으로 이동
+  useEffect(() => {
+    if (questioner.length === 0) {
+      navigate('/');
+    }
+  }, [navigate, questioner.length]);
+
   const questionArr = useAtomValue(questionArrAtom);
   const challenge = useAtomValue(challengeAtom);
 
   const [isRewrite, setIsRewrite] = useState(false);
   const [isExiting, setIsExiting] = useState(false);
+
+  const queryClient = useQueryClient();
+  const axiosInstance = instance();
+
+  const createDiaryMutation = useMutation({
+    mutationFn: () => {
+      return axiosInstance.post('diary/question', {
+        question: questionArr,
+        questioner,
+        challenge,
+        countersign,
+      });
+    },
+    onSuccess: data => {
+      if (data.status === 201) {
+        queryClient.invalidateQueries({ queryKey: ['isDiaryCreated'] });
+        navigate('/finish');
+      }
+    },
+    onError: () => {
+      console.error('Error creating diary');
+    },
+  });
+
+  const isDiaryCreatedQuery = useQuery({
+    queryKey: ['isDiaryCreated'],
+    queryFn: async () => {
+      const { data } = await axiosInstance.get('diary/');
+      return data;
+    },
+    enabled: false,
+  });
 
   const handleWriteCountersign = (e: ChangeEvent<HTMLInputElement>) => {
     setCountersign(e.target.value);
@@ -41,38 +85,12 @@ const WriteCountersign = () => {
     }, 1000);
   };
 
-  const pageVariants = {
-    initial: { opacity: 1, x: 0 },
-    exit: { opacity: 0, x: 0 },
-  };
-
-  const pageTransition = {
-    type: 'tween',
-    ease: 'anticipate',
-    duration: 1.0,
-  };
-
   const handleSubmitCountersign = async () => {
     if (countersign) {
       setCountersign(countersign);
-      const axiosInstance = instance();
+      createDiaryMutation.mutate();
 
-      const { status: statusCode } = await axiosInstance.post(
-        'diary/question',
-        {
-          question: questionArr,
-          questioner,
-          challenge,
-          countersign,
-        }
-      );
-
-      if (statusCode === 201) {
-        navigate('/finish');
-      }
-
-      const { data: isDiaryCreated } = await axiosInstance.get('diary/');
-
+      const { data: isDiaryCreated } = await isDiaryCreatedQuery.refetch();
       if (isDiaryCreated) {
         setIsRewrite(true);
       }
@@ -97,17 +115,19 @@ const WriteCountersign = () => {
               updateModal={handleModalClose}
             />
           )}
-          <Title>
-            <Emoji>🔑</Emoji>
-            <Subtitle>거의 다 왔다곰!</Subtitle>
-            <Description>
-              우리만의 암호를 아는 사람만 답장할 수 있도록
-              <br />
-              암호의 답을 정확하게 입력해주세요.
-              <br />
-              (ex. 0718, INFJ 등)
-            </Description>
-          </Title>
+          <TitleSection
+            emoji="🔑"
+            subtitle="거의 다 왔다곰!"
+            description={
+              <>
+                우리만의 암호를 아는 사람만 답장할 수 있도록
+                <br />
+                암호의 답을 정확하게 입력해주세요.
+                <br />
+                (ex. 0718, INFJ 등)
+              </>
+            }
+          />
           <CountersignContent>
             <Countersign>
               <Input
@@ -145,40 +165,11 @@ const WriteCountersign = () => {
 
 export default WriteCountersign;
 
-const SwingAnimation = keyframes`
-  0% {
-    transform: rotate(-10deg);
-  }
-  50% {
-    transform: rotate(15deg);
-  }
-  100% {
-    transform: rotate(-10deg);
-  }
-`;
-
 const WriteCountersignContainer = styled(motion.div)`
   display: flex;
   flex-direction: column;
   gap: 60px;
 `;
-
-const Title = styled.div`
-  text-align: center;
-  line-height: 1.6;
-`;
-
-const Emoji = styled.div`
-  font-size: 40px;
-  animation: ${SwingAnimation} 0.8s infinite;
-`;
-
-const Subtitle = styled.div`
-  font-size: 25px;
-  color: var(--point-color);
-`;
-
-const Description = styled.div``;
 
 const CountersignContent = styled.div`
   display: flex;
