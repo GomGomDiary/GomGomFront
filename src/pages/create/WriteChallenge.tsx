@@ -1,11 +1,13 @@
-import { ChangeEvent, useEffect, useState } from 'react';
-import { challengeAtom } from '@/store/create/challenge';
-import { Button, Modal, Input } from '@/components';
+import { AnimatePresence, motion } from 'framer-motion';
 import { useAtom, useAtomValue } from 'jotai';
+import { ChangeEvent, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { questionerAtom } from '@/store/create/questioner';
-import { motion, AnimatePresence } from 'framer-motion';
-import styled, { keyframes } from 'styled-components';
+import styled from 'styled-components';
+
+import { Button, Input, Modal } from '@/components';
+import { pageTransition, pageVariants } from '@/design';
+import { TitleSection } from '@/design/TitleSection';
+import { challengeAtom, questionerAtom } from '@/store/create';
 
 const WriteChallenge = () => {
   const navigate = useNavigate();
@@ -50,17 +52,6 @@ const WriteChallenge = () => {
     }, 1000);
   };
 
-  const pageVariants = {
-    initial: { opacity: 1, x: 0 },
-    exit: { opacity: 0, x: 0 },
-  };
-
-  const pageTransition = {
-    type: 'tween',
-    ease: 'anticipate',
-    duration: 1.0,
-  };
-
   return (
     <AnimatePresence>
       {!isExiting && (
@@ -77,17 +68,19 @@ const WriteChallenge = () => {
               updateModal={handleModalClose}
             />
           )}
-          <Title>
-            <Emoji>🔒</Emoji>
-            <Subtitle>모든 질문이 완성됐다곰!</Subtitle>
-            <Description>
-              우리만의 암호를 아는 사람만 답장할 수 있도록
-              <br />
-              암호는 정확하고 명확한 것으로 입력해주세요.
-              <br />
-              (ex. 내 생일 4자리, 내 MBTI 대문자 등)
-            </Description>
-          </Title>
+          <TitleSection
+            emoji="🔒"
+            subtitle="모든 질문이 완성됐다곰!"
+            description={
+              <>
+                우리만의 암호를 아는 사람만 답장할 수 있도록
+                <br />
+                암호는 정확하고 명확한 것으로 입력해주세요.
+                <br />
+                (ex. 내 생일 4자리, 내 MBTI 대문자 등)
+              </>
+            }
+          />
           <ChallengeContent>
             <Challenge>
               <Input
@@ -119,40 +112,11 @@ const WriteChallenge = () => {
 
 export default WriteChallenge;
 
-const SwingAnimation = keyframes`
-  0% {
-    transform: rotate(-10deg);
-  }
-  50% {
-    transform: rotate(15deg);
-  }
-  100% {
-    transform: rotate(-10deg);
-  }
-`;
-
 const WriteChallengeContainer = styled(motion.div)`
   display: flex;
   flex-direction: column;
   gap: 60px;
 `;
-
-const Title = styled.div`
-  text-align: center;
-  line-height: 1.6;
-`;
-
-const Emoji = styled.div`
-  font-size: 40px;
-  animation: ${SwingAnimation} 0.8s infinite;
-`;
-
-const Subtitle = styled.div`
-  font-size: 25px;
-  color: var(--point-color);
-`;
-
-const Description = styled.div``;
 
 const ChallengeContent = styled.div`
   display: flex;

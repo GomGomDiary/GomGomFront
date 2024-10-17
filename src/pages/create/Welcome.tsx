@@ -1,10 +1,12 @@
-import { useNavigate } from 'react-router-dom';
-import { Button, Modal, Input } from '@/components';
+import { AnimatePresence, motion } from 'framer-motion';
 import { useAtom } from 'jotai';
-import { questionerAtom } from '@/store/create/questioner';
 import { ChangeEvent, useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import styled, { keyframes } from 'styled-components';
+import { useNavigate } from 'react-router-dom';
+import styled from 'styled-components';
+
+import { Button, Input, Modal } from '@/components';
+import { pageTransition, pageVariants } from '@/design';
+import { questionerAtom } from '@/store/create/questioner';
 
 const Welcome = () => {
   const navigate = useNavigate();
@@ -31,17 +33,6 @@ const Welcome = () => {
     } else {
       setIsNameWritten(true);
     }
-  };
-
-  const pageVariants = {
-    initial: { opacity: 1, x: 0 },
-    exit: { opacity: 0, x: 0 },
-  };
-
-  const pageTransition = {
-    type: 'tween',
-    ease: 'anticipate',
-    duration: 1.0,
   };
 
   return (
@@ -95,18 +86,6 @@ const Welcome = () => {
 
 export default Welcome;
 
-const SwingAnimation = keyframes`
-  0% {
-    transform: rotate(-5deg);
-  }
-  50% {
-    transform: rotate(5deg);
-  }
-  100% {
-    transform: rotate(-5deg);
-  }
-`;
-
 const WelcomeContainer = styled(motion.div)`
   display: flex;
   flex-direction: column;
@@ -120,7 +99,6 @@ const Title = styled.div`
 `;
 
 const Emoji = styled.div`
-  animation: ${SwingAnimation} 1s infinite;
   font-size: 40px;
 `;
 

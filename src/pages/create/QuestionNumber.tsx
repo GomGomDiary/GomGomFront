@@ -1,12 +1,13 @@
-import { questionerAtom } from '@/store/create/questioner';
-import { Button } from '@/components';
-import { questionNumberAtom } from '@/store/create/questionNumber';
+import { AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { useAtom, useAtomValue } from 'jotai';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { AnimatePresence } from 'framer-motion';
-import { motion } from 'framer-motion';
 import styled from 'styled-components';
+
+import { Button } from '@/components';
+import { pageTransition, pageVariants } from '@/design';
+import { questionerAtom, questionNumberAtom } from '@/store/create';
 
 const QuestionNumber = () => {
   const navigate = useNavigate();
@@ -31,17 +32,6 @@ const QuestionNumber = () => {
     if (questionNum < 10) {
       setQuestionNum(questionNum + 1);
     }
-  };
-
-  const pageVariants = {
-    initial: { opacity: 1, x: 0 },
-    exit: { opacity: 0, x: 0 },
-  };
-
-  const pageTransition = {
-    type: 'tween',
-    ease: 'anticipate',
-    duration: 1.0,
   };
 
   const handlePrevious = () => {
