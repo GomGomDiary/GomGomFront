@@ -1,26 +1,48 @@
-import { MdOutlineHistory } from 'react-icons/md';
+import { useAtom, useSetAtom } from 'jotai';
+import { useEffect, useRef, useState } from 'react';
 import { FaBell } from 'react-icons/fa6';
+import { MdOutlineHistory } from 'react-icons/md';
 import { RiMenuLine } from 'react-icons/ri';
 import { useNavigate } from 'react-router-dom';
-import { useSetAtom } from 'jotai';
-import { questionerAtom } from '@/store/create/questioner';
-import { questionNumberAtom } from '@/store/create/questionNumber';
 import styled, { css, keyframes } from 'styled-components';
-import { useEffect, useRef, useState } from 'react';
+
+import { Modal } from '@/components';
+import {
+  challengeAtom,
+  countersignAtom,
+  questionerAtom,
+  questionNumberAtom,
+} from '@/store/create';
 
 const Headerbar = () => {
   const navigate = useNavigate();
   const dropdownRef = useRef<HTMLDivElement>(null);
 
-  const setQuestioner = useSetAtom(questionerAtom);
-  const setQuestionNumber = useSetAtom(questionNumberAtom);
+  const [questioner, setQuestioner] = useAtom(questionerAtom);
+  const [questionNumber, setQuestionNumber] = useAtom(questionNumberAtom);
+  const [challenge, setChallenge] = useAtom(challengeAtom);
+  const [countersign, setCountersign] = useAtom(countersignAtom);
+
   const [isBellClick, setIsBellClick] = useState(false);
   const [isMenuClick, setIsMenuClick] = useState(false);
 
   const handleGoToMain = () => {
+    const hasUnsavedData =
+      questioner || questionNumber !== 5 || challenge || countersign;
+
+    if (hasUnsavedData) {
+      const confirmLeave = window.confirm(
+        '변경 사항이 저장되지 않았습니다. 정말 이동하시겠습니까?'
+      );
+
+      if (!confirmLeave) return;
+    }
+
     navigate('/');
     setQuestioner('');
     setQuestionNumber(5);
+    setChallenge('');
+    setCountersign('');
   };
 
   const handleAlarm = () => {
