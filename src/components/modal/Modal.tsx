@@ -3,20 +3,20 @@ import styled from 'styled-components';
 
 export interface ModalProps {
   message: string;
-  updateModal: ($isOpen: boolean) => void;
+  updateModal: ($isModalOpen: boolean) => void;
 }
 
 export const Modal = ({ message, updateModal }: ModalProps) => {
-  const [modalIsOpen, setModalIsOpen] = useState(true);
+  const [isModalOpen, setIsModalOpen] = useState(true);
 
   const handleClose = () => {
-    setModalIsOpen(false);
+    setIsModalOpen(false);
     updateModal(false);
   };
 
   return (
     <>
-      <Overlay $isOpen={modalIsOpen} onClick={handleClose} />
+      <Overlay $isModalOpen={isModalOpen} onClick={handleClose} />
       <ModalContainer>
         <ModalContent>
           <Message>{message}</Message>
@@ -29,14 +29,14 @@ export const Modal = ({ message, updateModal }: ModalProps) => {
   );
 };
 
-const Overlay = styled.div<{ $isOpen: boolean }>`
+const Overlay = styled.div<{ $isModalOpen: boolean }>`
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
   background-color: rgba(224, 224, 224, 0.513);
-  display: ${({ $isOpen }) => ($isOpen ? 'block' : 'none')};
+  display: ${({ $isModalOpen }) => ($isModalOpen ? 'block' : 'none')};
 `;
 
 const ModalContainer = styled.div`
