@@ -25,6 +25,8 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
   }
 );
 
+Input.displayName = 'Input';
+
 const StyledInput = styled.input`
   border: none;
   border-bottom: 1px solid var(--border-color);
@@ -32,4 +34,5 @@ const StyledInput = styled.input`
   padding: 5px;
   width: 200px;
   font-size: 16px;
+  outline: none;
 `;
