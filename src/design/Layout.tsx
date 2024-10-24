@@ -1,13 +1,11 @@
 import { Outlet } from 'react-router-dom';
 
-import Frame from './Frame';
+import { Frame } from './Frame';
 
-const Layout = () => {
+export const Layout = () => {
   return (
     <Frame>
       <Outlet />
     </Frame>
   );
 };
-
-export default Layout;

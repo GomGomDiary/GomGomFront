@@ -1,22 +1,19 @@
-import axios from 'axios';
+import axios, { AxiosInstance } from 'axios';
 
-const instance = (answererJWT?: string) => {
+export const instance = (answererJWT?: string): AxiosInstance => {
   const axiosInstance = axios.create({
     baseURL: process.env.REACT_APP_SERVER_URL,
     withCredentials: true,
     headers: {
       'Content-Type': 'application/json',
-      Authorization: `Bearer ${answererJWT}`,
+      Authorization: answererJWT ? `Bearer ${answererJWT}` : '',
     },
   });
 
   axiosInstance.interceptors.response.use(
     response => response,
-    error => {
-      return Promise.reject(error);
-    }
+    error => Promise.reject(error)
   );
+
   return axiosInstance;
 };
-
-export default instance;

@@ -1,14 +1,13 @@
 import styled from 'styled-components';
 
-import Ad from '@/utils/Ad';
+import { Ad } from '@/utils';
 
-import Headerbar from './Headerbar';
-
+import { Headerbar } from './Headerbar';
 export interface FrameProps {
   children: React.ReactNode;
 }
 
-const Frame = ({ children }: FrameProps) => {
+export const Frame = ({ children }: FrameProps) => {
   return (
     <>
       <Headerbar />
@@ -19,8 +18,6 @@ const Frame = ({ children }: FrameProps) => {
     </>
   );
 };
-
-export default Frame;
 
 const StyledFrame = styled.div`
   display: flex;

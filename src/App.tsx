@@ -4,19 +4,25 @@ import { CookiesProvider } from 'react-cookie';
 import ReactGA from 'react-ga4';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 
-import Layout from './design/Layout';
-import DisplayAnswer from './pages/create/DisplayAnswer';
-import DisplayAnswerList from './pages/create/DisplayAnswerList';
-import Finish from './pages/create/Finish';
-import QuestionList from './pages/create/QuestionList';
-import QuestionNumber from './pages/create/QuestionNumber';
-import Welcome from './pages/create/Welcome';
-import WriteChallenge from './pages/create/WriteChallenge';
-import WriteCountersign from './pages/create/WriteCountersign';
-import History from './pages/history/History';
-import HistoryItem from './pages/history/HistoryItem';
-import NotFound from './pages/NotFound';
-import MatchChallenge from './pages/response/MatchChallenge';
+import { Layout } from './design';
+import {
+  Done,
+  MatchChallenge,
+  WriteAnswer,
+  WriteAnswererName,
+} from './pages/answer';
+import { History, HistoryItem } from './pages/history';
+import { NotFound } from './pages/NotFound';
+import {
+  DisplayAnswer,
+  DisplayAnswerList,
+  Finish,
+  QuestionList,
+  QuestionNumber,
+  Welcome,
+  WriteChallenge,
+  WriteCountersign,
+} from './pages/question';
 
 const App = () => {
   const queryClient = new QueryClient();
@@ -43,9 +49,19 @@ const App = () => {
                 path="/answerers/:diaryId"
                 element={<DisplayAnswerList />}
               />
-              <Route path="/answer/:diaryId" element={<DisplayAnswer />} />
+              <Route
+                path="/answer/:diaryId/:answerId"
+                element={<DisplayAnswer />}
+              />
 
               <Route path="/diary/:diaryId" element={<MatchChallenge />} />
+              <Route
+                path="/answerer/:diaryId"
+                element={<WriteAnswererName />}
+              />
+              <Route path="/answer/:diaryId" element={<WriteAnswer />} />
+              <Route path="/done/:diaryId" element={<Done />} />
+
               <Route path="/history" element={<History />} />
               <Route path="/history/:historyItemId" element={<HistoryItem />} />
 

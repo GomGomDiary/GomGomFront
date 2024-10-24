@@ -12,7 +12,7 @@ interface Window {
   };
 }
 
-const Ad = ({ unit, width, height }: AdProps) => {
+export const Ad = ({ unit, width, height }: AdProps) => {
   const containerRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
@@ -38,5 +38,3 @@ const Ad = ({ unit, width, height }: AdProps) => {
     </div>
   );
 };
-
-export default Ad;

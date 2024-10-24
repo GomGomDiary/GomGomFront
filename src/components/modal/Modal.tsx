@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
 export interface ModalProps {
@@ -7,11 +8,16 @@ export interface ModalProps {
 }
 
 export const Modal = ({ message, updateModal }: ModalProps) => {
+  const navigate = useNavigate();
   const [isModalOpen, setIsModalOpen] = useState(true);
 
   const handleClose = () => {
-    setIsModalOpen(false);
-    updateModal(false);
+    if (message === '이전 다이어리는 저장됐어요.') {
+      navigate('/finish');
+    } else {
+      setIsModalOpen(false);
+      updateModal(false);
+    }
   };
 
   return (

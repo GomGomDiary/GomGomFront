@@ -4,7 +4,7 @@ import styled from 'styled-components';
 export interface InputProps {
   value?: string;
   onChange?: ChangeEventHandler<HTMLInputElement>;
-  onKeyUp?: () => void;
+  onKeyUp?: (e: React.KeyboardEvent<HTMLInputElement>) => void;
   placeholder?: string;
   maxLength?: number;
 }

@@ -3,7 +3,7 @@ import styled from 'styled-components';
 
 import { Button } from '@/components';
 
-const NotFound = () => {
+export const NotFound = () => {
   const navigate = useNavigate();
 
   const handleGoToMain = () => {
@@ -27,7 +27,6 @@ const NotFound = () => {
     </NotFoundContainer>
   );
 };
-export default NotFound;
 
 const NotFoundContainer = styled.div`
   display: flex;

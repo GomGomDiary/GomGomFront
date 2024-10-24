@@ -1,7 +1,7 @@
 import canvasConfetti from 'canvas-confetti';
 import { useEffect } from 'react';
 
-const ConfettiEffect = () => {
+export const ConfettiEffect = () => {
   useEffect(() => {
     canvasConfetti({
       particleCount: 150,
@@ -11,5 +11,3 @@ const ConfettiEffect = () => {
   }, []);
   return <div></div>;
 };
-
-export default ConfettiEffect;
