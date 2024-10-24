@@ -67,7 +67,7 @@ export const Finish = () => {
     sendKakaoLink(description, imageUrl, link, buttonTitle);
   };
 
-  const handleGoToAnswerList = () => {
+  const handleGoToAnswererList = () => {
     navigate(`/answerers/${questionerCookie}`);
   };
 
@@ -102,7 +102,7 @@ export const Finish = () => {
           <Button
             text={'답변 현황 확인하기'}
             variant="default"
-            onClick={handleGoToAnswerList}
+            onClick={handleGoToAnswererList}
           />
           {isCopied && (
             <Modal

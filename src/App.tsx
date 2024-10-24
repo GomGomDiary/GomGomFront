@@ -15,7 +15,7 @@ import { History, HistoryItem } from './pages/history';
 import { NotFound } from './pages/NotFound';
 import {
   DisplayAnswer,
-  DisplayAnswerList,
+  DisplayAnswererList,
   Finish,
   QuestionList,
   QuestionNumber,
@@ -45,15 +45,15 @@ const App = () => {
               <Route path="/challenge" element={<WriteChallenge />} />
               <Route path="/countersign" element={<WriteCountersign />} />
               <Route path="/finish" element={<Finish />} />
-              <Route
-                path="/answerers/:diaryId"
-                element={<DisplayAnswerList />}
-              />
+
               <Route
                 path="/answer/:diaryId/:answerId"
                 element={<DisplayAnswer />}
               />
-
+              <Route
+                path="/answerers/:diaryId"
+                element={<DisplayAnswererList />}
+              />
               <Route path="/diary/:diaryId" element={<MatchChallenge />} />
               <Route
                 path="/answerer/:diaryId"

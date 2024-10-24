@@ -1,5 +1,5 @@
 export * from './DisplayAnswer';
-export * from './DisplayAnswerList';
+export * from './DisplayAnswererList';
 export * from './Finish';
 export * from './QuestionList';
 export * from './QuestionNumber';

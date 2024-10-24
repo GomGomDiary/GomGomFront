@@ -20,17 +20,17 @@ export const QuestionNumber = () => {
     }
   }, [navigate, questioner.length]);
 
-  const [questionNum, setQuestionNum] = useAtom(questionNumberAtom);
+  const [questionNumber, setQuestionNum] = useAtom(questionNumberAtom);
 
   const handleNumMinus = () => {
-    if (questionNum > 3) {
-      setQuestionNum(questionNum - 1);
+    if (questionNumber > 3) {
+      setQuestionNum(questionNumber - 1);
     }
   };
 
   const handleNumPlus = () => {
-    if (questionNum < 10) {
-      setQuestionNum(questionNum + 1);
+    if (questionNumber < 10) {
+      setQuestionNum(questionNumber + 1);
     }
   };
 
@@ -70,7 +70,7 @@ export const QuestionNumber = () => {
           </Title>
           <Circle>
             <MinusButton onClick={handleNumMinus}>-</MinusButton>
-            <QuestionCounter>{questionNum}</QuestionCounter>
+            <QuestionCounter>{questionNumber}</QuestionCounter>
             <PlusButton onClick={handleNumPlus}>+</PlusButton>
           </Circle>
           <Buttons>
