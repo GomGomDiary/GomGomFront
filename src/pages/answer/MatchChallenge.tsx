@@ -87,7 +87,7 @@ export const MatchChallenge = () => {
     setIsDiaryOwner(false);
     setIsExiting(true);
     setTimeout(() => {
-      navigate(`/answerer/${diaryId}`);
+      navigate(`/answerers/${diaryId}`);
     }, 1000);
   };
 
@@ -130,7 +130,7 @@ export const MatchChallenge = () => {
       });
       setIsExiting(true);
       setTimeout(() => {
-        navigate(`/answerer/${diaryId}`);
+        navigate(`/answerer-name/${diaryId}`);
       }, 1000);
     } catch (error) {
       setIsCountersignCorrected('incorrect');
