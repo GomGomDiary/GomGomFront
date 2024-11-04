@@ -1,4 +1,4 @@
-import { useAtom } from 'jotai';
+import { useAtom, useAtomValue } from 'jotai';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
@@ -6,27 +6,25 @@ import styled from 'styled-components';
 import { Button, Modal } from '@/components';
 import { ConfettiEffect } from '@/design';
 import { TitleSection } from '@/design/TitleSection';
-import { questionerCookieAtom } from '@/store/question';
+import { questionerAtom, questionerCookieAtom } from '@/store/question';
 import { shareLink } from '@/utils';
 import { getCookie } from '@/utils/cookie';
 import { initializeKakao, sendKakaoLink } from '@/utils/kakao';
 
 export const Finish = () => {
+  const navigate = useNavigate();
+
+  const questioner = useAtomValue(questionerAtom);
+
+  // NOTE: 다이어리 생성 중 이탈 시 메인으로 이동
   useEffect(() => {
-    const script = document.createElement('script');
-    script.src = 'https://developers.kakao.com/sdk/js/kakao.js';
-    script.async = true;
-
-    document.body.appendChild(script);
-
-    return () => {
-      document.body.removeChild(script);
-    };
-  }, []);
+    if (questioner.length === 0) {
+      navigate('/');
+    }
+  }, [navigate, questioner.length]);
 
   const [questionerCookie, setQuestionerCookie] = useAtom(questionerCookieAtom);
-
-  const navigate = useNavigate();
+  const [isDiaryFinished, setIsDiaryFinished] = useState(false);
 
   useEffect(() => {
     const fetchQuestionerCookieAtom = async () => {
@@ -37,6 +35,7 @@ export const Finish = () => {
         const diaryUser = getCookie('diaryUser');
         localStorage.setItem('diaryAddress', diaryId);
         localStorage.setItem('diaryUser', diaryUser);
+        setIsDiaryFinished(true);
       } catch (error) {
         console.error('error', error);
       }
@@ -73,7 +72,7 @@ export const Finish = () => {
 
   return (
     <>
-      <ConfettiEffect />
+      {isDiaryFinished && <ConfettiEffect />}
       <FinishContainer>
         <TitleSection
           emoji="🎉"
