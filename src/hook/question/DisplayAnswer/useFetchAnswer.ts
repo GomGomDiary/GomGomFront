@@ -5,13 +5,11 @@ import { instance } from '@/utils';
 export type fetchAnswerProps = {
   diaryId: string | undefined;
   start: number;
-  itemsPerPage: number;
   sortOrder: string;
 };
 
 export type fetchAnswerQueryProps = {
   diaryId: string | undefined;
-  itemsPerPage: number;
   currentPage: number;
   sortOrder: string;
 };
@@ -19,11 +17,10 @@ export type fetchAnswerQueryProps = {
 export const fetchAnswerers = async ({
   diaryId,
   start,
-  itemsPerPage,
   sortOrder,
 }: fetchAnswerProps) => {
   const response = await instance().get(
-    `diary/answerers/${diaryId}/?start=${start}&take=${itemsPerPage}&sortOrder=${sortOrder}`
+    `diary/answerers/${diaryId}/?start=${start}&take=5&sortOrder=${sortOrder}`
   );
   return response.data;
 };
@@ -31,15 +28,15 @@ export const fetchAnswerers = async ({
 export const useAnswerersQuery = ({
   diaryId,
   currentPage,
-  itemsPerPage,
   sortOrder,
 }: fetchAnswerQueryProps) => {
-  const start = (currentPage - 1) * itemsPerPage;
+  const start = (currentPage - 1) * 5;
 
   return useQuery({
-    queryKey: ['answerers', diaryId, currentPage, sortOrder],
-    queryFn: () => fetchAnswerers({ diaryId, start, itemsPerPage, sortOrder }),
+    queryKey: ['answerers', diaryId, currentPage, start, sortOrder],
+    queryFn: () => fetchAnswerers({ diaryId, start, sortOrder }),
     enabled: !!diaryId,
     staleTime: 1000 * 60 * 5,
+    gcTime: 1000 * 60 * 5,
   });
 };
