@@ -1,18 +1,36 @@
 import { AnimatePresence, motion } from 'framer-motion';
 import { useAtom } from 'jotai';
-import { ChangeEvent, useRef, useState } from 'react';
+import { ChangeEvent, useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
 import { Button, Input, Modal } from '@/components';
 import { pageTransition, pageVariants } from '@/design';
-import { questionerAtom } from '@/store/question';
+import { questionerAtom, rewriteDiaryAtom } from '@/store/question';
+import { getCookie, instance, setCookie } from '@/utils';
 
 export const Welcome = () => {
   const navigate = useNavigate();
   const [questioner, setQuestioner] = useAtom(questionerAtom);
   const [isExiting, setIsExiting] = useState(false);
   const nameInputRef = useRef<HTMLInputElement>(null);
+  const axiosInstance = instance();
+  const [rewriteDiary, setRewriteDiary] = useAtom(rewriteDiaryAtom);
+
+  const diaryId = getCookie('diaryAddress');
+  const diaryUser = getCookie('diaryUser');
+  const localDiaryId = localStorage.getItem('diaryAddress');
+  const localDiaryUser = localStorage.getItem('diaryUser');
+
+  useEffect(() => {
+    if (diaryId || diaryUser) {
+      localStorage.setItem('diaryAddress', diaryId);
+      localStorage.setItem('diaryUser', diaryUser);
+    } else if (localDiaryId || localDiaryUser) {
+      setCookie({ name: 'diaryAddress', value: localDiaryId, options: {} });
+      setCookie({ name: 'diaryUser', value: localDiaryUser, options: {} });
+    }
+  }, [diaryId, diaryUser, localDiaryId, localDiaryUser]);
 
   const handleWriteName = (e: ChangeEvent<HTMLInputElement>) => {
     setQuestioner(e.target.value);
@@ -36,6 +54,23 @@ export const Welcome = () => {
       setIsNameWritten(true);
     }
   };
+
+  useEffect(() => {
+    const checkDiary = async () => {
+      try {
+        const response = await axiosInstance.get('/diary');
+        if (response.data === true && !rewriteDiary) {
+          const redirectDiaryId = diaryId || localDiaryId;
+          localStorage.setItem('diaryAddress', redirectDiaryId);
+          navigate(`/answerers/${redirectDiaryId}`);
+        }
+      } catch (error) {
+        console.error('다이어리 확인 중 오류 발생:', error);
+      }
+      setRewriteDiary(false);
+    };
+    checkDiary();
+  }, []);
 
   return (
     <AnimatePresence>
