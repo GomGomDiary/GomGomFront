@@ -1,52 +1,58 @@
-import { useAtom } from 'jotai';
 import React, { useEffect, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
+import styled from 'styled-components';
 
 import {
   AnswererList,
   EmptyList,
 } from '@/components/question/DisplayAnswererList';
+import { AnswererListButtons } from '@/components/question/DisplayAnswererList/AnswererListButtons';
 import { Loading } from '@/design/Loading';
 import { useAnswerersQuery } from '@/hook/question/DisplayAnswer/useFetchAnswer';
-import { answerArrAtom } from '@/store/answer';
-import { questionArrAtom } from '@/store/question';
 import { AnswererListType } from '@/types/answererListType';
-import { getCookie } from '@/utils';
+import { getCookie, setCookie } from '@/utils';
 
 export const DisplayAnswererList = () => {
   const { diaryId } = useParams();
-  // const navigate = useNavigate();
 
-  /* 쿠키 */
   const diaryIdCookie = getCookie('diaryAddress');
-  // const diaryUser = getCookie('diaryUser');
-  // const localDiaryId = localStorage.getItem('diaryAddress');
-  // const localDiaryUser = localStorage.getItem('diaryUser');
+  const diaryUser = getCookie('diaryUser');
+  const localDiaryId = localStorage.getItem('diaryAddress');
+  const localDiaryUser = localStorage.getItem('diaryUser');
 
-  /* 다이어리 */
   const [answererList, setAnswererList] = useState<AnswererListType[]>([]);
   const [, setAnswerCount] = useState(0);
-  // const [answer, setAnswer] = useAtom(answerArrAtom);
-  // const [question, setQuestion] = useAtom(questionArrAtom);
-
-  /* 페이지네이션 */
   const [currentPage, setCurrentPage] = useState(1);
   const [sortOrder, setSortOrder] = useState('desc');
-  const itemsPerPage = 5;
+  const [isDiaryOwner, setIsDiaryOwner] = useState(false);
 
-  /* 자기 자신인지 확인 */
-  const [, setIsDiaryOwner] = useState(false);
+  useEffect(() => {
+    if (diaryIdCookie || diaryUser) {
+      localStorage.setItem('diaryAddress', diaryIdCookie);
+      localStorage.setItem('diaryUser', diaryUser);
+    } else if (localDiaryId || localDiaryUser) {
+      setCookie({
+        name: 'diaryAddress',
+        value: localDiaryId,
+        options: {},
+      });
+      setCookie({
+        name: 'diaryUser',
+        value: localDiaryUser,
+        options: {},
+      });
+    }
+  }, [diaryIdCookie, diaryUser, localDiaryId, localDiaryUser]);
 
   useEffect(() => {
     if (diaryIdCookie === diaryId) {
       setIsDiaryOwner(true);
     }
-  });
+  }, [diaryId, diaryIdCookie]);
 
   const { data, isLoading, isError } = useAnswerersQuery({
     diaryId,
     currentPage,
-    itemsPerPage,
     sortOrder,
   });
 
@@ -57,17 +63,36 @@ export const DisplayAnswererList = () => {
     }
   }, [data]);
 
+  const handleSelectSortOrder = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setSortOrder(e.target.value === '오래된 순' ? 'asc' : 'desc');
+  };
+
+  const handlePageChange = (newPage: number) => {
+    setCurrentPage(newPage);
+  };
+
+  if (isLoading) return <Loading />;
   if (isError) return <div>error</div>;
 
   return (
-    <div>
-      {isLoading ? (
-        <Loading />
-      ) : answererList.length > 0 ? (
-        <AnswererList />
+    <AnswererListContainer>
+      {answererList.length > 0 ? (
+        <AnswererList
+          answererData={data}
+          handleSelectSortOrder={handleSelectSortOrder}
+          currentPage={currentPage}
+          onPageChange={handlePageChange}
+        />
       ) : (
         <EmptyList />
       )}
-    </div>
+      <AnswererListButtons isDiaryOwner={isDiaryOwner} />
+    </AnswererListContainer>
   );
 };
+
+const AnswererListContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+`;
