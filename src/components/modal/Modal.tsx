@@ -12,7 +12,11 @@ export const Modal = ({ message, updateModal }: ModalProps) => {
   const [isModalOpen, setIsModalOpen] = useState(true);
 
   const handleClose = () => {
-    if (message === '이전 다이어리는 저장됐어요.') {
+    if (
+      message ===
+      `이전 다이어리는 저장됐어요.
+      왼쪽의 시계 모양을 눌러 확인할 수 있어요.`
+    ) {
       navigate('/finish');
     } else {
       setIsModalOpen(false);
