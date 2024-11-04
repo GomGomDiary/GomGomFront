@@ -59,7 +59,7 @@ export const WriteCountersign = () => {
           label: '다이어리 완성하기',
           value: 1,
         });
-        return;
+        navigate('/finish');
       }
 
       const { data: isCreated } = await axiosInstance.get('diary/');
@@ -145,7 +145,8 @@ export const WriteCountersign = () => {
           </Buttons>
           {isRewrite && (
             <Modal
-              message={'이전 다이어리는 저장됐어요.'}
+              message={`이전 다이어리는 저장됐어요.
+      왼쪽의 시계 모양을 눌러 확인할 수 있어요.`}
               updateModal={handleModalClose}
             />
           )}
