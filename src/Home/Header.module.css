@@ -42,6 +42,8 @@
   position: absolute;
   cursor: pointer;
   right: 40px;
+  height: 25px;
+  width: 25px;
 }
 
 .haveNewMessage {
