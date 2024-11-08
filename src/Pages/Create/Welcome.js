@@ -10,6 +10,7 @@ import instance from '../../api/customAxios';
 import { UpdateClick } from '../../store/Create/UpdateClick';
 import CustomModal from '../../components/CustomModal';
 import { EventTrigger } from '../../gtag';
+import EventModal from '../../components/EventModal';
 
 const Welcome = ({ onNextStep }) => {
   const [questioner, setQuestioner] = useRecoilState(Questioner);
@@ -85,6 +86,8 @@ const Welcome = ({ onNextStep }) => {
     checkDiary();
   }, []);
 
+  const noEventShow = getCookie('isEventNoShow');
+
   return (
     <div className={Styles.Welcome}>
       <div className={Styles.title}>
@@ -114,6 +117,7 @@ const Welcome = ({ onNextStep }) => {
           />
         )}
       </div>
+      {!noEventShow && <EventModal />}
     </div>
   );
 };
