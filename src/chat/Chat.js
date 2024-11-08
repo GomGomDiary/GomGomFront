@@ -5,11 +5,11 @@ import SendMessage from '../chat/SendMessage';
 import ReceiveMessage from '../chat/ReceiveMessage';
 import { io } from 'socket.io-client';
 import { useRecoilValue } from 'recoil';
-import { ChatToken } from '../store/Chat/ChatToken';
-import { RoomId } from '../store/Chat/RoomId';
+import { ChatToken } from '../store/chat/ChatToken';
+import { RoomId } from '../store/chat/RoomId';
 import instance from '../api/customAxios';
 import { useNavigate } from 'react-router-dom';
-import { GuestAddress } from '../store/Chat/GuestAddress';
+import { GuestAddress } from '../store/chat/GuestAddress';
 import { getCookie } from '../api/cookie';
 import CustomModal from '../components/CustomModal';
 
@@ -59,7 +59,7 @@ const Chat = () => {
       setSocket(newSocket);
     });
 
-    newSocket.on('exception', (e) => {
+    newSocket.on('exception', e => {
       console.error('에러 발생', e);
     });
 
@@ -88,14 +88,14 @@ const Chat = () => {
 
       if (isEnter) {
         // console.log('메세지 수신 준비 완료');
-        socket.on('receive_message', (message) => {
+        socket.on('receive_message', message => {
           const newMessage = {
             chat: message.chat,
             nickname: message.nickname,
             createdAt: new Date(),
           };
 
-          setMessages((prevReceivedMessages) => [
+          setMessages(prevReceivedMessages => [
             ...prevReceivedMessages,
             newMessage,
           ]);
@@ -113,7 +113,7 @@ const Chat = () => {
 
   const [isScaleover, setIsScaleover] = useState(false);
 
-  const handleMessageSend = (e) => {
+  const handleMessageSend = e => {
     if (socket && message.trim() !== '' && e.key === 'Enter') {
       const nickname = guestAddress === diaryAddress ? answerer : questioner;
 
@@ -131,7 +131,7 @@ const Chat = () => {
           nickname: nickname,
         });
 
-        setMessages((prevMessages) => [...prevMessages, newMessage]);
+        setMessages(prevMessages => [...prevMessages, newMessage]);
         setMessage('');
         scrollToBottom();
       } else {
@@ -140,7 +140,7 @@ const Chat = () => {
     }
   };
 
-  const handleMessageInput = (e) => {
+  const handleMessageInput = e => {
     setMessage(e.target.value);
   };
 
@@ -175,7 +175,7 @@ const Chat = () => {
   };
 
   /* 처음 메세지 next를 기준으로 다음 메세지 리스트 요청 */
-  const fetchNextMessages = async (next) => {
+  const fetchNextMessages = async next => {
     // next 값이 없으면 빈 배열 반환 (+next 값이 같아 종료된 경우)
     if (next === undefined || !next) {
       return [];
@@ -204,7 +204,7 @@ const Chat = () => {
 
     // 새로 받아온 메세지가 있을 경우 누적으로 저장 & next 값 갱신
     if (nextMessagesList.length > 0) {
-      setSaveMessages((prev) => [...nextMessagesList, ...prev]);
+      setSaveMessages(prev => [...nextMessagesList, ...prev]);
       setIsEnd(false);
     } else {
       setIsEnd(true);

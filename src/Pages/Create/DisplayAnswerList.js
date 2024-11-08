@@ -23,9 +23,9 @@ import { OriginQuestionNum } from '../../store/Create/OriginQuestionNum';
 import { QuestionNum } from '../../store/Create/QuestionNum';
 import { EventTrigger } from '../../gtag';
 
-import { RoomId } from '../../store/Chat/RoomId';
-import { ChatToken } from '../../store/Chat/ChatToken';
-import { GuestAddress } from '../../store/Chat/GuestAddress';
+import { RoomId } from '../../store/chat/RoomId';
+import { ChatToken } from '../../store/chat/ChatToken';
+import { GuestAddress } from '../../store/chat/GuestAddress';
 import EventModal from '../../components/EventModal';
 import { Cookies } from 'react-cookie';
 
@@ -332,7 +332,7 @@ const DisplayAnswerList = ({ goToFirstStep }) => {
     }
   };
 
-  // const noEventShow = getCookie('isEventNoShow');
+  const noEventShow = getCookie('isEventNoShow');
 
   return (
     <div className={Styles.DisplayAnswerList}>
@@ -443,7 +443,7 @@ const DisplayAnswerList = ({ goToFirstStep }) => {
           <div className={Styles.noResponsecontent}>텅</div>
         </div>
       )}
-      {/* {!noEventShow && <EventModal />} */}
+      {!noEventShow && <EventModal />}
       {!isDiaryOwner && (
         <div className={Styles.commonBtns}>
           <Btn text={'나도 만들기'} onClick={handleNewDiary} />

@@ -9,8 +9,8 @@ import Input from '../../components/Input';
 import CustomModal from '../../components/CustomModal';
 
 import { UserCookie } from '../../store/Create/UserCookie';
-import { AnswererToken } from '../../store/Response/AnswererToken';
-import { Response } from '../../store/Response/Response';
+import { AnswererToken } from '../../store/response/AnswererToken';
+import { Response } from '../../store/response/Response';
 
 import { EventTrigger } from '../../gtag';
 
@@ -32,11 +32,11 @@ const WriteResponse = ({ onNextStep, onPreviousStep }) => {
   useEffect(() => {
     axiosInstance
       .get(`diary/question/${diaryId}`)
-      .then((response) => {
+      .then(response => {
         setQuestionArr(response.data.question);
         setQuestionNumber(response.data.questionLength);
       })
-      .catch((error) => console.error(error));
+      .catch(error => console.error(error));
   }, []);
 
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
@@ -117,7 +117,7 @@ const WriteResponse = ({ onNextStep, onPreviousStep }) => {
                   <Input
                     placeholder="100자 내외로 답장을 입력하세요."
                     value={response}
-                    onChange={(e) => setResponse(e.target.value)}
+                    onChange={e => setResponse(e.target.value)}
                     ref={responseInputRef}
                     maxLength={100}
                   />

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import Styles from './Header.module.css';
 import { MdOutlineHistory } from 'react-icons/md';
-import { FaBell } from 'react-icons/fa6';
+import { IoMdHelpCircle } from 'react-icons/io';
 import { RiMenuLine } from 'react-icons/ri';
 import { useNavigate } from 'react-router-dom';
 
@@ -75,7 +75,8 @@ const Header = ({ questionerStep, answererStep }) => {
   };
 
   const handleGoToForm = () => {
-    window.location.href = 'https://forms.gle/1TXShtN1kxS7zKqS6';
+    window.location.href =
+      'https://gomgomdiary.notion.site/136f315888588081bc18fa2fdc4ab0be?pvs=4';
   };
 
   // 채팅 알람
@@ -92,19 +93,20 @@ const Header = ({ questionerStep, answererStep }) => {
       <div className={Styles.title} onClick={handleGoToMain}>
         GomGom Diary 🐻💭
       </div>
-      <FaBell
+
+      {/* <FaBell
         className={
           isReceivedMessage
             ? `${Styles.haveNewMessage} ${Styles.noNewMessage}`
             : Styles.noNewMessage
         }
         onClick={handleAlarm}
-      />
+      /> */}
       <RiMenuLine className={Styles.menu} onClick={handleDropdown} />
       {isDropDownOpen && (
         <ul className={Styles.dropdown}>
           <li onClick={handleGoToInsta}>공식 인스타그램</li>
-          <li onClick={handleGoToForm}>피드백</li>
+          <li onClick={handleGoToForm}>곰곰 다이어리 소개 & 문의 페이지</li>
         </ul>
       )}
       {isModalOpen && (

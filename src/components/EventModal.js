@@ -11,7 +11,14 @@ const EventModal = () => {
   };
 
   const handleGoToEvent = () => {
-    window.open('https://www.instagram.com/p/C9Z27pvyTrH/');
+    window.open(
+      'https://www.instagram.com/p/DCGs2VDS9eE/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA=='
+    );
+    setModalIsOpen(false);
+  };
+
+  const handleGoToTest = () => {
+    window.open('https://pepero-test.vercel.app/');
     setModalIsOpen(false);
   };
 
@@ -35,12 +42,12 @@ const EventModal = () => {
     >
       <div className={Styles.event}>
         <div className={Styles.eventText}>
-          답장을 캡쳐하고 공유해서
+          빼빼로데이 테스트를 하고
           <br />
-          곰곰 다이어리에서 상품을 받아가라곰! 🎁
+          빼빼로 받아가라곰! 🎁
         </div>
         <img
-          src="/image/eventPopup.webp"
+          src="/image/peperoEvent.webp"
           alt="이벤트 이미지"
           width={200}
           height={200}
@@ -48,6 +55,9 @@ const EventModal = () => {
         <div className={Styles.eventBtns}>
           <button className={Styles.eventBtn} onClick={handleGoToEvent}>
             이벤트 확인하기
+          </button>
+          <button className={Styles.eventBtn} onClick={handleGoToTest}>
+            테스트 하기
           </button>
           <button className={Styles.closeBtn} onClick={handleClose}>
             닫기
