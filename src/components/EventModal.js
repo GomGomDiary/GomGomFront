@@ -11,7 +11,9 @@ const EventModal = () => {
   };
 
   const handleGoToEvent = () => {
-    window.open('https://www.instagram.com/p/C9Z27pvyTrH/');
+    window.open(
+      'https://www.instagram.com/p/DCGs2VDS9eE/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA=='
+    );
     setModalIsOpen(false);
   };
 
