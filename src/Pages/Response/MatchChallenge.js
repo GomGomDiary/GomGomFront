@@ -12,7 +12,7 @@ import { useParams } from 'react-router-dom';
 import { UserCookie } from '../../store/Create/UserCookie';
 import { Challenge } from '../../store/Create/Challenge';
 import { Questioner } from '../../store/Create/Questioner';
-import { AnswererToken } from '../../store/Response/AnswererToken';
+import { AnswererToken } from '../../store/response/AnswererToken';
 import { getCookie } from '../../api/cookie';
 import { EventTrigger } from '../../gtag';
 
@@ -43,7 +43,7 @@ const MatchChallenge = ({ onNextStep }) => {
   const [isAlreadyAnswered, setIsAlreadyAnswered] = useState(false);
 
   useEffect(() => {
-    axiosInstance.get(`/diary/${diaryId}`).then((response) => {
+    axiosInstance.get(`/diary/${diaryId}`).then(response => {
       if (response.data === true) {
         setIsAlreadyAnswered(true);
       }
@@ -56,13 +56,13 @@ const MatchChallenge = ({ onNextStep }) => {
 
       axiosInstance
         .get(`diary/challenge/${diaryId}`)
-        .then((response) => {
+        .then(response => {
           if (response.status === 200) {
             setChallenge(response.data.challenge);
             setQuestioner(response.data.questioner);
           }
         })
-        .catch((error) => {
+        .catch(error => {
           setIsExisted(true);
         });
     }
@@ -70,11 +70,11 @@ const MatchChallenge = ({ onNextStep }) => {
 
   const CountersignInput = useRef();
 
-  const writeCountersign = (e) => {
+  const writeCountersign = e => {
     setCountersign(e.target.value);
   };
 
-  const handleKeyPress = (e) => {
+  const handleKeyPress = e => {
     if (e.key === 'Enter') {
       submitCountersign();
     }
@@ -102,7 +102,7 @@ const MatchChallenge = ({ onNextStep }) => {
     if (countersign) {
       axiosInstance
         .post(`diary/countersign/${diaryId}`, { countersign })
-        .then((response) => {
+        .then(response => {
           setAnswererToken(response.data.diaryToken);
           onNextStep();
           EventTrigger({
@@ -136,7 +136,7 @@ const MatchChallenge = ({ onNextStep }) => {
         <Input
           type="text"
           value={countersign}
-          onChange={(e) => writeCountersign(e)}
+          onChange={e => writeCountersign(e)}
           placeholder="암호를 입력하세요."
           onKeyUp={handleKeyPress}
           ref={CountersignInput}

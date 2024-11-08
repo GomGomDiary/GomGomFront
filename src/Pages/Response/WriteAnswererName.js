@@ -2,7 +2,7 @@ import React, { useRef, useState } from 'react';
 import Styles from './WriteAnswererName.module.css';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import { Questioner } from '../../store/Create/Questioner';
-import { Answerer } from '../../store/Response/Answerer';
+import { Answerer } from '../../store/response/Answerer';
 import Input from '../../components/Input';
 import Btn from '../../components/Btn';
 import WhiteBtn from '../../components/WhiteBtn';
@@ -12,11 +12,11 @@ const WriteAnswererName = ({ onNextStep, onPreviousStep }) => {
   const [answerer, setAnswerer] = useRecoilState(Answerer);
   const NameInputRef = useRef();
 
-  const writeName = (e) => {
+  const writeName = e => {
     setAnswerer(e.target.value);
   };
 
-  const handleKeyPress = (e) => {
+  const handleKeyPress = e => {
     if (e.key === 'Enter') {
       submitName();
     }
@@ -50,7 +50,7 @@ const WriteAnswererName = ({ onNextStep, onPreviousStep }) => {
         <Input
           type="text"
           value={answerer}
-          onChange={(e) => writeName(e)}
+          onChange={e => writeName(e)}
           onKeyUp={handleKeyPress}
           placeholder="10자 이내로 이름을 입력하세요."
           ref={NameInputRef}

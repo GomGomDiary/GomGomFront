@@ -23,9 +23,9 @@ import { OriginQuestionNum } from '../../store/Create/OriginQuestionNum';
 import { QuestionNum } from '../../store/Create/QuestionNum';
 import { EventTrigger } from '../../gtag';
 
-import { RoomId } from '../../store/Chat/RoomId';
-import { ChatToken } from '../../store/Chat/ChatToken';
-import { GuestAddress } from '../../store/Chat/GuestAddress';
+import { RoomId } from '../../store/chat/RoomId';
+import { ChatToken } from '../../store/chat/ChatToken';
+import { GuestAddress } from '../../store/chat/GuestAddress';
 import EventModal from '../../components/EventModal';
 import { Cookies } from 'react-cookie';
 

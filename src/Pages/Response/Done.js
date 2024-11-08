@@ -8,11 +8,11 @@ import WhiteBtn from '../../components/WhiteBtn';
 import CustomModal from '../../components/CustomModal';
 
 import { UserCookie } from '../../store/Create/UserCookie';
-import { Answerer } from '../../store/Response/Answerer';
-import { Response } from '../../store/Response/Response';
+import { Answerer } from '../../store/response/Answerer';
+import { Response } from '../../store/response/Response';
 
 import { useRecoilState, useRecoilValue } from 'recoil';
-import { AnswererToken } from '../../store/Response/AnswererToken';
+import { AnswererToken } from '../../store/response/AnswererToken';
 import { useNavigate } from 'react-router-dom';
 import { QuestionArr } from '../../store/Create/QuestionArr';
 import { Challenge } from '../../store/Create/Challenge';
