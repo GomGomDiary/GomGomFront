@@ -11,14 +11,14 @@
   height: 20px;
   margin: 0 auto;
   border-radius: 20px;
-  background-color: #fed7aa;
+  background-color: var(--border-color);
 }
 
 .progress {
   width: 0px;
   height: 20px;
   border-radius: 20px;
-  background-color: #7c2d12;
+  background-color: var(--point-color);
 }
 
 .QuestionList {
